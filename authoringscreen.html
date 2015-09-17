@@ -1,0 +1,10 @@
+<div class ="container">
+	<div id="header" class="row" ng-controller="GamController as gamctrl">
+		<button class="btn btn-default" ng-click="gamctrl.generateGAM(items)">GENERATE</button>
+		<button class="btn btn-default" ng-click="control.switchview()"><span class="glyphicon glyphicon-align-left" aria-hidden="true"></span></button>
+		<h1>{{name}}<h1>
+		<h4>{{description}}<h3>
+	</div>
+	<overview></overview>
+	<step-by-step></step-by-step>
+</div>

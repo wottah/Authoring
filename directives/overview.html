@@ -1,0 +1,19 @@
+<!--html code of the overview mode-->
+<div id="overviewcontainer" class="row" ng-show="control.overviewEnabled">
+	<ol id="overview" class="list-group container">
+		<li ng-repeat="item in items|idFilter:0" class="collapsed list-group-item">
+			<span class="glyphicon glyphicon-triangle-right" ng-click="control.dropdowncontrol($event, item.id)" aria-hidden="true"> </span>
+			<input type="checkbox" ng-checked="item.selected" ng-click="control.includeswitch(item)"/>
+			<p >{{item.text}}</p>
+			<div class="btn-group">
+				<button ng-click="control.deleteItem(item)" class="btn btn-primary">
+						<span class="glyphicon glyphicon-remove" aria-hidden="true"> </span>
+				</button>
+				<button ng-click="control.settings(item)" class="btn btn-primary">
+						<span class="glyphicon glyphicon-option-horizontal" aria-hidden="true"> </span>
+				</button>
+			</div>
+		</li>
+		<li class="list-group-item"><add-items controller="control" parent="0" ></add-items></li>
+	</li>
+</div>

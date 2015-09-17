@@ -1,0 +1,31 @@
+[
+	{
+		"name":"text-topic",
+		"default_parameters":
+		[
+				{
+					"name":"var1",
+					"type":"String",
+					"value":"pewpy"
+				},
+				{
+					"name":"knowledge",
+					"type":"Double",
+					"value":"0.80"
+				}
+		],
+		"default_rules":["Visited"]
+	},
+	{
+		"name":"quiz-topics",
+		"default_parameters":
+		[
+			{
+				"name":"mark",
+				"type":"Int",
+				"value":"1"
+			}
+		],
+		"default_rules":["Grading"]
+	}
+]

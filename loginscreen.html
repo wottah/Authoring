@@ -1,0 +1,25 @@
+<div id="loginScreenContainer" class="container">
+  <div class="row" id="loginBox">
+    <div class="col-md-4 col-md-offset-4 panel panel-default panel-body">
+      <h1 ng-hide="control.showRegister">Log-in</h1><h1 ng-hide="control.showLogin">Register</h1><br>
+      <alert ng-repeat="alert in alerts" type="{{alert.type}}" close="control.closeAlert($index)">{{alert.msg}}</alert>
+      <form  class="form-group" ng-submit="control.login(control.credentials)" ng-show="control.showLogin" validate>
+        <label for="usernameField">Username: </label>
+        <input type="text" id="usernameField" class="form-control" ng-model="control.credentials.name" placeholder="Username" required></input>
+        <label for="passwordField">Password: </label>
+        <input type="password" id="passwordField" class="form-control" ng-model="control.credentials.pass" placeholder="Password" required></input>
+        <input type="submit" name="login" class="btn btn-default"  value="login"></input>
+      </form>
+      <form ng-submit="control.register(control.credentials)" ng-show="control.showRegister" validate>
+        <input type="text" class="form-control" ng-model="control.credentials.name" placeholder="Username" required></input>
+        <input type="password" class="form-control" ng-model="control.credentials.pass" placeholder="Password" required></input>
+        <input type="submit" name="login" class="btn btn-default" value="Register"></input>
+        <input type="submit" name="cancel" class="btn btn-default" value="Cancel"></input>
+      </form>
+      <div class="login-help">
+        <a href="#" ng-click="control.ToggleRegisterMenu()" ng-hide="control.showRegister">Register</a>
+        <a href="#" ng-click="control.ToggleRegisterMenu()" ng-hide="control.showLogin">Login</a> • <a href="#">Forgot Password</a>
+      </div>
+    </div>
+  </div>
+</div>

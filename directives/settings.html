@@ -1,0 +1,109 @@
+<!-- This code makes up the topic settings menu -->
+<div id="options">
+	<div class="modal-header">
+		<h3 class="modal-title">Settings of {{settingsItem.text}}.</h3>
+	</div>
+	<div class="modal-body">
+		<table class="table">
+			<tr><td><b>Name: </b></td> <td><input type="text" ng-blur="setControl.SessionService.saveProject()" class="form-control" ng-model="settingsItem.text" placeholder="topic name" ></input></td></tr>
+			<tr><td><b>Description: </b></td> <td><input type="text" class="form-control" ng-blur="setControl.SessionService.saveProject()" ng-model="settingsItem.description" placeholder="topic description"></input></td></tr>
+			<tr>
+				<td>
+					<b>Rule: </b>
+					<select class="form-control" ng-options="rule as rule.name disable when rule.disabled for rule in setControl.ruleSelectList(settingsItem)" ng-model="selectedrule" ></select>
+				</td>
+				<td>
+					<table class="table table-bordered" id="ruleTable">
+						<tr>
+							<th>Source name</th>
+							<th>Rule name</th></th>
+							<th>Target name</th>
+							<th>Delete</th>
+						</tr>
+						<tr ng-repeat="item in setControl.getItemRules(settingsItem.id) | ruletypeFilter : selectedrule">
+							<td>
+								{{item.source.text}}
+							</td>
+							<td>
+								{{item.name}}
+							</td>
+							<td>
+								{{item.target.text}}
+							<td>
+								<button class="btn btn-default btn-xs" ng-click="setControl.removeRule(item, settingsItem)" ng-disabled="setControl.isDefRule(item, settingsItem.id)">DELETE</button>
+							</td>
+						</tr>
+					</table>
+					<div id="prereqselector" ng-controller="AddController as rulecontrol">
+						<div ng-hide="rulecontrol.showAddButton" >
+							<select class="form-control" ng-options="item as item.text for item in items | prereqFilter: settingsItem: selectedrule" ng-model="selectedItem" ng-hide="setControl.unaryRuleSelected()"></select>
+							<button class="btn btn-default btn-xs" ng-click="setControl.addRule(settingsItem, selectedItem, selectedrule); rulecontrol.addHide();">
+								<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+							</button>
+							<button class="btn btn-default btn-xs" ng-click="rulecontrol.addHide()">
+								<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+							</button>
+						</div>
+						<div>
+							<button class="btn btn-default btn-xs" ng-click="rulecontrol.addShow()" ng-disabled="setControl.allSelected()" ng-show="rulecontrol.showAddButton" >
+							<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+						</button>
+						</div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td><b>Parameters :</b></td>
+				<td>
+					<table id="paramTable" class="table table-bordered">
+						<tr>
+							<th>Name</th>
+							<th>Value</th>
+							<th>Type</th>
+							<th>Delete</th>
+						</tr>
+						<tr ng-repeat="param in settingsItem.parameters">
+							<td>
+								<input type="text" ng-model="param.name" ng-disabled ="param.ruleparam"></input>
+							</td>
+							<td>
+								<input type="text" ng-model="param.value" ng-disabled="setControl.isCalculated(param)"></input>
+							</td>
+							<td>
+								<select ng-model="param.type" ng-options="type as type for type in defaultTypes" ng-disabled ="param.ruleparam"></select>
+							</td>
+							<td>
+								<button class="btn btn-default btn-xs" ng-click="setControl.removeParam(settingsItem, param)" ng-disabled="param.ruleparam">DELETE</button>
+							</td>
+						</tr>
+					</table>
+					<div  id="paramselector" ng-controller="AddController as paramcontrol">
+							<div class="panel panel-default panel-body" ng-hide="paramcontrol.showAddButton">
+								<label for="parNameI ut">Name: </label><input type="text" class="form-control" id="parNameInput" ng-model="paramcontrol.addText" ></input>
+								<label for="parTypeSelect">Type: </label><select class="form-control" id="parTypeSelect" ng-options="type as type for type in defaultTypes" ng-model="selectedNewType"></select>
+								<label for="parValSelect">Value: </label><input type="text" class="form-control" id="parValSelect" ng-model="paramcontrol.descText"></input>
+								<button class="btn btn-default btn-xs" ng-click="paramcontrol.addText && setControl.addParam(settingsItem, paramcontrol.addText,selectedNewType, paramcontrol.descText);paramcontrol.addText && paramcontrol.addHide();">
+									<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+								</button>
+								<button class="btn btn-default btn-xs" ng-click="paramcontrol.addHide()">
+									<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+								</button>
+							</div>
+							<div>
+								<button class="btn btn-default btn-xs" ng-click="paramcontrol.addShow()" ng-show="paramcontrol.showAddButton" >
+									<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+								</button>
+							</div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+					<td><b>Resource :</b></td>
+					<td><input type="text" class="form-control" ng-model="settingsItem.resource" placeholder="http://mysite.org/topic"></input></td>
+			</tr>
+		</table>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" type="button" ng-click="setControl.ok()">OK</button>
+	</div>
+</div>

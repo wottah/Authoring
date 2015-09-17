@@ -1,0 +1,30 @@
+ [
+	{
+		"name":"hasPrerequisite",
+    "type":"binary",
+    "properties": [{"name":"suitability","type":"Boolean","defval":""}],
+		"code":"#suitability:Boolean & `${%target%#knowledge > 70}`"
+	},
+	{
+		"name":"Quiz",
+    "type":"unary",
+		"code":"PLACEHOLDER"
+	},
+  {
+    "name":"knowledge_prop",
+    "type":"unary",
+    "code":"CODE HERE"
+  },
+  {
+    "name":"Grading",
+    "type":"unary",
+    "properties":[{"name":"nrQuestions","type":"Int","defval":"1"},{"name":"threshold","type":"Double","defval":"0.5"}],
+    "code":"ENTER GAM HERE"
+  },
+  {
+    "name":"Visited",
+    "type":"unary",
+    "properties":[{"name":"visited", "type":"Int", "defval":""}],
+    "code":"#[visited]:Integer event +'boolean countclick = ${#suitability};'"
+  }
+]

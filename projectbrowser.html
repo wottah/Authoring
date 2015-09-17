@@ -1,0 +1,16 @@
+<div class="container" id="browseScreenContainer">
+  <div class="row" id="browseBox">
+      <div class="panel panel-default panel-body col-md-6 col-md-offset-3">
+      <table class="table">
+      <th>Project name</th>
+      <th>Author</th>
+      <tr ng-repeat="project in projects" ng-click="control.SelectProject(project)" ng-class="{'info': control.selectedProject.name == project.name}">
+        <td>{{project.name}}</td>
+        <td>{{project.author}}</td>
+      </tr>
+      </table>
+      <input class="btn btn-primary row" type="submit" ng-click="control.loadProject()" value="Load"></input>
+      <input class="btn btn-primary row" type="submit" ng-click="control.openNewProjectModal()" value="New"></input>
+    </div>
+  </div>
+</div>

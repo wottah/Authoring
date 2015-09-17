@@ -1,0 +1,19 @@
+<!--The reusable add item html code-->
+<div id	="addcontrol" ng-controller="AddController as addcontrol">
+	<div ng-hide="addcontrol.showAddButton" >
+		<label for:"addItemNameInput">Name: </label><input type="text" class="form-control" id="addItemNameInput" ng-model="addcontrol.addText"></input>
+		<label for:"addItemDescInput">Description: </label><input type="text" class="form-control" id="addItemDescInput" ng-model="addcontrol.descText"></input>
+		<label for:"addItemsTypeSelect">Type: </label><select class="form-control" id="addItemsTypeSelect" ng-options="concept as concept.name for concept in conceptTypes" ng-model="selectedConceptType"></select>
+		<button class="btn btn-default btn-sm" ng-click="addcontrol.addText && controller.saveItem(parent, addcontrol.addText, addcontrol.descText, selectedConceptType);addcontrol.addText && addcontrol.addHide()">
+			<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+		</button>
+		<button class="btn btn-default btn-sm" ng-click="addcontrol.addHide()">
+			<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+		</button>
+	</div>
+	<div>
+	<button class="btn btn-primary btn-sm btn-block" ng-click="addcontrol.addShow()" ng-show="addcontrol.showAddButton" >
+		<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+	</button>
+	</div>
+</div>

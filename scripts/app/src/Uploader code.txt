@@ -1,0 +1,75 @@
+\\JS
+//handles file selection upload and interpretation.
+angular.module('modelbuilder').controller('FileUploadController', function($scope){
+$scope.file_changed = function(element) {
+
+   $scope.$apply(function(scope) {
+     var inputfile = element.files[0];
+     var reader = new FileReader();
+     reader.onload = function(e) {
+      //reads the input text file into an array of items to show in the hierarchy;
+      var idcounter = 1;
+      var newitems = [];
+      var lines = reader.result.split(';');
+      for(var i = 0;i < lines.length;i++)
+      {
+
+        var left = (lines[i].slice(0,lines[i].indexOf("->"))).trim();
+        var right = (lines[i].slice(lines[i].indexOf("->")+2)).trim();
+        if(left!="" && right!="")
+        {
+          newitemleft={text:left, id:0, parent:0};
+          newitemright={text:right, id:0, parent:0};
+          for(j in newitems)
+          {
+            if(newitems[j].text == newitemleft.text)
+            {
+              newitemleft = newitems[j];
+            }
+          }
+          if(newitemleft.id==0)
+          {
+            newitemleft.id = idcounter;
+            newitemleft.parent = 0;
+            newitems.push(newitemleft);
+            idcounter++;
+          }
+          for(j in newitems)
+          {
+            if(newitems[j].text == newitemright.text)
+            {
+              newitemright = newitems[j];
+              newitems[j].parent = newitemleft.id
+            }
+          }
+          if(newitemright.id==0)
+          {
+            newitemright.id = idcounter;
+            newitemright.parent = newitemleft.id;
+            newitems.push(newitemright);
+            idcounter++;
+          }
+        }
+      }
+      $scope.items = newitems;
+      $scope.$apply();
+     };
+    reader.readAsText(inputfile);
+
+   });
+};
+});
+
+\\JS in treecontrol
+
+			//applies a file selected in the upload file selector.
+			this.addfile = function()
+			{
+				$scope.items = formItems;
+			};
+
+\\html
+<div>
+  <input type="file" accept ="text/plain" ng-controller="FileUploadController as uploadControl" onchange="angular.element(this).scope().file_changed(this)"/>
+  <button ng-click="control.addfile()">Update Gui</button>
+</div>

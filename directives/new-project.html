@@ -1,0 +1,17 @@
+<!-- This code makes up the topic settings menu -->
+<div id="options">
+	<div class="modal-header">
+		<h3 class="modal-title">New course</h3>
+	</div>
+	<div class="modal-body">
+    <form>
+      <label for="nameField">Course name: </label>
+      <input type="text" id="nameField" class="form-control" ng-model="newProject.text" placeholder="New course" required></input>
+      <label for="descField">Description: </label>
+      <input type="text" id="descField" class="form-control" ng-model="newProject.description" placeholder="Your course description." required></input>
+    </form>
+	<div class="modal-footer">
+		<button class="btn btn-primary" type="button" ng-click="browseControl.newProject(newProject.text,newProject.description)">Confirm</button>
+    <button class="btn btn-primary" type="button" ng-click="browseControl.cancelNewProject()">Cancel</button>
+	</div>
+</div>
