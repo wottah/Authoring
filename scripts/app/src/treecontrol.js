@@ -11,7 +11,7 @@
 			this.currentparentid= 0;
 			this.overviewEnabled = false;
 			this.crumblepath = [];
-			//Switches view from step-by-step to overview.
+			//Switches view from step-by-step to overview. typing stuff now 
 			this.switchview = function(){
 				this.overviewEnabled = !this.overviewEnabled;
 			};
