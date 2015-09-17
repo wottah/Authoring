@@ -6,9 +6,10 @@
 		"code":"#suitability:Boolean & `${%target%#knowledge > 70}`"
 	},
 	{
-		"name":"Quiz",
+		"name":"Suitable",
     "type":"unary",
-		"code":"PLACEHOLDER"
+    "properties":[{"name":"suitability", "type":"Boolean", "defval":""},{"name":"knowledge", "type":"Double", "defval":"0"}],
+		"code":"#suitability:Boolean & `${%target%#knowledge > 70"
 	},
   {
     "name":"knowledge_prop",

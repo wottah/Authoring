@@ -87,12 +87,16 @@ angular.module('modelbuilder').service('ConceptService', function(SupportService
         return;
       }
       //otherwise edit the target parameters accordingly.
-      var editProp = {name: "", type:"", value:"", defval:"", ruleparam:true};
+      var editProp = {name: "", type:"", value:"", defval:"", ruleparam:false};
       editProp.name = target.parameters[index].name;
       editProp.type = target.parameters[index].type;
+      editProp.value = target.parameters[index].value;
       if(ruleparam == true){
         editProp.ruleparam = newparam.ruleparam;
         editProp.defval = newparam.defval;
+        if(newparam.defval==""){
+          editProp.value = "Defined by "+ruleName +".";
+        }
       }
       target.parameters[index] = editProp;
       newprop = false;

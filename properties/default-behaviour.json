@@ -4,17 +4,22 @@
 		"default_parameters":
 		[
 				{
-					"name":"var1",
-					"type":"String",
-					"value":"pewpy"
+					"name":"own-knowledge",
+					"type":"Double",
+					"value":"0"
 				},
 				{
 					"name":"knowledge",
 					"type":"Double",
-					"value":"0.80"
+					"value":"0"
+				},
+				{
+					"name":"suitability",
+					"type":"Boolean",
+					"value":"0"
 				}
 		],
-		"default_rules":["Visited"]
+		"default_rules":["Suitable"]
 	},
 	{
 		"name":"quiz-topics",
