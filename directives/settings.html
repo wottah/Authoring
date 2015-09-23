@@ -9,6 +9,43 @@
 			<tr><td><b>Description: </b></td> <td><input type="text" class="form-control" ng-blur="setControl.SessionService.saveProject()" ng-model="settingsItem.description" placeholder="topic description"></input></td></tr>
 			<tr>
 				<td>
+					<b>Default Parameters:</b>
+					<select id="defParamSelectBox" class= "form-control" ng-options="param as param.name for param in defaultParams" ng-model="selectedDefParam" size={{defaultParams.length}}></select>
+				</td>
+				<td>
+					<table class="table table-bordered">
+						<tr>
+							<th>Condition</th>
+							<th>Target name</th>
+							<th>Delete</th>
+						</tr>
+						<tr ng-repeat="item in setControl.getItemRules(settingsItem.id) | ruleDefParamFilter : selectedDefParam">
+							<td>{{item.name}}</td>
+							<td>{{item.target.text}}</td>
+							<td><button class="btn btn-default btn-xs" ng-click="setControl.removeRule(item, settingsItem)" ng-disabled="setControl.isDefRule(item, settingsItem.id)">DELETE</button></td>
+						</tr>
+					</table>
+					<div id="defParamselector" ng-controller="AddController as rulecontrol">
+						<div ng-hide="rulecontrol.showAddButton" >
+							<select class="form-control" ng-options="rule as rule.name for rule in setControl.defParamSelectedRulesList(selectedDefParam)" ng-model="selectedDefParamRule"></select>
+							<select class="form-control" ng-options="item as item.text for item in items | prereqFilter: settingsItem: selectedrule" ng-model="selectedItem" ng-hide="setControl.unaryRuleSelected()"></select>
+							<button class="btn btn-default btn-xs" ng-click="setControl.addRule(settingsItem, selectedItem, selectedDefParamRule, selectedDefParam); rulecontrol.addHide();">
+								<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+							</button>
+							<button class="btn btn-default btn-xs" ng-click="rulecontrol.addHide()">
+								<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+							</button>
+						</div>
+						<div>
+							<button class="btn btn-default btn-xs" ng-click="rulecontrol.addShow()" ng-show="rulecontrol.showAddButton" >
+							<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+						</button>
+						</div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
 					<b>Rule: </b>
 					<select class="form-control" ng-options="rule as rule.name disable when rule.disabled for rule in setControl.ruleSelectList(settingsItem)" ng-model="selectedrule" ></select>
 				</td>

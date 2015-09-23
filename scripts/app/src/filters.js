@@ -16,19 +16,39 @@
 			};
 		});
 
+		//Filter returns the rules corresponding with the right Default param
+		app.filter('ruleDefParamFilter', function() {
+			return function(items, defParam) {
+				this.returnlist = [];
+				var cat = defParam.name;
+				for(var i in items){
+					if(items[i].category == cat){
+						returnlist.push(items[i]);
+					}
+				}
+				return returnlist;
+			};
+		});
+
 		//Filter that makes sure the right rules are being returned
 		app.filter('ruletypeFilter',function() {
 			return function(items, rule) {
 				this.returnlist = [];
+				this.itemlist = [];
+				for(var i in items){
+					if(items[i].category == "general"){
+						itemlist.push(items[i]);
+					}
+				}
 				if(rule.name=="All")
 				{
-					return items;
+					return itemlist;
 				}
-				for(var i in items)
+				for(var i in itemlist)
 				{
-					if(items[i].name == rule.name)
+					if(itemlist[i].name == rule.name)
 					{
-						returnlist.push(items[i]);
+						returnlist.push(itemlist[i]);
 					}
 				}
 				return returnlist;

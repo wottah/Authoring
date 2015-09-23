@@ -1,31 +1,47 @@
- [
-	{
-		"name":"hasPrerequisite",
-    "type":"binary",
-    "properties": [{"name":"suitability","type":"Boolean","defval":""}],
-		"code":"#suitability:Boolean & `${%target%#knowledge > 70}`"
-	},
-	{
-		"name":"Suitable",
-    "type":"unary",
-    "properties":[{"name":"suitability", "type":"Boolean", "defval":""},{"name":"knowledge", "type":"Double", "defval":"0"}],
-		"code":"#suitability:Boolean & `${%target%#knowledge > 70"
-	},
-  {
-    "name":"knowledge_prop",
-    "type":"unary",
-    "code":"CODE HERE"
-  },
-  {
-    "name":"Grading",
-    "type":"unary",
-    "properties":[{"name":"nrQuestions","type":"Int","defval":"1"},{"name":"threshold","type":"Double","defval":"0.5"}],
-    "code":"ENTER GAM HERE"
-  },
-  {
-    "name":"Visited",
-    "type":"unary",
-    "properties":[{"name":"visited", "type":"Int", "defval":""}],
-    "code":"#[visited]:Integer event +'boolean countclick = ${#suitability};'"
+   {
+     "general":[
+    	{
+    		"name":"hasPrerequisite",
+        "type":"binary",
+        "properties": [{"name":"suitability","type":"Boolean","defval":""}],
+    		"code":"#suitability:Boolean & `${%target%#knowledge > 70}`"
+    	},
+    	{
+    		"name":"Suitable",
+        "type":"unary",
+        "properties":[{"name":"suitability", "type":"Boolean", "defval":""},{"name":"knowledge", "type":"Double", "defval":"0"}],
+    		"code":"#suitability:Boolean & `${%target%#knowledge > 70}"
+    	},
+      {
+        "name":"knowledge_prop",
+        "type":"unary",
+        "code":"CODE HERE"
+      },
+      {
+        "name":"Grading",
+        "type":"unary",
+        "properties":[{"name":"nrQuestions","type":"Int","defval":"1"},{"name":"threshold","type":"Double","defval":"0.5"}],
+        "code":"ENTER GAM HERE"
+      },
+      {
+        "name":"Visited",
+        "type":"unary",
+        "properties":[{"name":"visited", "type":"Int", "defval":""}],
+        "code":"#[visited]:Integer event +'boolean countclick = ${#suitability};'"
+      }
+    ],
+    "boolean":[
+      {
+        "name":"knowledge required",
+        "type":"binary",
+        "code":"$%target%#knowledge > 70"
+      }
+    ],
+    "knowledge":[
+      {
+        "name":"test",
+        "type":"unary",
+        "code":"goed verhaal"
+      }
+    ]
   }
-]

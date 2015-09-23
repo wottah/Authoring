@@ -2,11 +2,16 @@
 angular.module('modelbuilder').service('ConceptService', function(SupportService, RuleService, DefaultPropsFac){
   var concepts = {};
   var conceptTypes = {};
+  var defaultParameters = [{name:"suitability", type:"Boolean", value:"true"},{name:"availability", type:"Boolean", value:"true"}];
   var nextid = 0;
 
   DefaultPropsFac.LoadDefaults().then(function(data){
     conceptTypes = data;
   });
+
+  this.getDefaultParams = function(){
+    return defaultParameters;
+  };
 
   this.getConcepts = function(){
     return concepts;
@@ -87,16 +92,12 @@ angular.module('modelbuilder').service('ConceptService', function(SupportService
         return;
       }
       //otherwise edit the target parameters accordingly.
-      var editProp = {name: "", type:"", value:"", defval:"", ruleparam:false};
+      var editProp = {name: "", type:"", value:"", defval:"", ruleparam:true};
       editProp.name = target.parameters[index].name;
       editProp.type = target.parameters[index].type;
-      editProp.value = target.parameters[index].value;
       if(ruleparam == true){
         editProp.ruleparam = newparam.ruleparam;
         editProp.defval = newparam.defval;
-        if(newparam.defval==""){
-          editProp.value = "Defined by "+ruleName +".";
-        }
       }
       target.parameters[index] = editProp;
       newprop = false;
