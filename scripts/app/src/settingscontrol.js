@@ -27,8 +27,8 @@ angular.module('modelbuilder').controller('SettingsController', function($scope,
     }
   }
   //adds an item to the prereq list of the current settingsItem.
-  this.addRule = function(source, target, rule, defParam){
-    ruleprops = RuleService.addRule(source,target,rule, false, defParam.name);
+  this.addRule = function(source, target, rule, ruleCat){
+    ruleprops = RuleService.addRule(source,target,rule, false, ruleCat);
     for(var r in ruleprops){
       ConceptService.addParameter(source.id, ruleprops[r].name, ruleprops[r].type, ruleprops[r].defval, ruleprops[r].defval, true, rule.name);
     }
@@ -122,6 +122,7 @@ angular.module('modelbuilder').controller('SettingsController', function($scope,
     for(var r in $scope.ruleSelectList){
       selectedItemRules = RuleService.getItemRules(selectedItem.id);
       index = SupportService.contains($scope.ruleSelectList[r],"name",selectedItemRules);
+      if($scope.ruleSelectList[r].name =="visited"){alert("WHAT THE HELL");}
       if(index!= -1 && $scope.ruleSelectList[r].type=="unary"){
         $scope.ruleSelectList[r].disabled=true;
       }

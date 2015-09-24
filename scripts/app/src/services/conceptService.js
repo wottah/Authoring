@@ -39,7 +39,7 @@ angular.module('modelbuilder').service('ConceptService', function(SupportService
     for(var r in conceptType.default_rules)
     {
       ruleObj = {name:conceptType.default_rules[r]};
-      defaultprops = RuleService.addRule(item,"",ruleObj, true);
+      defaultprops = RuleService.addRule(item,"",ruleObj, true,"general");
       for(var rp in defaultprops)
       {
         this.addParameter(item.id, defaultprops[rp].name, defaultprops[rp].type, defaultprops[rp].defval, defaultprops[rp].defval , true, conceptType.default_rules[r]);
@@ -95,9 +95,13 @@ angular.module('modelbuilder').service('ConceptService', function(SupportService
       var editProp = {name: "", type:"", value:"", defval:"", ruleparam:true};
       editProp.name = target.parameters[index].name;
       editProp.type = target.parameters[index].type;
+      editProp.value = value;
       if(ruleparam == true){
         editProp.ruleparam = newparam.ruleparam;
         editProp.defval = newparam.defval;
+        if(defval == ""){
+          editProp.value = "Defined by "+ruleName +".";
+        }
       }
       target.parameters[index] = editProp;
       newprop = false;

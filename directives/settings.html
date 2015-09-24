@@ -29,7 +29,7 @@
 						<div ng-hide="rulecontrol.showAddButton" >
 							<select class="form-control" ng-options="rule as rule.name for rule in setControl.defParamSelectedRulesList(selectedDefParam)" ng-model="selectedDefParamRule"></select>
 							<select class="form-control" ng-options="item as item.text for item in items | prereqFilter: settingsItem: selectedrule" ng-model="selectedItem" ng-hide="setControl.unaryRuleSelected()"></select>
-							<button class="btn btn-default btn-xs" ng-click="setControl.addRule(settingsItem, selectedItem, selectedDefParamRule, selectedDefParam); rulecontrol.addHide();">
+							<button class="btn btn-default btn-xs" ng-click="setControl.addRule(settingsItem, selectedItem, selectedDefParamRule, selectedDefParam.name); rulecontrol.addHide();">
 								<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
 							</button>
 							<button class="btn btn-default btn-xs" ng-click="rulecontrol.addHide()">
@@ -74,7 +74,7 @@
 					<div id="prereqselector" ng-controller="AddController as rulecontrol">
 						<div ng-hide="rulecontrol.showAddButton" >
 							<select class="form-control" ng-options="item as item.text for item in items | prereqFilter: settingsItem: selectedrule" ng-model="selectedItem" ng-hide="setControl.unaryRuleSelected()"></select>
-							<button class="btn btn-default btn-xs" ng-click="setControl.addRule(settingsItem, selectedItem, selectedrule); rulecontrol.addHide();">
+							<button class="btn btn-default btn-xs" ng-click="setControl.addRule(settingsItem, selectedItem, selectedrule,'general'); rulecontrol.addHide();">
 								<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
 							</button>
 							<button class="btn btn-default btn-xs" ng-click="rulecontrol.addHide()">
