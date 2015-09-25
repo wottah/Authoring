@@ -10,7 +10,7 @@
 			<tr>
 				<td>
 					<b>Default Parameters:</b>
-					<select id="defParamSelectBox" class= "form-control" ng-options="param as param.name for param in defaultParams" ng-model="selectedDefParam" size={{defaultParams.length}}></select>
+					<select id="defParamSelectBox" class= "form-control" ng-change="setControl.defParamChanged(selectedDefParam, settingsItem)" ng-options="param as param.name for param in defaultParams" ng-model="selectedDefParam" size={{defaultParams.length}}></select>
 				</td>
 				<td>
 					<table class="table table-bordered">
@@ -27,8 +27,8 @@
 					</table>
 					<div id="defParamselector" ng-controller="AddController as rulecontrol">
 						<div ng-hide="rulecontrol.showAddButton" >
-							<select class="form-control" ng-options="rule as rule.name for rule in setControl.defParamSelectedRulesList(selectedDefParam)" ng-model="selectedDefParamRule"></select>
-							<select class="form-control" ng-options="item as item.text for item in items | prereqFilter: settingsItem: selectedrule" ng-model="selectedItem" ng-hide="setControl.unaryRuleSelected()"></select>
+							<select class="form-control" ng-options="rule as rule.name disable when rule.disabled for rule in setControl.defParamSelectedRulesList(selectedDefParam, settingsItem)" ng-model="selectedDefParamRule"></select>
+							<select class="form-control" ng-options="item as item.text for item in items | prereqFilter: settingsItem: selectedrule" ng-model="selectedItem" ng-hide="setControl.unaryRuleSelected(selectedDefParamRule)"></select>
 							<button class="btn btn-default btn-xs" ng-click="setControl.addRule(settingsItem, selectedItem, selectedDefParamRule, selectedDefParam.name); rulecontrol.addHide();">
 								<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
 							</button>
@@ -47,7 +47,7 @@
 			<tr>
 				<td>
 					<b>Rule: </b>
-					<select class="form-control" ng-options="rule as rule.name disable when rule.disabled for rule in setControl.ruleSelectList(settingsItem)" ng-model="selectedrule" ></select>
+					<select class="form-control" ng-options="rule as rule.name disable when rule.disabled for rule in setControl.ruleSelectList(settingsItem, ruleSelectList)" ng-model="selectedrule" ></select>
 				</td>
 				<td>
 					<table class="table table-bordered" id="ruleTable">
@@ -73,7 +73,7 @@
 					</table>
 					<div id="prereqselector" ng-controller="AddController as rulecontrol">
 						<div ng-hide="rulecontrol.showAddButton" >
-							<select class="form-control" ng-options="item as item.text for item in items | prereqFilter: settingsItem: selectedrule" ng-model="selectedItem" ng-hide="setControl.unaryRuleSelected()"></select>
+							<select class="form-control" ng-options="item as item.text for item in items | prereqFilter: settingsItem: selectedrule" ng-model="selectedItem" ng-hide="setControl.unaryRuleSelected(selectedrule)"></select>
 							<button class="btn btn-default btn-xs" ng-click="setControl.addRule(settingsItem, selectedItem, selectedrule,'general'); rulecontrol.addHide();">
 								<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
 							</button>

@@ -14,7 +14,7 @@ angular.module('modelbuilder').controller('SettingsController', function($scope,
   $scope.selectedrule = $scope.ruleSelectList[0];
   $scope.defaultTypes = SupportService.getDefaultTypes();
   $scope.selectedNewType = $scope.defaultTypes[0];
-  $scope.selectedDefParamRule = $scope.ruleTypeList[0];
+  $scope.selectedDefParamRule = $scope.booleanTypeList[0];
 
   this.allSelected = function(){
     if($scope.selectedrule.name=="All")
@@ -91,8 +91,8 @@ angular.module('modelbuilder').controller('SettingsController', function($scope,
     return false;
   };
 
-  this.unaryRuleSelected = function(){
-    if($scope.selectedrule.type == "unary"){
+  this.unaryRuleSelected = function(rule){
+    if(rule != null && rule.type == "unary"){
       return true;
     }
     return false;
@@ -107,33 +107,36 @@ angular.module('modelbuilder').controller('SettingsController', function($scope,
     }
   };
 
-  this.defParamSelectedRulesList = function(selectedParam){
+  this.defParamSelectedRulesList = function(selectedParam, selectedItem){
     if(selectedParam.name == "suitability" | selectedParam.name == "availability"){
       $scope.selectedDefParamRule = $scope.booleanTypeList[0];
-      return $scope.booleanTypeList;
+      return this.ruleSelectList(selectedItem,$scope.booleanTypeList);
     }
     if(selectedParam.name == "knowledge"){
       $scope.selectedDefParamRule = $scope.knowledgeTypeList[0];
-      return $scope.knowledgeTypeList;
+      return this.ruleSelectList(selectedItem,$scope.knowledgeTypeList);
     }
   };
 
-  this.ruleSelectList = function(selectedItem) {
-    for(var r in $scope.ruleSelectList){
+  this.ruleSelectList = function(selectedItem, ruleList) {
+    for(var r in ruleList){
       selectedItemRules = RuleService.getItemRules(selectedItem.id);
-      index = SupportService.contains($scope.ruleSelectList[r],"name",selectedItemRules);
-      if($scope.ruleSelectList[r].name =="visited"){alert("WHAT THE HELL");}
-      if(index!= -1 && $scope.ruleSelectList[r].type=="unary"){
-        $scope.ruleSelectList[r].disabled=true;
+      index = SupportService.contains(ruleList[r],"name",selectedItemRules);
+      if(index!= -1 && ruleList[r].type=="unary"){
+        ruleList[r].disabled=true;
       }
       else{
-        $scope.ruleSelectList[r].disabled=false;
+        ruleList[r].disabled=false;
       }
     }
-    return $scope.ruleSelectList;
+    return ruleList;
   };
 
   this.saveProject = function(){
-    SessionService.saveProject();
-  }
+    sessionService.saveProject();
+  };
+
+  this.defParamChanged = function(defparam, item){
+    $scope.selectedDefParamRule = this.defParamSelectedRulesList(defparam, item)[0];
+  };
 });
