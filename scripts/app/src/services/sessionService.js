@@ -27,6 +27,18 @@ angular.module('modelbuilder').service('SessionService', function(ConceptService
 
   this.setCurrentProject = function(project){
     ConceptService.setConcepts(project.data.concepts);
+    for(var r in project.data.rules){
+      project.data.rules[r].source = {};
+      project.data.rules[r].target = {};
+      for(var i in project.data.concepts){
+        if(project.data.concepts[i].id == project.data.rules[r].sourceId){
+          project.data.rules[r].source = project.data.concepts[i] ;
+        }
+        if(project.data.rules[r].targetId != null && project.data.concepts[i].id == project.data.rules[r].targetId){
+          project.data.rules[r].target = project.data.concepts[i];
+        }
+      }
+    }
     RuleService.setRules(project.data.rules);
     currentproject = project;
   };
@@ -47,8 +59,19 @@ angular.module('modelbuilder').service('SessionService', function(ConceptService
 
   this.saveProject = function(){
     saveConcepts = ConceptService.getConcepts();
-    saveRules = RuleService.getRules();
-    data = {concepts:saveConcepts, rules:saveRules};
+    saveRuleNoRefs = [];
+    saveRuleRefs = RuleService.getRules();
+    for(var r in saveRuleRefs){
+      saveRule = {};
+      saveRule.id = saveRuleRefs[r].id;
+      saveRule.sourceId = saveRuleRefs[r].sourceId;
+      saveRule.targetId = saveRuleRefs[r].targetId;
+      saveRule.name = saveRuleRefs[r].name;
+      saveRule.defaultRule = saveRuleRefs[r].defaultRule;
+      saveRule.category = saveRuleRefs[r].category;
+      saveRuleNoRefs.push(saveRule);
+    }
+    data = {concepts:saveConcepts, rules:saveRuleNoRefs};
     currentproject.data = data;
     DatabaseFactory.saveProject(currentproject, username);
   }

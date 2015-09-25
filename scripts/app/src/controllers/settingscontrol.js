@@ -132,4 +132,8 @@ angular.module('modelbuilder').controller('SettingsController', function($scope,
     }
     return $scope.ruleSelectList;
   };
+
+  this.saveProject = function(){
+    SessionService.saveProject();
+  }
 });

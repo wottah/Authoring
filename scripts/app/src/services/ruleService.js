@@ -85,7 +85,7 @@ angular.module('modelbuilder').service('RuleService', function(DefaultPropsFac, 
     }
     if(source!=="" && !dupe)
     {
-      var newrule = {id: newId.id, source:source, target: target, name: rule.name, defaultRule:def, category: cat };
+      var newrule = {id: newId.id, sourceId: source.id, source:source, targetId: target.id, target: target, name: rule.name, defaultRule:def, category: cat };
       //adds rule properties to the topic parameters. Sets the item to a rule parameter if it already exists (so the user cannot delete it).
       if(cat=="general"){
         ruleIndex = SupportService.contains(newrule,"name",generalRuleList);

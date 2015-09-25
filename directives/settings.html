@@ -5,8 +5,8 @@
 	</div>
 	<div class="modal-body">
 		<table class="table">
-			<tr><td><b>Name: </b></td> <td><input type="text" ng-blur="setControl.SessionService.saveProject()" class="form-control" ng-model="settingsItem.text" placeholder="topic name" ></input></td></tr>
-			<tr><td><b>Description: </b></td> <td><input type="text" class="form-control" ng-blur="setControl.SessionService.saveProject()" ng-model="settingsItem.description" placeholder="topic description"></input></td></tr>
+			<tr><td><b>Name: </b></td> <td><input type="text" ng-blur="setControl.saveProject()" class="form-control" ng-model="settingsItem.text" placeholder="topic name" ></input></td></tr>
+			<tr><td><b>Description: </b></td> <td><input type="text" class="form-control" ng-blur="setControl.saveProject()" ng-model="settingsItem.description" placeholder="topic description"></input></td></tr>
 			<tr>
 				<td>
 					<b>Default Parameters:</b>
@@ -101,13 +101,13 @@
 						</tr>
 						<tr ng-repeat="param in settingsItem.parameters">
 							<td>
-								<input type="text" ng-model="param.name" ng-disabled ="param.ruleparam"></input>
+								<input type="text" ng-model="param.name" ng-blur="setControl.saveProject()" ng-disabled ="param.ruleparam"></input>
 							</td>
 							<td>
-								<input type="text" ng-model="param.value" ng-disabled="setControl.isCalculated(param)"></input>
+								<input type="text" ng-model="param.value" ng-blur="setControl.saveProject()" ng-disabled="setControl.isCalculated(param)"></input>
 							</td>
 							<td>
-								<select ng-model="param.type" ng-options="type as type for type in defaultTypes" ng-disabled ="param.ruleparam"></select>
+								<select ng-model="param.type" ng-options="type as type for type in defaultTypes" ng-change="setControl.saveProject()" ng-disabled ="param.ruleparam"></select>
 							</td>
 							<td>
 								<button class="btn btn-default btn-xs" ng-click="setControl.removeParam(settingsItem, param)" ng-disabled="param.ruleparam">DELETE</button>
