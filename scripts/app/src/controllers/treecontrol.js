@@ -1,5 +1,5 @@
 	//Controls list hierarchy and navigation
-		angular.module('modelbuilder').controller('FormController', function(SessionService, ConceptService, $modal, $scope, $compile){
+		angular.module('modelbuilder').controller('FormController', function(GamService, SessionService, ConceptService, $modal, $scope, $compile){
 			if(!SessionService.isAuthorised())
 			{
 				$location.path('/');
@@ -134,4 +134,8 @@
 				angular.element(listelement).toggleClass("collapsed expanded");
 				angular.element(element).toggleClass("glyphicon-triangle-right glyphicon-triangle-bottom");
 			};
+
+			this.generateGAM = function(){
+				GamService.generateGAM();
+			}
 		});
