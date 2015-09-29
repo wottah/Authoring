@@ -37,7 +37,7 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
             {
               if (coursemodel[j].id == coursemodel[i].parent)
               {
-                  concept += "\t<-(parent)"+coursemodel[j].text+"\n";
+                  concept += "\t->(parent)"+coursemodel[j].text+"\n";
               }
             }
             for(var p in coursemodel[i].parameters)

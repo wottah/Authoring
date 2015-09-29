@@ -6,12 +6,6 @@
         "properties": [{"name":"suitability","type":"Boolean","defval":""}],
     		"code":"#suitability:Boolean & `${%target%#knowledge > 70}`"
     	},
-    	{
-    		"name":"Suitable",
-        "type":"unary",
-        "properties":[{"name":"suitability", "type":"Boolean", "defval":""},{"name":"knowledge", "type":"Double", "defval":"0"}],
-    		"code":"#suitability:Boolean & `${%target%#knowledge > 70}"
-    	},
       {
         "name":"knowledge_prop",
         "type":"unary",
@@ -27,14 +21,14 @@
         "name":"Visited",
         "type":"unary",
         "properties":[{"name":"visited", "type":"Int", "defval":""}],
-        "code":"#[visited]:Integer event +'boolean countclick = ${#suitability};'"
+        "code":"#[visited]:Integer event `${#visited}++;`"
       }
     ],
     "boolean":[
       {
         "name":"knowledge required",
         "type":"binary",
-        "code":"$%target%#knowledge > 70"
+        "code":"${%target%#knowledge > 70}"
       }
     ],
     "knowledge":[
