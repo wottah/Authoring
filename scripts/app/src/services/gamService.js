@@ -49,7 +49,7 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
             }
             concept += '\t#resource =`~ return "[[='+ +coursemodel[i].resource +']]";`\n';
             itemRules = RuleService.getItemRules(coursemodel[i].id);
-            var general = "\t";
+            var general = "";
             var suitability = "\t#suitability:Boolean =`true";
             var availability = "\t#availability:Boolean =`true";
             var knowledge = "\t#knowledge:Double =`";
@@ -66,7 +66,7 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
                   code = rulecode.replace("%target%",itemRules[r].target.text);
                 }
                 if(itemRules[r].category == "general"){
-                  general += code + "\n";
+                  general += "\t" + code + "\n";
                 }
                 if(itemRules[r].category =="suitability"){
                   suitability += " && "+ code;
@@ -87,9 +87,10 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
             output += concept;
           }
         }
+        window.open('data:text,' + encodeURIComponent(output));
         newTab = $window.open();
         newTab.document.open();
-        newTab.document.write("<pre>"+output+"</pre>");
+        newTab.document.write("<p>"+ output + "</p>");
         newTab.document.close();
     };
 });

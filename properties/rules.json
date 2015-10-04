@@ -27,7 +27,7 @@
         "name":"own knowledge update",
         "type":"unary",
         "properties":[{"name":"own-knowledge", "type":"Double", "defval":""}],
-        "code":"event +`if(${#suitability}) ${#own-knowledge} = 1; else if(${#own-knowledge} < 0.3) ${#own-knowledge} = 0.3;`"
+        "code":"#[own-knowledge]:Double event +`if(${#suitability}) ${#own-knowledge} = 1; else if(${#own-knowledge} < 0.3) ${#own-knowledge} = 0.3;`"
       }
     ],
     "boolean":[
