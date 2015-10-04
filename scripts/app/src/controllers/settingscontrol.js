@@ -1,5 +1,5 @@
 //This controller takes care of all the concept settings and properties
-angular.module('modelbuilder').controller('SettingsController', function($scope, $modalInstance, SessionService, DefaultPropsFac, RuleService, ConceptService, SupportService){
+angular.module('modelbuilder').controller('SettingsController', function($scope, $modalInstance, SessionService, RuleService, ConceptService, SupportService){
   //import rules list and assign reference to DefaultTypes to Properties
   $scope.ruleTypeList = RuleService.getRuleTypeList();
   $scope.booleanTypeList = RuleService.getBooleanTypeList();
@@ -133,7 +133,7 @@ angular.module('modelbuilder').controller('SettingsController', function($scope,
   };
 
   this.saveProject = function(){
-    sessionService.saveProject();
+    SessionService.saveProject();
   };
 
   this.defParamChanged = function(defparam, item){

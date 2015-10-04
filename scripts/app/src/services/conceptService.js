@@ -3,7 +3,7 @@ angular.module('modelbuilder').service('ConceptService', function(SupportService
   var concepts = {};
   var conceptTypes = {};
   var defaultParameters = [{name:"suitability", type:"Boolean", value:"true"},{name:"availability", type:"Boolean", value:"true"},{name:"knowledge", type:"Double", value:"1"}];
-  var nextid = 0;
+  var nextid = 1;
 
   DefaultPropsFac.LoadDefaults().then(function(data){
     conceptTypes = data;

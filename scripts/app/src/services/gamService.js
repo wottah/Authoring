@@ -10,7 +10,7 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
         for(var i in defaultTypes)
         {
           var concept = "";
-          concept += defaultTypes[i].name + "{\n";
+          concept += defaultTypes[i].name.replace(/\s+/g, '') + "{\n";
           for(var p in defaultTypes[i].default_parameters){
               concept+="\t#["+ defaultTypes[i].default_parameters[p].name +"]:"+defaultTypes[i].default_parameters[p].type+" `"+defaultTypes[i].default_parameters[p].value + "`\n";
           }
@@ -30,8 +30,8 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
           if(coursemodel[i].selected==true)
           {
             var concept = "";
-            concept += coursemodel[i].text + "{\n";
-            concept += "\t->(extends) "+ coursemodel[i].type + "\n";
+            concept += coursemodel[i].text.replace(/\s+/g, '') + "{\n";
+            concept += "\t->(extends) "+ coursemodel[i].type.replace(/\s+/g, '') + "\n";
             concept += "\ttitle `" + coursemodel[i].description + "`\n";
             for(var j in coursemodel)
             {
@@ -47,7 +47,7 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
                 concept+="\t#["+ coursemodel[i].parameters[p].name +"]:"+coursemodel[i].parameters[p].type+" `"+coursemodel[i].parameters[p].value + "`\n";
               }
             }
-            concept += "\t#resource =`"+ coursemodel[i].resource +"`\n";
+            concept += '\t#resource =`~ return "[[='+ +coursemodel[i].resource +']]";`\n';
             itemRules = RuleService.getItemRules(coursemodel[i].id);
             var general = "\t";
             var suitability = "\t#suitability:Boolean =`true";
