@@ -1,54 +1,65 @@
 //This controller is all about generating the GAM code based on the current model.
-angular.module('modelbuilder').service('GamService', function($window, $http, RuleService, ConceptService) {
+angular.module('modelbuilder').service('GamService', function($window, $http, RuleService, ConceptService, SupportService) {
     this.generateGAM = function(){
         coursemodel = ConceptService.getConcepts();
-        defaultTypes = ConceptService.getConceptTypes();
         rulesList = RuleService.getRuleTypeList();
-
-        //First Print the templated concepts of which other concepts will inherit behaviour
-        var output = "";
-        for(var i in defaultTypes)
-        {
-          var concept = "";
-          concept += defaultTypes[i].name.replace(/\s+/g, '') + "{\n";
-          for(var p in defaultTypes[i].default_parameters){
-              concept+="\t#["+ defaultTypes[i].default_parameters[p].name +"]:"+defaultTypes[i].default_parameters[p].type+" `"+defaultTypes[i].default_parameters[p].value + "`\n";
+        defaultTypes = ConceptService.getConceptTypes();
+        usedTypes = [];
+        for(var c in coursemodel){
+          if(SupportService.contains(coursemodel[c].type,"",usedTypes)==-1){
+            usedTypes.push(coursemodel[c].type);
           }
-
-          var suitability = "\t#suitability:Boolean =`true";
-          var availability = "\t#availability:Boolean =`true";
-          var knowledge = "\t#knowledge:Double =`";
-          //add general template rules
-          for(var r in defaultTypes[i].default_general_rules){
-            rule = RuleService.getRule(defaultTypes[i].default_general_rules[r]);
-                if(rule.type=="unary"){
-                    concept += "\t" + rule.code + "\n";
-                }
-          }
-          //add knowledge template rules
-          for(var r in defaultTypes[i].default_knowledge_rules){
-            rule = RuleService.getRule(defaultTypes[i].default_knowledge_rules[r]);
-                if(rule.type=="unary"){
-                    knowledge += rule.code;
-                }
-          }
-          //add availability template rules
-          for(var r in defaultTypes[i].default_availability_rules){
-            rule = RuleService.getRule(defaultTypes[i].default_availability_rules[r]);
-                if(rule.type=="unary"){
-                    availability +=  " && "+ rule.code;
-                }
-          }
-          //add suitability template rules
-          for(var r in defaultTypes[i].default_suitability_rules){
-            rule = RuleService.getRule(defaultTypes[i].default_suitability_rules[r]);
-                if(rule.type=="unary"){
-                    suitability +=  " && "+ rule.code;
-                } " && "+ code;
-          }
-        concept += knowledge +"`\n"+ availability +"\n"+ suitability +"\n } \n \n";
-        output += concept;
         }
+        //First Print the templated concepts of which other concepts will inherit behaviour
+        var output = '$options { default.properties "event;strict"} \n \n';
+        for(var i in defaultTypes){
+          if(SupportService.contains(defaultTypes[i].name,"",usedTypes)!=-1){
+            var concept = "";
+            concept += defaultTypes[i].name.replace(/\s+/g, '') + "{\n";
+            for(var p in defaultTypes[i].default_parameters){
+                concept+="\t#["+ defaultTypes[i].default_parameters[p].name +"]:"+defaultTypes[i].default_parameters[p].type+" `"+defaultTypes[i].default_parameters[p].value + "`\n";
+            }
+
+            var suitability = "\t#suitability:Boolean =`true";
+            var availability = "\t#availability:Boolean =`true";
+            var knowledge = "\t#knowledge:Double =`";
+            var hasKnowledgeRule = false;
+            //add general template rules
+            for(var r in defaultTypes[i].default_general_rules){
+              rule = RuleService.getRule(defaultTypes[i].default_general_rules[r]);
+                  if(rule.type=="unary"){
+                      concept += "\t" + rule.code + "\n";
+                  }
+            }
+            //add knowledge template rules
+            for(var r in defaultTypes[i].default_knowledge_rules){
+              rule = RuleService.getRule(defaultTypes[i].default_knowledge_rules[r]);
+                  if(rule.type=="unary"){
+                      hasKnowledgeRule = true;
+                      knowledge += rule.code;
+                  }
+            }
+            //add availability template rules
+            for(var r in defaultTypes[i].default_availability_rules){
+              rule = RuleService.getRule(defaultTypes[i].default_availability_rules[r]);
+                  if(rule.type=="unary"){
+                      availability +=  " && "+ rule.code;
+                  }
+            }
+            //add suitability template rules
+            for(var r in defaultTypes[i].default_suitability_rules){
+              rule = RuleService.getRule(defaultTypes[i].default_suitability_rules[r]);
+                  if(rule.type=="unary"){
+                      suitability +=  " && "+ rule.code;
+                  } " && "+ code;
+            }
+          if(!hasKnowledgeRule){
+            knowledge += "0";
+          }
+          concept += knowledge +"`\n"+ availability +"`\n"+ suitability +"`\n } \n \n";
+          output += concept;
+        }
+      }
 
         //Output all concepts extending the basic types
         for(var i in coursemodel)
@@ -57,13 +68,13 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
           {
             var concept = "";
             concept += coursemodel[i].text.replace(/\s|'|"|`/g, '') + "{\n";
-            concept += "\t->(extends) "+ coursemodel[i].type.replace(/\s+/g, '') + "\n";
+            concept += "\t->(extends)"+ coursemodel[i].type.replace(/\s+/g, '') + "\n";
             concept += "\ttitle `" + coursemodel[i].description + "`\n";
             for(var j in coursemodel)
             {
               if (coursemodel[j].id == coursemodel[i].parent)
               {
-                  concept += "\t->(parent)"+coursemodel[j].text+"\n";
+                  concept += "\t->(parent)"+coursemodel[j].text.replace(/\s+/g, '')+"\n";
               }
             }
             for(var p in coursemodel[i].parameters)
@@ -73,7 +84,11 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
                 concept+="\t#["+ coursemodel[i].parameters[p].name +"]:"+coursemodel[i].parameters[p].type+" `"+coursemodel[i].parameters[p].value + "`\n";
               }
             }
-            concept += '\t#resource =`~ return "[[='+ +coursemodel[i].resource +']]";`\n';
+            resource = "placeholder.xhtml";
+            if(coursemodel[i].resource!=""){
+              resource = coursemodel[i].resource;
+            }
+            concept += '\t#resource =`~ return "[[='+resource +']]";`\n';
             itemRules = RuleService.getItemRules(coursemodel[i].id);
             var general = "";
             var suitability = "\t#suitability:Boolean =`true";
@@ -81,6 +96,7 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
             var availability = "\t#availability:Boolean =`true";
             var availHasNonDefRules = false;
             var knowledge = "";
+            var knowlegdeHasNonDefRule = false;
             for(var r in itemRules)
             {
               if(itemRules[r].source.id == coursemodel[i].id){
@@ -112,13 +128,16 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
                   if(knowledge ==""){
                   knowledge = "\t#knowledge:Double =`"
                   }
+                  knowlegdeHasNonDefRule = true;
                   knowledge += code;
                 }
               }
             }
             suitability += "` \n";
             availability += "` \n";
-            knowledge += "` \n";
+            if(knowlegdeHasNonDefRule){
+              knowledge += "` \n";
+            }
             if(suitHasNonDefRules){
               concept += suitability;
             }
