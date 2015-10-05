@@ -14,13 +14,39 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
           for(var p in defaultTypes[i].default_parameters){
               concept+="\t#["+ defaultTypes[i].default_parameters[p].name +"]:"+defaultTypes[i].default_parameters[p].type+" `"+defaultTypes[i].default_parameters[p].value + "`\n";
           }
-          for(var r in defaultTypes[i].default_rules){
-            rule = RuleService.getRule(defaultTypes[i].default_rules[r]);
+
+          var suitability = "\t#suitability:Boolean =`true";
+          var availability = "\t#availability:Boolean =`true";
+          var knowledge = "\t#knowledge:Double =`";
+          //add general template rules
+          for(var r in defaultTypes[i].default_general_rules){
+            rule = RuleService.getRule(defaultTypes[i].default_general_rules[r]);
                 if(rule.type=="unary"){
                     concept += "\t" + rule.code + "\n";
                 }
           }
-        concept+= "} \n \n";
+          //add knowledge template rules
+          for(var r in defaultTypes[i].default_knowledge_rules){
+            rule = RuleService.getRule(defaultTypes[i].default_knowledge_rules[r]);
+                if(rule.type=="unary"){
+                    knowledge += rule.code;
+                }
+          }
+          //add availability template rules
+          for(var r in defaultTypes[i].default_availability_rules){
+            rule = RuleService.getRule(defaultTypes[i].default_availability_rules[r]);
+                if(rule.type=="unary"){
+                    availability +=  " && "+ rule.code;
+                }
+          }
+          //add suitability template rules
+          for(var r in defaultTypes[i].default_suitability_rules){
+            rule = RuleService.getRule(defaultTypes[i].default_suitability_rules[r]);
+                if(rule.type=="unary"){
+                    suitability +=  " && "+ rule.code;
+                } " && "+ code;
+          }
+        concept += knowledge +"`\n"+ availability +"\n"+ suitability +"\n } \n \n";
         output += concept;
         }
 
@@ -30,7 +56,7 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
           if(coursemodel[i].selected==true)
           {
             var concept = "";
-            concept += coursemodel[i].text.replace(/\s+/g, '') + "{\n";
+            concept += coursemodel[i].text.replace(/\s|'|"|`/g, '') + "{\n";
             concept += "\t->(extends) "+ coursemodel[i].type.replace(/\s+/g, '') + "\n";
             concept += "\ttitle `" + coursemodel[i].description + "`\n";
             for(var j in coursemodel)
@@ -51,11 +77,13 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
             itemRules = RuleService.getItemRules(coursemodel[i].id);
             var general = "";
             var suitability = "\t#suitability:Boolean =`true";
+            var suitHasNonDefRules = false;
             var availability = "\t#availability:Boolean =`true";
-            var knowledge = "\t#knowledge:Double =`";
+            var availHasNonDefRules = false;
+            var knowledge = "";
             for(var r in itemRules)
             {
-              if(itemRules[r].defaultRule == false && itemRules[r].source.id == coursemodel[i].id){
+              if(itemRules[r].source.id == coursemodel[i].id){
                 ruleDef = RuleService.getRule(itemRules[r].name);
                 var code = "";
                 if(ruleDef.type == "unary"){
@@ -65,16 +93,25 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
                   var rulecode = RuleService.getRule(itemRules[r].name).code;
                   code = rulecode.replace("%target%",itemRules[r].target.text);
                 }
-                if(itemRules[r].category == "general"){
+                if(itemRules[r].category == "general" && itemRules[r].defaultRule == false){
                   general += "\t" + code + "\n";
                 }
                 if(itemRules[r].category =="suitability"){
+                  if(itemRules[r].defaultRule == false){
+                    suitHasNonDefRules = true;
+                  }
                   suitability += " && "+ code;
                 }
                 if(itemRules[r].category=="availability"){
+                  if(itemRules[r].defaultRule == false){
+                    availHasNonDefRules = true;
+                  }
                   availability += " && "+ code;
                 }
-                if(itemRules[r].category=="knowledge"){
+                if(itemRules[r].category=="knowledge" && itemRules[r].defaultRule == false){
+                  if(knowledge ==""){
+                  knowledge = "\t#knowledge:Double =`"
+                  }
                   knowledge += code;
                 }
               }
@@ -82,15 +119,17 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
             suitability += "` \n";
             availability += "` \n";
             knowledge += "` \n";
-            concept += suitability + availability + knowledge + general;
+            if(suitHasNonDefRules){
+              concept += suitability;
+            }
+            if(availHasNonDefRules){
+              concept += availability;
+            }
+            concept += knowledge + general;
             concept+= "} \n \n";
             output += concept;
           }
         }
         window.open('data:text,' + encodeURIComponent(output));
-        newTab = $window.open();
-        newTab.document.open();
-        newTab.document.write("<p>"+ output + "</p>");
-        newTab.document.close();
     };
 });

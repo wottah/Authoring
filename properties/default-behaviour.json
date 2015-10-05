@@ -14,7 +14,10 @@
 					"value":"<struct cols='250px;*'><view name='static-tree-view'/><struct rows='60px;*;40px'><view name='file-view' file='header.xhtml'/><content/><p><hr/>Next suggested concept to study: <view name='next-view'/></p></struct></struct>"
 				}
 		],
-		"default_rules":["visited","own knowledge update"]
+		"default_general_rules":["visited","own knowledge update"],
+		"default_knowledge_rules":["childAverage"],
+		"default_suitability_rules":[],
+		"default_availability_rules":[]
 	},
 	{
 		"name":"quiz-topics",
@@ -26,6 +29,17 @@
 				"value":"1"
 			}
 		],
-		"default_rules":["Grading"]
+		"default_general_rules":[],
+		"default_knowledge_rules":[],
+		"default_suitability_rules":[],
+		"default_availability_rules":[]
+	},
+	{
+		"name":"empty topic",
+		"default_parameters":[],
+		"default_general_rules":[],
+		"default_knowledge_rules":[],
+		"default_suitability_rules":[],
+		"default_availability_rules":[]
 	}
 ]

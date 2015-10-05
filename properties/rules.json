@@ -7,17 +7,6 @@
     		"code":"#suitability:Boolean & `${%target%#knowledge > 70}`"
     	},
       {
-        "name":"knowledge_prop",
-        "type":"unary",
-        "code":"CODE HERE"
-      },
-      {
-        "name":"Grading",
-        "type":"unary",
-        "properties":[{"name":"nrQuestions","type":"Int","defval":"1"},{"name":"threshold","type":"Double","defval":"0.5"}],
-        "code":"ENTER GAM HERE"
-      },
-      {
         "name":"visited",
         "type":"unary",
         "properties":[{"name":"visited", "type":"Int", "defval":""}],

@@ -41,13 +41,43 @@ angular.module('modelbuilder').service('ConceptService', function(SupportService
     }
     nextid++;
     concepts.push(item);
-    for(var r in conceptType.default_rules)
+    //add default rules to this list.
+    defaultRules = [];
+    //list default rules
+    for(var r in conceptType.default_general_rules)
     {
-      ruleObj = {name:conceptType.default_rules[r]};
-      defaultprops = RuleService.addRule(item,"",ruleObj, true,"general");
+      ruleObj = {name:conceptType.default_general_rules[r], category:"general"};
+      defaultRules.push(ruleObj);
+    }
+
+    //list knowledge rules
+    for(var r in conceptType.default_knowledge_rules)
+    {
+      ruleObj = {name:conceptType.default_knowledge_rules[r], category:"knowledge"};
+      defaultRules.push(ruleObj);
+    }
+
+    //list availability rules
+    for(var r in conceptType.default_availability_rules)
+    {
+      ruleObj = {name:conceptType.default_availability_rules[r], category:"availability"};
+      defaultRules.push(ruleObj);
+    }
+
+    //list suitability rules
+    for(var r in conceptType.default_suitability_rules)
+    {
+      ruleObj = {name:conceptType.default_suitability_rules[r], category:"suitability"};
+      defaultRules.push(ruleObj);
+    }
+
+    //add all rules with corresponding category.
+    for(var dr in defaultRules)
+    {
+      defaultprops = RuleService.addRule(item,"",defaultRules[dr], true,defaultRules[dr].category);
       for(var rp in defaultprops)
       {
-        this.addParameter(item.id, defaultprops[rp].name, defaultprops[rp].type, defaultprops[rp].defval, defaultprops[rp].defval , true, conceptType.default_rules[r]);
+        this.addParameter(item.id, defaultprops[rp].name, defaultprops[rp].type, defaultprops[rp].defval, defaultprops[rp].defval , true,defaultRules[dr].name);
       }
     }
     if(parentId>0)
@@ -72,7 +102,7 @@ angular.module('modelbuilder').service('ConceptService', function(SupportService
       }
       if(concepts[i].parent == id)
       {
-        this.removeConcept(concepts[i]);
+        this.removeConcept(concepts[i].id);
       }
     }
     concepts.splice(index,1);

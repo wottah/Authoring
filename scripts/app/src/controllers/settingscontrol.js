@@ -114,6 +114,12 @@ angular.module('modelbuilder').controller('SettingsController', function($scope,
     }
     if(selectedParam.name == "knowledge"){
       $scope.selectedDefParamRule = $scope.knowledgeTypeList[0];
+      rulesList = RuleService.getItemRules($scope.settingsItem.id);
+      for(var r in rulesList){
+        if(rulesList[r].category == "knowledge"){
+          return [];
+        }
+      }
       return this.ruleSelectList(selectedItem,$scope.knowledgeTypeList);
     }
   };
