@@ -108,7 +108,7 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
                 }
                 if(ruleDef.type == "binary"){
                   var rulecode = RuleService.getRule(itemRules[r].name).code;
-                  code = rulecode.replace("%target%",itemRules[r].target.text);
+                  code = rulecode.replace("%target%",itemRules[r].target.text.replace(/\s|'|"|`/g, ''));
                 }
                 if(itemRules[r].category == "general" && itemRules[r].defaultRule == false){
                   general += "\t" + code + "\n";

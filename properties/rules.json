@@ -4,7 +4,7 @@
     		"name":"hasPrerequisite",
         "type":"binary",
         "properties": [{"name":"suitability","type":"Boolean","defval":""}],
-    		"code":"#suitability:Boolean & `${%target%#knowledge > 70}`"
+    		"code":"#suitability:Boolean & `${%target%#knowledge > 0.7}`"
     	},
       {
         "name":"visited",
@@ -24,7 +24,7 @@
         "name":"knowledge required",
         "type":"binary",
         "properties":[],
-        "code":"${%target%#knowledge} > 70"
+        "code":"${%target%#knowledge} > 0.7"
       },
       {
         "name":"parent available",
