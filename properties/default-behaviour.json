@@ -7,11 +7,6 @@
 					"name":"own-knowledge",
 					"type":"Double",
 					"value":"0"
-				},
-				{
-					"name":"layout",
-					"type":"String",
-					"value":"<struct cols='250px;*'><view name='static-tree-view'/><struct rows='60px;*;40px'><view name='file-view' file='header.xhtml'/><content/><p><hr/>Next suggested concept to study: <view name='next-view'/></p></struct></struct>"
 				}
 		],
 		"default_general_rules":["visited","own knowledge update"],

@@ -88,7 +88,8 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
             if(coursemodel[i].resource!=""){
               resource = coursemodel[i].resource;
             }
-            concept += '\t#resource =`~ return "[[='+resource +']]";`\n';
+            concept += '\t#content:String =`~ return "[[='+resource +']]";`\n';
+            concept += '\t#resource =`~ return "[[=layout.xhtml]]";`\n';
             itemRules = RuleService.getItemRules(coursemodel[i].id);
             var general = "";
             var suitability = "\t#suitability:Boolean =`true";
