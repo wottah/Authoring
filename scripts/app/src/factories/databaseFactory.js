@@ -31,15 +31,19 @@ angular.module('modelbuilder').factory('DatabaseFactory', function($http) {
   };
 
   DatabaseFactory.saveProject = function(project, user){
+    postObj = {
+      user: user,
+      name: project.name,
+      description: project.description,
+      data: angular.toJson(project.data)
+    };
     var promise = $http({
-      method: "GET",
+      method: "POST",
       url:"scripts/data/index.php",
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      data : postObj,
       params: {
         action:"saveProject",
-        user: user,
-        name: project.name,
-        description: project.description,
-        data: angular.toJson(project.data)
       }
     }).then(function(response){
       return response.data;

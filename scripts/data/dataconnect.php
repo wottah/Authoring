@@ -74,13 +74,14 @@
       return json_encode($returnlist);
     }
 
-    public function saveProject($post)
+    public function saveProject($data)
     {
-      $author = $this->connection->real_escape_string($post['user']);
-      $name = $this->connection->real_escape_string($post['name']);
-      $description = $this->connection->real_escape_string($post['description']);
-      //escaping the data would destroy the JSON structure.
-      $data = $post['data'];
+      $post = json_decode(file_get_contents("php://input"));
+      $author = $this->connection->real_escape_string($post->user);
+      $name = $this->connection->real_escape_string($post->name);
+      $description = $this->connection->real_escape_string($post->description);
+      //escaping the data would destroy the JSON structure
+      $data = $post->data;
       $query = $this->connection->prepare("INSERT INTO projects (author, name, description, data)
                                             VALUES (?,?,?,?)
                                             ON DUPLICATE KEY
