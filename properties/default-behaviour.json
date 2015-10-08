@@ -7,6 +7,11 @@
 					"name":"own-knowledge",
 					"type":"Double",
 					"value":"0"
+				},
+				{
+					"name":"didac-age",
+					"type":"Integer",
+					"value":"6"
 				}
 		],
 		"default_general_rules":["visited","own knowledge update"],

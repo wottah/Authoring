@@ -34,13 +34,13 @@ angular.module('modelbuilder').service('ConceptService', function(SupportService
 
   this.addConcept = function(parentId, addText, descText, conceptType){
     var item = {text:addText, description:descText, id:nextid, type:conceptType.name, parent:parentId, children:[], rules:[], parameters:[], selected:true, resource:""};
-    defParams = conceptType.default_parameters.slice();
-    defParams.push(defaultParameters.slice());
-    for(var d in defParams){
-      defParams[d].defval = defParams[d].value;
-    }
     nextid++;
     concepts.push(item);
+    defParams = conceptType.default_parameters.slice();
+    for(var d in defParams){
+        if(defParams[d].name =="didac-age"){alert(defParams[d].type);}
+        this.addParameter(item.id, defParams[d].name, defParams[d].type, defParams[d].value, defParams[d].value, false);
+    }
     //add default rules to this list.
     defaultRules = [];
     //list default rules

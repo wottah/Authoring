@@ -1,6 +1,6 @@
 //Service that provides oftenly reused code in order to avoid code duplication.
 angular.module('modelbuilder').service('SupportService',function(DefaultPropsFac){
-  var defaultTypes = ["String","Int","Boolean","Double"];
+  var defaultTypes = ["String","Integer","Boolean","Double"];
 
   this.getDefaultTypes = function(){
     return defaultTypes;

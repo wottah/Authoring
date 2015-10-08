@@ -9,7 +9,7 @@
       {
         "name":"visited",
         "type":"unary",
-        "properties":[{"name":"visited", "type":"Int", "defval":""}],
+        "properties":[{"name":"visited", "type":"Integer", "defval":""}],
         "code":"#[visited]:Integer event `${#visited}++;`"
       },
       {
