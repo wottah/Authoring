@@ -1,5 +1,5 @@
 //This controller is all about generating the GAM code based on the current model.
-angular.module('modelbuilder').service('GamService', function($window, $http, RuleService, ConceptService, SupportService) {
+angular.module('modelbuilder').service('GamService', function($window, $http, RuleService, ConceptService, SupportService, DeploymentFactory, SessionService) {
     this.generateGAM = function(){
         coursemodel = ConceptService.getConcepts();
         rulesList = RuleService.getRuleTypeList();
@@ -150,6 +150,9 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
             output += concept;
           }
         }
-        window.open('data:text,' + encodeURIComponent(output));
+        //To just view the file use:
+        //window.open('data:text,' + encodeURIComponent(output));
+        //To actually deploy:
+        DeploymentFactory.deploy(SessionService.getCurrentproject().name,output)
     };
 });

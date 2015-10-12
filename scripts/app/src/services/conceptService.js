@@ -38,7 +38,6 @@ angular.module('modelbuilder').service('ConceptService', function(SupportService
     concepts.push(item);
     defParams = conceptType.default_parameters.slice();
     for(var d in defParams){
-        if(defParams[d].name =="didac-age"){alert(defParams[d].type);}
         this.addParameter(item.id, defParams[d].name, defParams[d].type, defParams[d].value, defParams[d].value, false);
     }
     //add default rules to this list.

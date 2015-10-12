@@ -2,7 +2,9 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 require_once("dataconnect.php");
+require_once("deployment.php");
 $database = new database();
+$deployer = new deployer();
 
 if(isset($_GET['action']) and $_GET['action'] == "login")
 {
@@ -17,6 +19,10 @@ if(isset($_GET['action']) and $_GET['action'] == "getProjects")
 if(isset($_GET['action']) and $_GET['action'] == "saveProject")
 {
   echo $database->saveProject($_GET);
+  exit;
+}
+if(isset($_GET['action']) and $_GET['action'] == "deploy"){
+  echo $deployer->deploy($_GET);
   exit;
 }
 ?>
