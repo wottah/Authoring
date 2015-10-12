@@ -74,5 +74,9 @@ angular.module('modelbuilder').service('SessionService', function(ConceptService
     data = {concepts:saveConcepts, rules:saveRuleNoRefs};
     currentproject.data = data;
     DatabaseFactory.saveProject(currentproject, username);
+  };
+
+  this.deleteProject = function(name){
+    DatabaseFactory.deleteProject(name, username);
   }
 });

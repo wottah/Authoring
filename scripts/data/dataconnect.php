@@ -74,6 +74,18 @@
       return json_encode($returnlist);
     }
 
+    public function deleteProject($data)
+    {
+      $post = json_decode(file_get_contents("php://input"));
+      $author = $this->connection->real_escape_string($post->user);
+      $name = $this->connection->real_escape_string($post->name);
+      $query = $this->connection->prepare("DELETE FROM projects
+                                            WHERE author = ? AND name = ?");
+      $query->bind_param('ss', $author, $name);
+      $result = $query->execute();
+      return $result;
+    }
+
     public function saveProject($data)
     {
       $post = json_decode(file_get_contents("php://input"));

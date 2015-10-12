@@ -21,6 +21,10 @@ if(isset($_GET['action']) and $_GET['action'] == "saveProject")
   echo $database->saveProject($_GET);
   exit;
 }
+if(isset($_GET['action']) and $_GET['action'] == "deleteProject"){
+  echo $database->deleteProject($_GET);
+  exit;
+}
 if(isset($_GET['action']) and $_GET['action'] == "deploy"){
   echo $deployer->deploy($_GET);
   exit;

@@ -43,12 +43,31 @@ angular.module('modelbuilder').factory('DatabaseFactory', function($http) {
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
       data : postObj,
       params: {
-        action:"saveProject",
+        action:"saveProject"
       }
     }).then(function(response){
       return response.data;
     });
     return promise;
   };
+
+  DatabaseFactory.deleteProject = function(name, user){
+    postObj = {
+      user : user,
+      name : name
+    };
+    var promise = $http({
+      method: "POST",
+      url:"scripts/data/index.php",
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      data:postObj,
+      params: {
+        action:"deleteProject"
+      }
+    }).then(function(response){
+      return response.data;
+    });
+  };
+
   return DatabaseFactory;
 });

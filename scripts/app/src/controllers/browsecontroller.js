@@ -44,5 +44,17 @@ angular.module('modelbuilder').controller('BrowserController', function( Session
 
   this.cancelNewProject = function(){
     $scope.newProjectModal.dismiss();
-  }
+  };
+
+  this.deleteProject = function(){
+    if(this.selectedProject!=null){
+      SessionService.deleteProject(this.selectedProject.name)
+      for(var p in $scope.projects){
+        if($scope.projects[p].name == this.selectedProject.name){
+          $scope.projects.splice(p,1);
+          this.selectedProject = null;
+        }
+      }
+    }
+  };
 });
