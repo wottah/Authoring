@@ -3,53 +3,53 @@ angular.module('modelbuilder').service('RuleService', function(DefaultPropsFac, 
   //contains all rules in the current project.
   var rulesList = [];
   //contains all types of rules curently available to the project.
-  var generalRuleList = [];
-  var booleanRuleList = [];
-  var knowledgeRuleList = [];
+  var persistentRuleTypeList = [];
+  var attRuleTypeList = [];
   DefaultPropsFac.LoadRules().then(function(data){
-    generalRuleList = data.general;
-    booleanRuleList = data.boolean;
-    knowledgeRuleList = data.knowledge;
-    for(var r in generalRuleList)
+    persistentRuleTypeList = data.persistent_att_rules;
+    attRuleTypeList = data.def_att_rules;
+    for(var r in persistentRuleTypeList)
     {
-      generalRuleList[r].properties = SupportService.matchtypes(generalRuleList[r].properties);
+      persistentRuleTypeList[r].properties = SupportService.matchtypes(persistentRuleTypeList[r].properties);
     }
   });
 
   this.setRules = function(rules){
     rulesList = rules;
-  }
+  };
 
   this.getRules = function(){
     return rulesList;
-  }
+  };
 
   this.getRuleTypeList = function(){
-    return generalRuleList;
+    returnlist = []
+    for(var p in persistentRuleTypeList){
+        returnlist.push(persistentRuleTypeList[p]);
+    }
+    for(var a in attRuleTypeList){
+        returnlist.push(attRuleTypeList[a]);
+    }
+    return returnlist;
   };
 
-  this.getBooleanTypeList = function(){
-    return booleanRuleList;
+  this.getPersistentTypeList = function(){
+    return persistentRuleTypeList;
   };
 
-  this.getKnowledgeTypeList = function(){
-    return knowledgeRuleList;
+  this.getAttRuleTypeList = function(){
+    return attRuleTypeList;
   };
 
   this.getRule = function(name){
-    for(var r in generalRuleList){
-      if(generalRuleList[r].name == name){
-        return generalRuleList[r];
+    for(var r in persistentRuleTypeList){
+      if(persistentRuleTypeList[r].name == name){
+        return persistentRuleTypeList[r];
       }
     }
-    for(var r in booleanRuleList){
-      if(booleanRuleList[r].name == name){
-        return booleanRuleList[r];
-      }
-    }
-    for(var r in knowledgeRuleList){
-      if(knowledgeRuleList[r].name == name){
-        return knowledgeRuleList[r];
+    for(var r in attRuleTypeList){
+      if(attRuleTypeList[r].name == name){
+        return attRuleTypeList[r];
       }
     }
     return null;
@@ -66,7 +66,7 @@ angular.module('modelbuilder').service('RuleService', function(DefaultPropsFac, 
   }
 
   //adds an item to the rule list.
-  this.addRule = function(source, target, rule, def, cat){
+  this.addRule = function(source, target, rule, def){
     if(source==null | rule==null)
     {
       return;
@@ -77,7 +77,7 @@ angular.module('modelbuilder').service('RuleService', function(DefaultPropsFac, 
     }
     //checks if the rule+target combination is not already added to this topic.
     dupe = false;
-    var newId = {id: target.id + rule.name + source.id};
+    var newId = {id: target.id + rule + source.id};
 
     if(SupportService.contains(newId,"id",rulesList)>-1)
     {
@@ -85,43 +85,25 @@ angular.module('modelbuilder').service('RuleService', function(DefaultPropsFac, 
     }
     if(source!=="" && !dupe)
     {
-      var newrule = {id: newId.id, sourceId: source.id, source:source, targetId: target.id, target: target, name: rule.name, defaultRule:def, category: cat };
+      var newrule = {id: newId.id, sourceId: source.id, source:source, targetId: target.id, target: target, name: rule, defaultRule:def};
       //adds rule properties to the topic parameters. Sets the item to a rule parameter if it already exists (so the user cannot delete it).
-      if(cat=="general"){
-        ruleIndex = SupportService.contains(newrule,"name",generalRuleList);
-        if(ruleIndex != -1){
-          ruledef = generalRuleList[ruleIndex];
-        }
+      ruleIndex = SupportService.contains(newrule,"name",persistentRuleTypeList);
+      if(ruleIndex != -1){
+        ruledef = persistentRuleTypeList[ruleIndex];
       }
-      if(cat=="suitability" | cat == "availability"){
-        ruleIndex = SupportService.contains(newrule,"name",booleanRuleList);
-        if(ruleIndex != -1){
-          ruledef = booleanRuleList[ruleIndex];
-        }
-      }
-      if(cat=="knowledge"){
-        ruleIndex = SupportService.contains(newrule,"name",knowledgeRuleList);
-        if(ruleIndex != -1){
-          ruledef = knowledgeRuleList[ruleIndex];
-        }
+      ruleIndex = SupportService.contains(newrule,"name",attRuleTypeList);
+      if(ruleIndex != -1){
+        ruledef = attRuleTypeList[ruleIndex];
       }
       rulesList.push(newrule);
-      return ruledef.properties;
+      if(ruledef.properties != null){
+        return ruledef.properties;
+      }
+      else{
+        return [];
+      }
     }
   };
-
-  this.getRuleCat = function(rule){
-    if(SupportService.contains(rule, "name", generalRuleList)>-1){
-      return "general";
-    }
-    if(SupportService.contains(rule, "name", booleanRuleList)>-1){
-      return "boolean";
-    }
-    if(SupportService.contains(rule, "name", knowledgeRuleList)>-1){
-      return "knowledge";
-    }
-
-  }
 
   this.removeRule = function(ruleId){
     for(var r in rulesList){

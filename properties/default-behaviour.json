@@ -1,8 +1,15 @@
-[
-	{
-		"name":"text-topic",
-		"default_parameters":
-		[
+{
+
+	"defaultattributes" :[
+		{"name":"suitability", "type":"Boolean", "value":"true"},
+		{"name":"availability", "type":"Boolean", "value":"true"},
+		{"name":"knowledge", "type":"Double", "value":"1"}
+	],
+	"concepttypes" :[
+		{
+			"name":"text-topic",
+			"default_parameters":
+			[
 				{
 					"name":"own-knowledge",
 					"type":"Double",
@@ -13,33 +20,25 @@
 					"type":"Integer",
 					"value":"6"
 				}
-		],
-		"default_general_rules":["visited","own knowledge update"],
-		"default_knowledge_rules":["childAverage"],
-		"default_suitability_rules":[],
-		"default_availability_rules":[]
-	},
-	{
-		"name":"quiz-topics",
-		"default_parameters":
-		[
-			{
-				"name":"mark",
-				"type":"Int",
-				"value":"1"
-			}
-		],
-		"default_general_rules":[],
-		"default_knowledge_rules":[],
-		"default_suitability_rules":[],
-		"default_availability_rules":[]
-	},
-	{
-		"name":"empty topic",
-		"default_parameters":[],
-		"default_general_rules":[],
-		"default_knowledge_rules":[],
-		"default_suitability_rules":[],
-		"default_availability_rules":[]
-	}
-]
+			],
+			"default_rules":["visited","own knowledge update", "childAverage"]
+		},
+		{
+			"name":"quiz-topics",
+			"default_parameters":
+			[
+				{
+					"name":"mark",
+					"type":"Int",
+					"value":"1"
+				}
+			],
+			"default_rules":[]
+		},
+		{
+			"name":"empty topic",
+			"default_parameters":[],
+			"default_rules":[]
+		}
+	]
+}

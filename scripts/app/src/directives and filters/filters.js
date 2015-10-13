@@ -35,20 +35,15 @@
 			return function(items, rule) {
 				this.returnlist = [];
 				this.itemlist = [];
-				for(var i in items){
-					if(items[i].category == "general"){
-						itemlist.push(items[i]);
-					}
-				}
 				if(rule.name=="All")
 				{
-					return itemlist;
+					return items;
 				}
-				for(var i in itemlist)
+				for(var i in items)
 				{
-					if(itemlist[i].name == rule.name)
+					if(items[i].name == rule.name)
 					{
-						returnlist.push(itemlist[i]);
+						returnlist.push(items[i]);
 					}
 				}
 				return returnlist;

@@ -2,15 +2,16 @@
 angular.module('modelbuilder').service('ConceptService', function(SupportService, RuleService, DefaultPropsFac){
   var concepts = {};
   var conceptTypes = {};
-  var defaultParameters = [{name:"suitability", type:"Boolean", value:"true"},{name:"availability", type:"Boolean", value:"true"},{name:"knowledge", type:"Double", value:"1"}];
+  var defaultAttributes = {};
   var nextid = 1;
 
   DefaultPropsFac.LoadDefaults().then(function(data){
-    conceptTypes = data;
+    conceptTypes = data.concepttypes;
+    defaultAttributes = data.defaultattributes;
   });
 
-  this.getDefaultParams = function(){
-    return defaultParameters;
+  this.getDefaultAtts = function(){
+    return defaultAttributes;
   };
 
   this.getConcepts = function(){
@@ -40,45 +41,16 @@ angular.module('modelbuilder').service('ConceptService', function(SupportService
     for(var d in defParams){
         this.addParameter(item.id, defParams[d].name, defParams[d].type, defParams[d].value, defParams[d].value, false);
     }
-    //add default rules to this list.
-    defaultRules = [];
-    //list default rules
-    for(var r in conceptType.default_general_rules)
+    //add all rules.
+    for(var dr in conceptType.default_rules)
     {
-      ruleObj = {name:conceptType.default_general_rules[r], category:"general"};
-      defaultRules.push(ruleObj);
-    }
-
-    //list knowledge rules
-    for(var r in conceptType.default_knowledge_rules)
-    {
-      ruleObj = {name:conceptType.default_knowledge_rules[r], category:"knowledge"};
-      defaultRules.push(ruleObj);
-    }
-
-    //list availability rules
-    for(var r in conceptType.default_availability_rules)
-    {
-      ruleObj = {name:conceptType.default_availability_rules[r], category:"availability"};
-      defaultRules.push(ruleObj);
-    }
-
-    //list suitability rules
-    for(var r in conceptType.default_suitability_rules)
-    {
-      ruleObj = {name:conceptType.default_suitability_rules[r], category:"suitability"};
-      defaultRules.push(ruleObj);
-    }
-
-    //add all rules with corresponding category.
-    for(var dr in defaultRules)
-    {
-      defaultprops = RuleService.addRule(item,"",defaultRules[dr], true,defaultRules[dr].category);
+      defaultprops = RuleService.addRule(item,"",conceptType.default_rules[dr], true);
       for(var rp in defaultprops)
       {
-        this.addParameter(item.id, defaultprops[rp].name, defaultprops[rp].type, defaultprops[rp].defval, defaultprops[rp].defval , true,defaultRules[dr].name);
+        this.addParameter(item.id, defaultprops[rp].name, defaultprops[rp].type, defaultprops[rp].defval, defaultprops[rp].defval , true, conceptType.default_rules[dr]);
       }
     }
+
     if(parentId>0)
     {
       for(var i in concepts)
@@ -119,7 +91,6 @@ angular.module('modelbuilder').service('ConceptService', function(SupportService
     var newparam = {name:name, type:type, value:value, defval:defval, ruleparam:ruleparam};
     var index = SupportService.contains(newparam,["name","type"],target.parameters);
     //if the parameter already exists:
-    alert("name: "+name +" index= "+index);
     if(index>-1)
     {
       //if this parameter is not allowed to be edited

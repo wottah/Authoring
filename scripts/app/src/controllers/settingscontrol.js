@@ -2,11 +2,7 @@
 angular.module('modelbuilder').controller('SettingsController', function($scope, $modalInstance, SessionService, RuleService, ConceptService, SupportService){
   //import rules list and assign reference to DefaultTypes to Properties
   $scope.ruleTypeList = RuleService.getRuleTypeList();
-  $scope.booleanTypeList = RuleService.getBooleanTypeList();
-  $scope.knowledgeTypeList = RuleService.getKnowledgeTypeList();
   $scope.ruleSelectList= [{name:"All"}];
-  $scope.defaultParams = ConceptService.getDefaultParams();
-  $scope.selectedDefParam = $scope.defaultParams[0];
   for(var l in $scope.ruleTypeList)
   {
     $scope.ruleSelectList.push($scope.ruleTypeList[l]);
@@ -14,7 +10,6 @@ angular.module('modelbuilder').controller('SettingsController', function($scope,
   $scope.selectedrule = $scope.ruleSelectList[0];
   $scope.defaultTypes = SupportService.getDefaultTypes();
   $scope.selectedNewType = $scope.defaultTypes[0];
-  $scope.selectedDefParamRule = $scope.booleanTypeList[0];
 
   this.allSelected = function(){
     if($scope.selectedrule.name=="All")
@@ -27,8 +22,8 @@ angular.module('modelbuilder').controller('SettingsController', function($scope,
     }
   }
   //adds an item to the prereq list of the current settingsItem.
-  this.addRule = function(source, target, rule, ruleCat){
-    ruleprops = RuleService.addRule(source,target,rule, false, ruleCat);
+  this.addRule = function(source, target, rule){
+    ruleprops = RuleService.addRule(source,target,rule.name, false);
     for(var r in ruleprops){
       ConceptService.addParameter(source.id, ruleprops[r].name, ruleprops[r].type, ruleprops[r].defval, ruleprops[r].defval, true, rule.name);
     }
@@ -104,23 +99,6 @@ angular.module('modelbuilder').controller('SettingsController', function($scope,
       if(itemRules[r].name == rule.name){
         return itemRules[r].defaultRule;
       }
-    }
-  };
-
-  this.defParamSelectedRulesList = function(selectedParam, selectedItem){
-    if(selectedParam.name == "suitability" | selectedParam.name == "availability"){
-      $scope.selectedDefParamRule = $scope.booleanTypeList[0];
-      return this.ruleSelectList(selectedItem,$scope.booleanTypeList);
-    }
-    if(selectedParam.name == "knowledge"){
-      $scope.selectedDefParamRule = $scope.knowledgeTypeList[0];
-      rulesList = RuleService.getItemRules($scope.settingsItem.id);
-      for(var r in rulesList){
-        if(rulesList[r].category == "knowledge"){
-          return [];
-        }
-      }
-      return this.ruleSelectList(selectedItem,$scope.knowledgeTypeList);
     }
   };
 
