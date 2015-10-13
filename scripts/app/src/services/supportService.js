@@ -53,25 +53,22 @@ angular.module('modelbuilder').service('SupportService',function(DefaultPropsFac
     //if properties in prop[] have to be checked from item i; .constructor === Array
     else if(prop.constructor === Array)
     {
-      for(var p in prop)
+      for(var i in array)
       {
-        for(var i in array)
+        //if there is a match
+        if(array[i][prop[0]].toLowerCase()==item[prop[0]].toLowerCase())
         {
-          //if there is a match
-          if(array[i][prop[p]].toLowerCase()==item[prop[p]].toLowerCase())
+          var match = true;
+          //if all other properties match as well
+          for(var pp=1; pp<prop.length;pp++)
           {
-            var match = true;
-            //if all other properties match as well
-            for(var pp=p; pp<prop.length;pp++)
+            if(array[i][prop[pp]].toLowerCase()!=item[prop[pp]].toLowerCase())
             {
-              if(array[i][prop[pp]].toLowerCase()!=item[prop[pp]].toLowerCase())
-              {
-                match = false;
-                pp= prop.length;
-              }
+              match = false;
+              pp= prop.length;
             }
-            if(match){ return i;}
           }
+          if(match){ return i;}
         }
       }
       return -1;

@@ -119,6 +119,7 @@ angular.module('modelbuilder').service('ConceptService', function(SupportService
     var newparam = {name:name, type:type, value:value, defval:defval, ruleparam:ruleparam};
     var index = SupportService.contains(newparam,["name","type"],target.parameters);
     //if the parameter already exists:
+    alert("name: "+name +" index= "+index);
     if(index>-1)
     {
       //if this parameter is not allowed to be edited
