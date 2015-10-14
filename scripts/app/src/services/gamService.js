@@ -4,6 +4,9 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
         coursemodel = ConceptService.getConcepts();
         rulesList = RuleService.getRuleTypeList();
         defaultTypes = ConceptService.getConceptTypes();
+        defaultPersRules = RuleService.getPersistentTypeList();
+        defaultAttRules = RuleService.getAttRuleTypeList();
+        defaultTemplateAttRules = [];
         usedTypes = [];
         for(var c in coursemodel){
           if(SupportService.contains(coursemodel[c].type,"",usedTypes)==-1){
@@ -20,47 +23,38 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
                 concept+="\t#["+ defaultTypes[i].default_parameters[p].name +"]:"+defaultTypes[i].default_parameters[p].type+" `"+defaultTypes[i].default_parameters[p].value + "`\n";
             }
 
-            var suitability = "\t#suitability:Boolean =`true";
-            var availability = "\t#availability:Boolean =`true";
-            var knowledge = "\t#knowledge:Double =`";
-            var hasKnowledgeRule = false;
-            //add general template rules
-            for(var r in defaultTypes[i].default_general_rules){
-              rule = RuleService.getRule(defaultTypes[i].default_general_rules[r]);
-                  if(rule.type=="unary"){
-                      concept += "\t" + rule.code + "\n";
-                  }
+            var defaultAttributes = ConceptService.getDefaultAtts();
+            //add template rules
+            for(var r in defaultTypes[i].default_rules){
+              rule = RuleService.getRule(defaultTypes[i].default_rules[r]);
+              if(rule.properties!=null){
+                if(rule.type=="unary"){
+                    concept += "\t" + rule.code + "\n";
+                }
+              }
+              if(rule.target!=null){
+                //get target attribute
+                for(var index in defaultAttributes){
+                  if(defaultAttributes[index].name == rule.target){
+                    this.addAttrCode(defaultAttributes[index], rule.code);
+                }
+              }
             }
-            //add knowledge template rules
-            for(var r in defaultTypes[i].default_knowledge_rules){
-              rule = RuleService.getRule(defaultTypes[i].default_knowledge_rules[r]);
-                  if(rule.type=="unary"){
-                      hasKnowledgeRule = true;
-                      knowledge += rule.code;
-                  }
-            }
-            //add availability template rules
-            for(var r in defaultTypes[i].default_availability_rules){
-              rule = RuleService.getRule(defaultTypes[i].default_availability_rules[r]);
-                  if(rule.type=="unary"){
-                      availability +=  " && "+ rule.code;
-                  }
-            }
-            //add suitability template rules
-            for(var r in defaultTypes[i].default_suitability_rules){
-              rule = RuleService.getRule(defaultTypes[i].default_suitability_rules[r]);
-                  if(rule.type=="unary"){
-                      suitability +=  " && "+ rule.code;
-                  } " && "+ code;
-            }
-          if(!hasKnowledgeRule){
-            knowledge += "0";
           }
-          concept += knowledge +"`\n"+ availability +"`\n"+ suitability +"`\n } \n \n";
-          output += concept;
+          //add all attribute code to the concept.
+          for(var t in defaultAttributes){
+            if(defaultAttributes[t].code == null){
+              concept += "\t#"+defaultAttributes[t].name+":"+defaultAttributes[t].type+" =`"+defaultAttributes[t].value+"`\n";
+              defaultTemplateAttRules.push({id:defaultTypes[i].name + defaultAttributes[t].name, type: defaultAttributes[t].type, code:defaultAttributes[t].value});
+            }
+            else{
+              concept += "\t#"+defaultAttributes[t].name+":"+defaultAttributes[t].type+" =`"+defaultAttributes[t].code+"`\n";
+              defaultTemplateAttRules.push({id:defaultTypes[i].name + defaultAttributes[t].name, type: defaultAttributes[t].type, code:defaultAttributes[t].code});
+            }
+          }
+          output += concept + "}\n\n";
         }
       }
-
         //Output all concepts extending the basic types
         for(var i in coursemodel)
         {
@@ -70,6 +64,7 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
             concept += coursemodel[i].text.replace(/\s|'|"|`/g, '') + "{\n";
             concept += "\t->(extends)"+ coursemodel[i].type.replace(/\s+/g, '') + "\n";
             concept += "\ttitle `" + coursemodel[i].description + "`\n";
+            defaultAttributes = [];
             for(var j in coursemodel)
             {
               if (coursemodel[j].id == coursemodel[i].parent)
@@ -91,61 +86,50 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
             concept += '\t#content:String =`~ return "[[='+resource +']]";`\n';
             concept += '\t#resource =`~ return "[[=layout.xhtml]]";`\n';
             itemRules = RuleService.getItemRules(coursemodel[i].id);
-            var general = "";
-            var suitability = "\t#suitability:Boolean =`true";
-            var suitHasNonDefRules = false;
-            var availability = "\t#availability:Boolean =`true";
-            var availHasNonDefRules = false;
-            var knowledge = "";
-            var knowlegdeHasNonDefRule = false;
             for(var r in itemRules)
             {
-              if(itemRules[r].source.id == coursemodel[i].id){
+              if(itemRules[r].source.id == coursemodel[i].id && itemRules[r].defaultRule==false){
                 ruleDef = RuleService.getRule(itemRules[r].name);
                 var code = "";
-                if(ruleDef.type == "unary"){
-                  code = ruleDef.code;
-                }
-                if(ruleDef.type == "binary"){
-                  var rulecode = RuleService.getRule(itemRules[r].name).code;
-                  code = rulecode.replace("%target%",itemRules[r].target.text.replace(/\s|'|"|`/g, ''));
-                }
-                if(itemRules[r].category == "general" && itemRules[r].defaultRule == false){
-                  general += "\t" + code + "\n";
-                }
-                if(itemRules[r].category =="suitability"){
-                  if(itemRules[r].defaultRule == false){
-                    suitHasNonDefRules = true;
+                  if(ruleDef.type == "unary"){
+                    code = ruleDef.code;
                   }
-                  suitability += " && "+ code;
-                }
-                if(itemRules[r].category=="availability"){
-                  if(itemRules[r].defaultRule == false){
-                    availHasNonDefRules = true;
+                  if(ruleDef.type == "binary"){
+                    var rulecode = RuleService.getRule(itemRules[r].name).code;
+                    code = rulecode.replace("%target%",itemRules[r].target.text.replace(/\s|'|"|`/g, ''));
                   }
-                  availability += " && "+ code;
-                }
-                if(itemRules[r].category=="knowledge" && itemRules[r].defaultRule == false){
-                  if(knowledge ==""){
-                  knowledge = "\t#knowledge:Double =`"
+                if(ruleDef.target!=null)
+                {
+                  newatt = true;
+                  for(var r in defaultAttributes){
+                    if(ruleDef.target == defaultAttributes[r].name){
+                      this.addAttrCode(defaultAttributes[r], code);
+                      newatt = false;
+                    }
                   }
-                  knowlegdeHasNonDefRule = true;
-                  knowledge += code;
+                  if(newatt){
+                    //add de attribute in de lijst.
+                    alert("newatt");
+                    for(var a in defaultTemplateAttRules){
+                      if(defaultTemplateAttRules[a].id == coursemodel[i].type + ruleDef.target){
+                        atrObject = {name: ruleDef.target, type:defaultTemplateAttRules[a].type, code: defaultTemplateAttRules[a].code};
+                        alert(code);
+                        this.addAttrCode(atrObject, code);
+                        defaultAttributes.push(atrObject);
+                      }
+                    }
+                  }
+                }
+                //voeg regelcode toe aan concept als t geen attributecode is
+                if(ruleDef.parameters!=null){
+                  concept += "\t"+code+"\n";
                 }
               }
             }
-            suitability += "` \n";
-            availability += "` \n";
-            if(knowlegdeHasNonDefRule){
-              knowledge += "` \n";
+            //add all attribute code to the concept.
+            for(var t in defaultAttributes){
+                concept += "\t#"+defaultAttributes[t].name+":"+defaultAttributes[t].type+" =`"+defaultAttributes[t].code+"`\n";
             }
-            if(suitHasNonDefRules){
-              concept += suitability;
-            }
-            if(availHasNonDefRules){
-              concept += availability;
-            }
-            concept += knowledge + general;
             concept+= "} \n \n";
             output += concept;
           }
@@ -154,5 +138,29 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
         //window.open('data:text,' + encodeURIComponent(output));
         //To actually deploy:
         DeploymentFactory.deploy(SessionService.getCurrentproject().name,output)
+    };
+
+    this.addAttrCode = function(attribute, code){
+      //determine what to apply by evaluating the attribute type:
+      if(attribute.type=="String"){
+        if(attribute.code == null){
+          attribute.code = "";
+        }
+        attribute.code += code;
+      }
+      if(attribute.type=="Boolean"){
+        if(attribute.code == null){
+          attribute.code = "true ";
+        }
+        attribute.code += " && "+ code;
+      }
+      if(attribute.type=="Integer" || attribute.type=="Double"){
+        if(attribute.code == null){
+          attribute.code = rule.code;
+        }
+        else{
+            attribute.code += " + " + code;
+        }
+      }
     };
 });
