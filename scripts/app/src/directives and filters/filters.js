@@ -32,21 +32,35 @@
 
 		//Filter that makes sure the right rules are being returned
 		app.filter('ruletypeFilter',function() {
-			return function(items, rule) {
+			return function(items, rule, showTemplated) {
 				this.returnlist = [];
 				this.itemlist = [];
-				if(rule.name=="All")
-				{
-					return items;
-				}
 				for(var i in items)
 				{
-					if(items[i].name == rule.name)
+					if(rule.name=="All" && (showTemplated == items[i].defaultRule || showTemplated == true))
+					{
+						returnlist.push(items[i]);
+					}
+
+					if(items[i].name == rule.name && (showTemplated == items[i].defaultRule || showTemplated == true))
 					{
 						returnlist.push(items[i]);
 					}
 				}
 				return returnlist;
+			};
+		});
+
+		//this filter makes sure Default parameters are either shown or not.
+		app.filter('paramFilter',function() {
+			return function(items, showTemplated) {
+					this.returnList  = []
+					for(var i in items){
+						if(items[i].ruleparam ==showTemplated || showTemplated == true){
+							returnList.push(items[i]);
+						}
+					}
+					return returnList;
 			};
 		});
 

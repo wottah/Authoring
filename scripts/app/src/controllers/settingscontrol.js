@@ -10,6 +10,8 @@ angular.module('modelbuilder').controller('SettingsController', function($scope,
   $scope.selectedrule = $scope.ruleSelectList[0];
   $scope.defaultTypes = SupportService.getDefaultTypes();
   $scope.selectedNewType = $scope.defaultTypes[0];
+  //determines whether templated rules and parameters should be shown or not.
+  $scope.showTemplated = false;
 
   this.allSelected = function(){
     if($scope.selectedrule.name=="All")
@@ -116,10 +118,15 @@ angular.module('modelbuilder').controller('SettingsController', function($scope,
     return ruleList;
   };
 
+  this.getTooltip= function(name){
+    return RuleService.getTooltip(name);
+  }
+
   this.saveProject = function(){
     SessionService.saveProject();
   };
 
+  //Probably obsolete
   this.defParamChanged = function(defparam, item){
     $scope.selectedDefParamRule = this.defParamSelectedRulesList(defparam, item)[0];
   };

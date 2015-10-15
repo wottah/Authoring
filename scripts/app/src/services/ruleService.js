@@ -53,7 +53,7 @@ angular.module('modelbuilder').service('RuleService', function(DefaultPropsFac, 
       }
     }
     return null;
-  }
+  };
 
   this.getItemRules = function(id){
     var returnList = [];
@@ -63,7 +63,20 @@ angular.module('modelbuilder').service('RuleService', function(DefaultPropsFac, 
       }
     }
     return returnList;
-  }
+  };
+
+  this.getTooltip = function(name){
+    for(var p in persistentRuleTypeList){
+      if(persistentRuleTypeList[p].name == name){
+        return persistentRuleTypeList[p].tooltip;
+      }
+    }
+    for(var a in attRuleTypeList){
+      if(attRuleTypeList[a].name == name){
+        return attRuleTypeList[a].tooltip;
+      }
+    }
+  };
 
   //adds an item to the rule list.
   this.addRule = function(source, target, rule, def){

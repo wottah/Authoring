@@ -4,18 +4,21 @@
     		"name":"hasPrerequisite",
         "type":"binary",
         "properties": [{"name":"suitability","type":"Boolean","defval":""}],
+        "tooltip" : "placeholder tooltip for persistent_att_rules.",
     		"code":"#suitability:Boolean & `${%target%#knowledge > 0.7}`"
     	},
       {
         "name":"visited",
         "type":"unary",
         "properties":[{"name":"visited", "type":"Integer", "defval":""}],
+        "tooltip" : "placeholder tooltip for visited",
         "code":"#[visited]:Integer event `${#visited}++;`"
       },
       {
         "name":"own knowledge update",
         "type":"unary",
         "properties":[{"name":"own-knowledge", "type":"Double", "defval":""}],
+        "tooltip" : "placeholder tooltip for own knw update.",
         "code":"#[own-knowledge]:Double event +`if(${#suitability}) ${#own-knowledge} = 1; else if(${#own-knowledge} < 0.3) ${#own-knowledge} = 0.3;`"
       }
     ],
@@ -24,24 +27,28 @@
         "name":"knowledge required",
         "type":"binary",
         "target":"suitability",
+        "tooltip" : "placeholder tooltip for knowl req.",
         "code":"${%target%#knowledge} > 0.7"
       },
       {
         "name":"parent available",
         "type":"unary",
         "target":"suitability",
+        "tooltip" : "placeholder tooltip for parent available.",
         "code":"${=>(parent)#availability}"
       },
       {
         "name":"parent subject known",
         "type":"unary",
         "target":"availability",
+        "tooltip" : "placeholder tooltip for parent sub known.",
         "code":"${<=(parent)#knowledge > 0.3}"
       },
       {
         "name":"childAverage",
         "type":"unary",
         "target":"knowledge",
+        "tooltip" : "placeholder tooltip for childavg",
         "code":"avg(new Object[] {${<=(parent)#knowledge}, ${#own-knowledge}})"
       }
     ]

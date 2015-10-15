@@ -2,6 +2,7 @@
 <div id="options">
 	<div class="modal-header">
 		<h3 class="modal-title">Settings of {{settingsItem.text}}.</h3>
+		<label>Show advanced:</label><input type="checkbox" ng-model ="showTemplated"></input>
 	</div>
 	<div class="modal-body">
 		<table class="table">
@@ -16,7 +17,7 @@
 						<th>Type</th>
 						<th>Delete</th>
 					</tr>
-					<tr ng-repeat="param in settingsItem.parameters">
+					<tr ng-repeat="param in settingsItem.parameters | paramFilter : showTemplated">
 						<td>
 							<input type="text" ng-model="param.name" ng-blur="setControl.saveProject()" ng-disabled ="param.ruleparam"></input>
 						</td>
@@ -54,7 +55,7 @@
 			<tr>
 				<td>
 					<b>Rule: </b>
-					<select class="form-control" ng-options="rule as rule.name disable when rule.disabled for rule in setControl.ruleSelectList(settingsItem, ruleSelectList)" ng-model="selectedrule" ></select>
+					<select class="form-control" ng-options="rule as rule.name disable when rule.disabled for rule in setControl.ruleSelectList(settingsItem, ruleSelectList)" ng-model="selectedrule" tooltip-popup-delay='1000' tooltip="{{selectedrule.tooltip}}"></select>
 				</td>
 				<td>
 					<table class="table table-bordered" id="ruleTable">
@@ -64,12 +65,12 @@
 							<th>Target name</th>
 							<th>Delete</th>
 						</tr>
-						<tr ng-repeat="item in setControl.getItemRules(settingsItem.id) | ruletypeFilter : selectedrule">
+						<tr ng-repeat="item in setControl.getItemRules(settingsItem.id) | ruletypeFilter : selectedrule : showTemplated">
 							<td>
 								{{item.source.text}}
 							</td>
 							<td>
-								{{item.name}}
+								<span tooltip-popup-delay='1000' tooltip="{{setControl.getTooltip(item.name)}}">{{item.name}}</span>
 							</td>
 							<td>
 								{{item.target.text}}
