@@ -38,19 +38,21 @@ angular.module('modelbuilder').controller('SettingsController', function($scope,
     ruleDefinition = RuleService.getRule(rule.name);
     //If no other rules rely on this one -> delete the property dependancy
     allRules = RuleService.getRules();
-    for(var r in ruleDefinition.properties){
-      hasDependancy = false;
-      for(var ar in allRules){
-        if(rule.id != allRules[ar].id && SupportService.contains(ruleDefinition.properties[r],["name","type"],allRules[ar].properties)!=-1){
-          hasDependancy = true;
+    if(ruleDefinition.properties!=null){
+      for(var r in ruleDefinition.properties){
+        hasDependancy = false;
+        for(var ar in allRules){
+          if(rule.id != allRules[ar].id && SupportService.contains(ruleDefinition.properties[r],["name","type"],allRules[ar].properties)!=-1){
+            hasDependancy = true;
+          }
         }
-      }
-      if(!hasDependancy){
-        if(ruleDefinition.properties[r].defval==""){
-          ConceptService.removeParameter(rule.source,ruleDefinition.properties[r]);
-        }
-        else{
-          ConceptService.removeRuleParamDependancy(rule.source.id, ruleDefinition.properties[r].name, ruleDefinition.properties[r].type);
+        if(!hasDependancy){
+          if(ruleDefinition.properties[r].defval==""){
+            ConceptService.removeParameter(rule.source,ruleDefinition.properties[r]);
+          }
+          else{
+            ConceptService.removeRuleParamDependancy(rule.source.id, ruleDefinition.properties[r].name, ruleDefinition.properties[r].type);
+          }
         }
       }
     }

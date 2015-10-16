@@ -51,5 +51,6 @@
         "tooltip" : "placeholder tooltip for childavg",
         "code":"avg(new Object[] {${<=(parent)#knowledge}, ${#own-knowledge}})"
       }
-    ]
+    ],
+    "def_relations":[{"name":"isRelatedTo","tooltip":"source is related to the target"},{"name":"ComesAfter","tooltip":"the source comes after the target"}]
   }

@@ -98,6 +98,9 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
                     var rulecode = RuleService.getRule(itemRules[r].name).code;
                     code = rulecode.replace("%target%",itemRules[r].target.text.replace(/\s|'|"|`/g, ''));
                   }
+                  if(ruleDef.type == "relation"){
+                    code ="->("+ruleDef.name+")"+ itemRules[r].target.text.replace(/\s|'|"|`/g, '');
+                  }
                 if(ruleDef.target!=null)
                 {
                   newatt = true;
@@ -109,11 +112,9 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
                   }
                   if(newatt){
                     //add de attribute in de lijst.
-                    alert("newatt");
                     for(var a in defaultTemplateAttRules){
                       if(defaultTemplateAttRules[a].id == coursemodel[i].type + ruleDef.target){
                         atrObject = {name: ruleDef.target, type:defaultTemplateAttRules[a].type, code: defaultTemplateAttRules[a].code};
-                        alert(code);
                         this.addAttrCode(atrObject, code);
                         defaultAttributes.push(atrObject);
                       }
@@ -121,7 +122,7 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
                   }
                 }
                 //voeg regelcode toe aan concept als t geen attributecode is
-                if(ruleDef.parameters!=null){
+                if(ruleDef.parameters!=null || ruleDef.type =="relation"){
                   concept += "\t"+code+"\n";
                 }
               }

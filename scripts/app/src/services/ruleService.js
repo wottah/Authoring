@@ -5,9 +5,14 @@ angular.module('modelbuilder').service('RuleService', function(DefaultPropsFac, 
   //contains all types of rules curently available to the project.
   var persistentRuleTypeList = [];
   var attRuleTypeList = [];
+  var relationTypeList = [];
   DefaultPropsFac.LoadRules().then(function(data){
     persistentRuleTypeList = data.persistent_att_rules;
     attRuleTypeList = data.def_att_rules;
+    for(var d in data.def_relations){
+      data.def_relations[d].type="relation";
+      relationTypeList.push(data.def_relations[d]);
+    }
     for(var r in persistentRuleTypeList)
     {
       persistentRuleTypeList[r].properties = SupportService.matchtypes(persistentRuleTypeList[r].properties);
@@ -30,6 +35,9 @@ angular.module('modelbuilder').service('RuleService', function(DefaultPropsFac, 
     for(var a in attRuleTypeList){
         returnlist.push(attRuleTypeList[a]);
     }
+    for(var r in relationTypeList){
+        returnlist.push(relationTypeList[r]);
+    }
     return returnlist;
   };
 
@@ -50,6 +58,11 @@ angular.module('modelbuilder').service('RuleService', function(DefaultPropsFac, 
     for(var r in attRuleTypeList){
       if(attRuleTypeList[r].name == name){
         return attRuleTypeList[r];
+      }
+    }
+    for(var r in relationTypeList){
+      if(relationTypeList[r].name == name){
+        return relationTypeList[r];
       }
     }
     return null;
@@ -74,6 +87,11 @@ angular.module('modelbuilder').service('RuleService', function(DefaultPropsFac, 
     for(var a in attRuleTypeList){
       if(attRuleTypeList[a].name == name){
         return attRuleTypeList[a].tooltip;
+      }
+    }
+    for(var r in relationTypeList){
+      if(relationTypeList[r].name == name){
+        return relationTypeList[r].tooltip;
       }
     }
   };
@@ -107,6 +125,10 @@ angular.module('modelbuilder').service('RuleService', function(DefaultPropsFac, 
       ruleIndex = SupportService.contains(newrule,"name",attRuleTypeList);
       if(ruleIndex != -1){
         ruledef = attRuleTypeList[ruleIndex];
+      }
+      ruleIndex = SupportService.contains(newrule,"name",relationTypeList);
+      if(ruleIndex != -1){
+        ruledef = relationTypeList[ruleIndex];
       }
       rulesList.push(newrule);
       if(ruledef.properties != null){
