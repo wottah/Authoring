@@ -11,6 +11,7 @@ angular.module('modelbuilder').service('RuleService', function(DefaultPropsFac, 
     attRuleTypeList = data.def_att_rules;
     for(var d in data.def_relations){
       data.def_relations[d].type="relation";
+      data.def_relations[d].custom=false;
       relationTypeList.push(data.def_relations[d]);
     }
     for(var r in persistentRuleTypeList)
@@ -95,6 +96,22 @@ angular.module('modelbuilder').service('RuleService', function(DefaultPropsFac, 
       }
     }
   };
+
+  this.getCustomRelations = function(){
+    returnlist=[];
+    for(var r in relationTypeList){
+      if(relationTypeList[r].custom==true){
+        returnlist.push(relationTypeList[r]);
+      }
+    }
+    return returnlist;
+  }
+
+  this.addRelation = function(name, description){
+    rel = {name:name, tooltip:description, custom:true, type:"relation"};
+    relationTypeList.push(rel);
+    return rel;
+  }
 
   //adds an item to the rule list.
   this.addRule = function(source, target, rule, def){

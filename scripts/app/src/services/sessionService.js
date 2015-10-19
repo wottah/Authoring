@@ -39,6 +39,9 @@ angular.module('modelbuilder').service('SessionService', function(ConceptService
         }
       }
     }
+    for(var r in project.data.relations){
+      RuleService.addRelation(project.data.relations[r].name, project.data.relations[r].tooltip);
+    }
     RuleService.setRules(project.data.rules);
     currentproject = project;
   };
@@ -71,7 +74,7 @@ angular.module('modelbuilder').service('SessionService', function(ConceptService
       saveRule.category = saveRuleRefs[r].category;
       saveRuleNoRefs.push(saveRule);
     }
-    data = {concepts:saveConcepts, rules:saveRuleNoRefs};
+    data = {concepts:saveConcepts, rules:saveRuleNoRefs, relations:RuleService.getCustomRelations()};
     currentproject.data = data;
     DatabaseFactory.saveProject(currentproject, username);
   };

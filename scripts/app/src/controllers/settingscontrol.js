@@ -10,6 +10,8 @@ angular.module('modelbuilder').controller('SettingsController', function($scope,
   $scope.selectedrule = $scope.ruleSelectList[0];
   $scope.defaultTypes = SupportService.getDefaultTypes();
   $scope.selectedNewType = $scope.defaultTypes[0];
+  $scope.relationName = "";
+  $scope.relationDesc = "";
   //determines whether templated rules and parameters should be shown or not.
   $scope.showTemplated = false;
 
@@ -126,6 +128,13 @@ angular.module('modelbuilder').controller('SettingsController', function($scope,
 
   this.saveProject = function(){
     SessionService.saveProject();
+  };
+
+  this.addRelation = function(name, description){
+    $scope.ruleSelectList.push(RuleService.addRelation(name, description));
+    SessionService.saveProject();
+    $scope.relationName = "";
+    $scope.relationDesc = "";
   };
 
   //Probably obsolete

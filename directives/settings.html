@@ -54,8 +54,13 @@
 		</tr>
 			<tr>
 				<td>
-					<b>Rule: </b>
+					<b>Relations and Expressions: </b>
 					<select class="form-control" ng-options="rule as rule.name disable when rule.disabled for rule in setControl.ruleSelectList(settingsItem, ruleSelectList)" ng-model="selectedrule" tooltip-popup-delay='1000' tooltip="{{selectedrule.tooltip}}"></select>
+					<label for="relationName">name: </label><input type="text" id="relationName" ng-model = "relationName" class="form-control"></input>
+					<label for="relationDesc">description: </label><input type="text" id="relationDesc" ng-model="relationDesc" class="form-control"></input>
+					<button class="btn btn-default btn-xs" ng-click="setControl.addRelation(relationName, relationDesc)">
+						<span class="glyphicon glyphicon-plus" aria-hidden="true">
+					</button>
 				</td>
 				<td>
 					<table class="table table-bordered" id="ruleTable">
