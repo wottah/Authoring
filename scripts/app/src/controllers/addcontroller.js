@@ -1,7 +1,6 @@
 //controller that handles the add item controls
 angular.module('modelbuilder').controller('AddController', function($scope, ConceptService){
   this.addText = "";
-  this.descText = "";
   this.selected="";
   this.showAddButton = true;
   $scope.conceptTypes = [];
@@ -15,7 +14,6 @@ angular.module('modelbuilder').controller('AddController', function($scope, Conc
   this.addHide = function(){
     this.showAddButton = true;
     this.addText = "";
-    this.descText = "";
     this.selected = "";
   };
 });

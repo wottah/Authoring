@@ -33,8 +33,8 @@ angular.module('modelbuilder').service('ConceptService', function(SupportService
     }
   }
 
-  this.addConcept = function(parentId, addText, descText, conceptType){
-    var item = {text:addText, description:descText, id:nextid, type:conceptType.name, parent:parentId, children:[], rules:[], parameters:[], selected:true, resource:""};
+  this.addConcept = function(parentId, addText, conceptType){
+    var item = {text:addText, id:nextid, type:conceptType.name, parent:parentId, children:[], rules:[], parameters:[], selected:true, resource:""};
     nextid++;
     concepts.push(item);
     defParams = conceptType.default_parameters.slice();

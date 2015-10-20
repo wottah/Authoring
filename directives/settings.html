@@ -7,7 +7,6 @@
 	<div class="modal-body">
 		<table class="table">
 			<tr><td><b>Name: </b></td> <td><input type="text" ng-blur="setControl.saveProject()" class="form-control" ng-model="settingsItem.text" placeholder="topic name" ></input></td></tr>
-			<tr><td><b>Description: </b></td> <td><input type="text" class="form-control" ng-blur="setControl.saveProject()" ng-model="settingsItem.description" placeholder="topic description"></input></td></tr>
 			<td><b>Attributes :</b></td>
 			<td>
 				<table id="paramTable" class="table table-bordered">
@@ -57,7 +56,7 @@
 					<b>Relations and Expressions: </b>
 					<select class="form-control" ng-options="rule as rule.name disable when rule.disabled for rule in setControl.ruleSelectList(settingsItem, ruleSelectList)" ng-model="selectedrule" tooltip-popup-delay='1000' tooltip="{{selectedrule.tooltip}}"></select>
 					<label for="relationName">name: </label><input type="text" id="relationName" ng-model = "relationName" class="form-control"></input>
-					<label for="relationDesc">description: </label><input type="text" id="relationDesc" ng-model="relationDesc" class="form-control"></input>
+					<label for="relationDesc">description: </label><input type="text" id="relationDesc" ng-model="relationDesc" class="form-control"></select>
 					<button class="btn btn-default btn-xs" ng-click="setControl.addRelation(relationName, relationDesc)">
 						<span class="glyphicon glyphicon-plus" aria-hidden="true">
 					</button>
@@ -84,18 +83,18 @@
 							</td>
 						</tr>
 					</table>
-					<div id="prereqselector" ng-controller="AddController as rulecontrol">
-						<div ng-hide="rulecontrol.showAddButton" >
-							<select class="form-control" ng-options="item as item.text for item in items | prereqFilter: settingsItem: selectedrule" ng-model="selectedItem" ng-hide="setControl.unaryRuleSelected(selectedrule)"></select>
-							<button class="btn btn-default btn-xs" ng-click="setControl.addRule(settingsItem, selectedItem, selectedrule); rulecontrol.addHide();">
+					<div id="prereqselector">
+						<div collapse="!addRuleCollapsed" >
+							<select multiple class="form-control" ng-options="item as item.text for item in items | prereqFilter: settingsItem: selectedrule" ng-model="selectedItem" ng-hide="setControl.unaryRuleSelected(selectedrule)"></select>
+							<button class="btn btn-default btn-xs" ng-click="setControl.addRule(settingsItem, selectedItem, selectedrule)">
 								<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
 							</button>
-							<button class="btn btn-default btn-xs" ng-click="rulecontrol.addHide()">
+							<button class="btn btn-default btn-xs" ng-click="addRuleCollapsed = !addRuleCollapsed">
 								<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
 							</button>
 						</div>
-						<div>
-							<button class="btn btn-default btn-xs" ng-click="rulecontrol.addShow()" ng-disabled="setControl.allSelected()" ng-show="rulecontrol.showAddButton" >
+						<div collapse="addRuleCollapsed">
+							<button class="btn btn-default btn-xs" ng-click="addRuleCollapsed = !addRuleCollapsed" ng-disabled="setControl.allSelected()" >
 							<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 						</button>
 						</div>

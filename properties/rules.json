@@ -12,23 +12,30 @@
         "type":"unary",
         "properties":[{"name":"visited", "type":"Integer", "defval":""}],
         "tooltip" : "placeholder tooltip for visited",
-        "code":"#[visited]:Integer event `${#visited}++;`"
+        "code":"#[visited]:Integer event `if (${#suitability}) { ${#visited}++;}`"
       },
       {
         "name":"own knowledge update",
         "type":"unary",
         "properties":[{"name":"own-knowledge", "type":"Double", "defval":""}],
         "tooltip" : "placeholder tooltip for own knw update.",
-        "code":"#[own-knowledge]:Double event +`if(${#suitability}) ${#own-knowledge} = 1; else if(${#own-knowledge} < 0.3) ${#own-knowledge} = 0.3;`"
+        "code":"#[own-knowledge]:Double event +'if (${#suitability}) ${#own-knowledge} = 1; else if (${#own-knowledge} < 0.3) ${#own-knowledge} = 0.3;'"
       }
     ],
     "def_att_rules":[
       {
-        "name":"knowledge required",
+        "name":"knows",
         "type":"binary",
         "target":"suitability",
-        "tooltip" : "placeholder tooltip for knowl req.",
-        "code":"${%target%#knowledge} > 0.7"
+        "tooltip" : "the user must have fully learned the target concept.",
+        "code":"${%target%#knowledge} > 0.8"
+      },
+      {
+        "name":"has knowledge of",
+        "type":"binary",
+        "target":"suitability",
+        "tooltip":"the user must have some udnerstanding of the target concept.",
+        "code":"${%target%#own-knowledge} > 0.8 "
       },
       {
         "name":"parent available",
@@ -49,6 +56,13 @@
         "type":"unary",
         "target":"knowledge",
         "tooltip" : "placeholder tooltip for childavg",
+        "code":"avg(new Object[] {${<=(parent)#knowledge}, ${#own-knowledge}})"
+      },
+      {
+        "name":"knowledge_update",
+        "type":"unary",
+        "target":"knowledge",
+        "tooltip":"defines the updates on the knowledge attribute",
         "code":"avg(new Object[] {${<=(parent)#knowledge}, ${#own-knowledge}})"
       }
     ],

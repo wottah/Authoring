@@ -7,6 +7,28 @@
 	],
 	"concepttypes" :[
 		{
+			"name":"milkyway_topic",
+			"default_parameters":[
+				{
+					"name":"next",
+					"type":"String",
+					"value":"next topic"
+				},
+				{
+					"name":"visited",
+					"type":"Integer",
+					"value":"0"
+				},
+				{
+					"name":"own-knowledge",
+					"type":"Double",
+					"value":"0"
+				}
+			],
+			"default_rules":["own knowledge update","visited","knowledge_update"]
+
+		},
+		{
 			"name":"text-topic",
 			"default_parameters":
 			[

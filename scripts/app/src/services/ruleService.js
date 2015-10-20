@@ -115,6 +115,7 @@ angular.module('modelbuilder').service('RuleService', function(DefaultPropsFac, 
 
   //adds an item to the rule list.
   this.addRule = function(source, target, rule, def){
+    //some safety checks
     if(source==null | rule==null)
     {
       return;
@@ -146,6 +147,10 @@ angular.module('modelbuilder').service('RuleService', function(DefaultPropsFac, 
       ruleIndex = SupportService.contains(newrule,"name",relationTypeList);
       if(ruleIndex != -1){
         ruledef = relationTypeList[ruleIndex];
+        //relations must have a target.
+        if(target.text == ""){
+          return;
+        }
       }
       rulesList.push(newrule);
       if(ruledef.properties != null){

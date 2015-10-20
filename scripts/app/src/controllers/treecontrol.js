@@ -6,7 +6,6 @@
 			}
 			$scope.items = ConceptService.getConcepts();
 			$scope.name = SessionService.getCurrentproject().name;
-			$scope.description = SessionService.getCurrentproject().description;
 			$scope.deleteModal;
 			this.currentparentid= 0;
 			this.overviewEnabled = false;
@@ -41,8 +40,8 @@
 			};
 
 			//Adds a new item to the hierarchy.
-			this.saveItem = function(parentId, addText, descText, conceptType){
-				ConceptService.addConcept(parentId, addText, descText, conceptType);
+			this.saveItem = function(parentId, addText, conceptType){
+				ConceptService.addConcept(parentId, addText, conceptType);
 				SessionService.saveProject();
 			};
 

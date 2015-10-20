@@ -7,6 +7,7 @@ angular.module('modelbuilder').controller('SettingsController', function($scope,
   {
     $scope.ruleSelectList.push($scope.ruleTypeList[l]);
   }
+  $scope.addRuleCollapsed = false;
   $scope.selectedrule = $scope.ruleSelectList[0];
   $scope.defaultTypes = SupportService.getDefaultTypes();
   $scope.selectedNewType = $scope.defaultTypes[0];
