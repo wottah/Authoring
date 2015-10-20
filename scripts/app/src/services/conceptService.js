@@ -18,6 +18,14 @@ angular.module('modelbuilder').service('ConceptService', function(SupportService
     return concepts;
   };
 
+  this.getConcept = function(id){
+    for(var c in concepts){
+      if(concepts[c].id == id){
+        return concepts[c];
+      }
+    }
+  };
+
   this.getConceptTypes = function(){
     return conceptTypes;
   }

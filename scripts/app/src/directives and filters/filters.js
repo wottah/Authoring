@@ -66,7 +66,7 @@
 
 		//Filter which makes sure the right items show up in the rules select menu (not itself + items which are already rule  targets)
 		app.filter('prereqFilter',function() {
-			return function(items, settingsItem, activeRule){
+			return function(items, parentid, settingsItem, activeRule){
 				if(settingsItem == null | activeRule == null)
 				{
 					return [];
@@ -75,11 +75,11 @@
 				for(var i in items)
 				{
 					this.dupe = false;
-					if(items[i].id != settingsItem.id)
+					if(items[i].parent == parentid)
 					{
 						for(var j in settingsItem.rules)
 						{
-							if(settingsItem.rules[j].targetid == items[i].id && !dupe && activeRule.type == settingsItem.rules[j].type)
+							if(settingsItem.rules[j].target.id == items[i].id && !dupe && activeRule.type == settingsItem.rules[j].type)
 							{
 								dupe=true;
 							}

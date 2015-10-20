@@ -54,7 +54,7 @@
 			<tr>
 				<td>
 					<b>Relations and Expressions: </b>
-					<select class="form-control" ng-options="rule as rule.name disable when rule.disabled for rule in setControl.ruleSelectList(settingsItem, ruleSelectList)" ng-model="selectedrule" tooltip-popup-delay='1000' tooltip="{{selectedrule.tooltip}}"></select>
+					<select class="form-control" ng-change="addRuleCollapsed = false" ng-options="rule as rule.name disable when rule.disabled for rule in setControl.ruleSelectList(settingsItem, ruleSelectList)" ng-model="selectedrule" tooltip-popup-delay='1000' tooltip="{{selectedrule.tooltip}}"></select>
 					<label for="relationName">name: </label><input type="text" id="relationName" ng-model = "relationName" class="form-control"></input>
 					<label for="relationDesc">description: </label><input type="text" id="relationDesc" ng-model="relationDesc" class="form-control"></select>
 					<button class="btn btn-default btn-xs" ng-click="setControl.addRelation(relationName, relationDesc)">
@@ -85,16 +85,22 @@
 					</table>
 					<div id="prereqselector">
 						<div collapse="!addRuleCollapsed" >
-							<select multiple class="form-control" ng-options="item as item.text for item in items | prereqFilter: settingsItem: selectedrule" ng-model="selectedItem" ng-hide="setControl.unaryRuleSelected(selectedrule)"></select>
+							<select multiple class="form-control" ng-options="item as item.text for item in items | prereqFilter: parentLevel.current : settingsItem : selectedrule" ng-model="selectedItem" ng-hide="setControl.unaryRuleSelected(selectedrule)"></select>
 							<button class="btn btn-default btn-xs" ng-click="setControl.addRule(settingsItem, selectedItem, selectedrule)">
 								<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
 							</button>
 							<button class="btn btn-default btn-xs" ng-click="addRuleCollapsed = !addRuleCollapsed">
 								<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
 							</button>
+							<button class="btn btn-default btn-xs" ng-click="setControl.rulesBackwards()">
+								<span class="glyphicon glyphicon-backward" aria-hidden="true"></span>
+							</button>
+							<button class="btn btn-default btn-xs" ng-click="setControl.rulesForwards()">
+								<span class="glyphicon glyphicon-forward" aria-hidden="true"></span>
+							</button>
 						</div>
 						<div collapse="addRuleCollapsed">
-							<button class="btn btn-default btn-xs" ng-click="addRuleCollapsed = !addRuleCollapsed" ng-disabled="setControl.allSelected()" >
+							<button class="btn btn-default btn-xs" ng-click="setControl.plusRule(settingsItem)" ng-disabled="setControl.allSelected()" >
 							<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 						</button>
 						</div>

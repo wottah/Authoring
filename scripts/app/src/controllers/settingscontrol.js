@@ -8,11 +8,13 @@ angular.module('modelbuilder').controller('SettingsController', function($scope,
     $scope.ruleSelectList.push($scope.ruleTypeList[l]);
   }
   $scope.addRuleCollapsed = false;
+  $scope.selectedItem = [];
   $scope.selectedrule = $scope.ruleSelectList[0];
   $scope.defaultTypes = SupportService.getDefaultTypes();
   $scope.selectedNewType = $scope.defaultTypes[0];
   $scope.relationName = "";
   $scope.relationDesc = "";
+  $scope.parentLevel = {current:0, backwards:0};
   //determines whether templated rules and parameters should be shown or not.
   $scope.showTemplated = false;
 
@@ -27,13 +29,16 @@ angular.module('modelbuilder').controller('SettingsController', function($scope,
     }
   }
   //adds an item to the prereq list of the current settingsItem.
-  this.addRule = function(source, target, rule){
-    ruleprops = RuleService.addRule(source,target,rule.name, false);
-    for(var r in ruleprops){
-      ConceptService.addParameter(source.id, ruleprops[r].name, ruleprops[r].type, ruleprops[r].defval, ruleprops[r].defval, true, rule.name);
+  this.addRule = function(source, targets, rule){
+    for(var t in targets){
+      if(source.id != targets[t].id){
+        ruleprops = RuleService.addRule(source,targets[t],rule.name, false);
+        for(var r in ruleprops){
+          ConceptService.addParameter(source.id, ruleprops[r].name, ruleprops[r].type, ruleprops[r].defval, ruleprops[r].defval, true, rule.name);
+        }
+      }
     }
     SessionService.saveProject();
-    $scope.selectedrule = $scope.ruleSelectList[0];
   };
 
   //removes rule from the list of rules of the current settingsItem
@@ -138,8 +143,35 @@ angular.module('modelbuilder').controller('SettingsController', function($scope,
     $scope.relationDesc = "";
   };
 
-  //Probably obsolete
-  this.defParamChanged = function(defparam, item){
-    $scope.selectedDefParamRule = this.defParamSelectedRulesList(defparam, item)[0];
+  //plus button to add new rules clicked.
+  this.plusRule = function(item){
+    $scope.addRuleCollapsed = !$scope.addRuleCollapsed;
+    $scope.parentLevel.current = item.parent;
+    if(item.parent > 0){
+      $scope.parentLevel.backwards = ConceptService.getConcept(item.parent).parent;
+    }
+    else{
+      $scope.parentLevel.backwards = item.id;
+    }
+  };
+
+  //moving forwards/backwards in the rule target select box.
+  this.rulesBackwards = function(){
+    $scope.parentLevel.current = $scope.parentLevel.backwards;
+    back = ConceptService.getConcept($scope.parentLevel.current);
+    if(back!=null){
+      $scope.parentLevel.backwards = back.parent;
+    }
+    else {
+      $scope.parentLevel.backwards = $scope.parentLevel.backwards;
+    }
+
+  };
+
+  this.rulesForwards = function(){
+    if($scope.selectedItem[0]!=null && ConceptService.getConcept($scope.selectedItem[0].id).children.length>0){
+        $scope.parentLevel.backwards = $scope.parentLevel.current;
+        $scope.parentLevel.current = $scope.selectedItem[0].id;
+    }
   };
 });
