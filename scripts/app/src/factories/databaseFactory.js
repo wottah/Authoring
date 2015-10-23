@@ -16,6 +16,21 @@ angular.module('modelbuilder').factory('DatabaseFactory', function($http) {
     return promise;
   };
 
+  DatabaseFactory.register = function(credentials) {
+    var promise = $http({
+      method: "POST",
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      url: "scripts/data/index.php",
+      params: {
+        action: "register"
+      },
+      data:credentials
+    }).then(function(response){
+      return response.data;
+    });
+    return promise;
+  };
+
   DatabaseFactory.getProjects = function(username) {
     var promise = $http({
       method: "GET",

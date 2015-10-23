@@ -26,6 +26,7 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
             var defaultAttributes = ConceptService.getDefaultAtts();
             //add template rules
             perscode = "";
+            attrList = [];
             for(var r in defaultTypes[i].default_rules){
               rule = RuleService.getRule(defaultTypes[i].default_rules[r]);
               if(rule.properties!=null){
@@ -51,6 +52,7 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
             else{
               concept += "\t#"+defaultAttributes[t].name+":"+defaultAttributes[t].type+" =`"+defaultAttributes[t].code+"`\n";
               defaultTemplateAttRules.push({id:defaultTypes[i].name + defaultAttributes[t].name, type: defaultAttributes[t].type, code:defaultAttributes[t].code});
+              defaultAttributes[t].code = null;
             }
           }
           concept += perscode;
@@ -133,6 +135,7 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
             //add all attribute code to the concept.
             for(var t in defaultAttributes){
                 concept += "\t#"+defaultAttributes[t].name+":"+defaultAttributes[t].type+" =`"+defaultAttributes[t].code+"`\n";
+                defaultAttributes[t].code = null;
             }
             concept += nonAttCode;
             concept+= "} \n \n";

@@ -8,6 +8,10 @@ angular.module('modelbuilder').service('SessionService', function(ConceptService
     return DatabaseFactory.login(credentials);
   };
 
+  this.register = function(credentials){
+    return DatabaseFactory.register(credentials);
+  }
+
   this.authorise = function(user){
     authorised = true;
     username = user;
@@ -39,10 +43,7 @@ angular.module('modelbuilder').service('SessionService', function(ConceptService
         }
       }
     }
-    for(var r in project.data.relations){
-      RuleService.addRelation(project.data.relations[r].name, project.data.relations[r].tooltip);
-    }
-    RuleService.setRules(project.data.rules);
+    RuleService.setProject(project.data.rules, project.data.relations);
     currentproject = project;
   };
 

@@ -25,11 +25,29 @@ angular.module('modelbuilder').controller('LoginController',function($window, $s
 
   this.register = function(credentials)
   {
-    //Register :)
+    if(credentials.name=="" || credentials.pass==""){
+      $scope.alerts.push({type:'danger',msg: "Username/Password not filled in."});
+      return;
+    }
+    var registered = SessionService.register(credentials).then(function(data){
+      if(data == 1){
+        credentials.name = "";
+        credentials.pass = "";
+        $scope.alerts.push({type:'success',msg: 'Registration succesful!'});
+        this.ToggleRegisterMenu();
+      }
+      if(data == 0){
+        credentials.name = "";
+        credentials.pass = "";
+        $scope.alerts.push({type:'danger',msg: 'Something went wrong! username might be used or connection might be broken.'});
+      }
+    });
   };
 
   this.ToggleRegisterMenu = function()
   {
+    this.credentials.name="";
+    this.credentials.pass="";
     this.showLogin= !this.showLogin;
     this.showRegister= !this.showRegister;
   };

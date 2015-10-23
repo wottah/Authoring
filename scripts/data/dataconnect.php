@@ -74,6 +74,19 @@
       return json_encode($returnlist);
     }
 
+    public function registerUser($data)
+    {
+      $post = json_decode(file_get_contents("php://input"));
+      $name = $this->connection->real_escape_string($post->name);
+      $pass = $this->connection->real_escape_string($post->pass);
+      $success = false;
+      $query = $this->connection->prepare("INSERT INTO users (username,password)
+                                          VALUES (?,?) ");
+      $query->bind_param('ss',$name,$pass);
+      $success = $query->execute();
+      return $success;
+    }
+
     public function deleteProject($data)
     {
       $post = json_decode(file_get_contents("php://input"));

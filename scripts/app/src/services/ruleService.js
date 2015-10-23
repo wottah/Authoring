@@ -6,21 +6,27 @@ angular.module('modelbuilder').service('RuleService', function(DefaultPropsFac, 
   var persistentRuleTypeList = [];
   var attRuleTypeList = [];
   var relationTypeList = [];
-  DefaultPropsFac.LoadRules().then(function(data){
-    persistentRuleTypeList = data.persistent_att_rules;
-    attRuleTypeList = data.def_att_rules;
-    for(var d in data.def_relations){
-      data.def_relations[d].type="relation";
-      data.def_relations[d].custom=false;
-      relationTypeList.push(data.def_relations[d]);
-    }
-    for(var r in persistentRuleTypeList)
-    {
-      persistentRuleTypeList[r].properties = SupportService.matchtypes(persistentRuleTypeList[r].properties);
-    }
-  });
 
-  this.setRules = function(rules){
+  this.setProject = function(rules, relations){
+    persistentRuleTypeList = [];
+    attRuleTypeList = [];
+    relationTypeList = [];
+    DefaultPropsFac.LoadRules().then(function(data){
+      persistentRuleTypeList = data.persistent_att_rules;
+      attRuleTypeList = data.def_att_rules;
+      for(var d in data.def_relations){
+        data.def_relations[d].type="relation";
+        data.def_relations[d].custom=false;
+        relationTypeList.push(data.def_relations[d]);
+      }
+      for(var r in persistentRuleTypeList)
+      {
+        persistentRuleTypeList[r].properties = SupportService.matchtypes(persistentRuleTypeList[r].properties);
+      }
+    });
+    for(var r in relations){
+      this.addRelation(relations[r].name, relations[r].tooltip);
+    }
     rulesList = rules;
   };
 

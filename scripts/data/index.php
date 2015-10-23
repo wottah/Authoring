@@ -11,6 +11,10 @@ if(isset($_GET['action']) and $_GET['action'] == "login")
     echo $database->login($_GET);
     exit;
 }
+if(isset($_GET['action']) and $_GET['action'] == "register"){
+  echo $database->registerUser($_GET);
+  exit;
+}
 if(isset($_GET['action']) and $_GET['action'] == "getProjects")
 {
   echo $database->getProjects($_GET);

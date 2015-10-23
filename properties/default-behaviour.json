@@ -15,14 +15,14 @@
 					"value":"next topic"
 				},
 				{
-					"name":"visited",
-					"type":"Integer",
-					"value":"0"
+					"name":"info",
+					"type":"String",
+					"value":"milkyway_text.xhtml"
 				},
 				{
-					"name":"own-knowledge",
-					"type":"Double",
-					"value":"0"
+					"name":"image",
+					"type":"String",
+					"value":"img/img_milkyway.jpg"
 				}
 			],
 			"default_rules":["own knowledge update","visited","knowledge_update"]
