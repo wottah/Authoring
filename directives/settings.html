@@ -54,12 +54,22 @@
 			<tr>
 				<td>
 					<b>Relations and Expressions: </b>
-					<select class="form-control" ng-change="addRuleCollapsed = false" ng-options="rule as rule.name disable when rule.disabled for rule in setControl.ruleSelectList(settingsItem, ruleSelectList)" ng-model="selectedrule" tooltip-popup-delay='1000' tooltip="{{selectedrule.tooltip}}"></select>
-					<label for="relationName">name: </label><input type="text" id="relationName" ng-model = "relationName" class="form-control"></input>
-					<label for="relationDesc">description: </label><input type="text" id="relationDesc" ng-model="relationDesc" class="form-control"></select>
-					<button class="btn btn-default btn-xs" ng-click="setControl.addRelation(relationName, relationDesc)">
-						<span class="glyphicon glyphicon-plus" aria-hidden="true">
-					</button>
+					<select class="form-control" ng-change="hideAddRelation = true" ng-options="rule as rule.name disable when rule.disabled for rule in setControl.ruleSelectList(settingsItem, ruleSelectList)" ng-model="selectedrule" tooltip-popup-delay='1000' tooltip="{{selectedrule.tooltip}}"></select>
+					<div collapse="hideAddRelation">
+						<label for="relationName">name: </label><input type="text" id="relationName" ng-model = "relationName" class="form-control"></input>
+						<label for="relationDesc">description: </label><input type="text" id="relationDesc" ng-model="relationDesc" class="form-control"></select>
+						<button class="btn btn-default btn-xs" ng-click="setControl.addRelation(relationName, relationDesc)">
+							<span class="glyphicon glyphicon-plus" aria-hidden="true">
+						</button>
+						<button class="btn btn-default btn-xs" ng-click="hideAddRelation = !hideAddRelation">
+							<span class="glyphicon glyphicon-remove" aria-hidden="true">
+						</button>
+					</div>
+					<div collapse="!hideAddRelation">
+						<button class="btn btn-default btn-xs" ng-click="hideAddRelation = !hideAddRelation">
+							<span class="glyphicon glyphicon-plus" aria-hidden="true">
+						</button>
+					</div>
 				</td>
 				<td>
 					<table class="table table-bordered" id="ruleTable">

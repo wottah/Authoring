@@ -1,12 +1,5 @@
    {
      "persistent_att_rules":[
-    	{
-    		"name":"hasPrerequisite",
-        "type":"binary",
-        "properties": [{"name":"suitability","type":"Boolean","defval":""}],
-        "tooltip" : "placeholder tooltip for persistent_att_rules.",
-    		"code":"#suitability:Boolean & `${%target%#knowledge > 0.7}`"
-    	},
       {
         "name":"visited",
         "type":"unary",
@@ -34,7 +27,7 @@
         "name":"has knowledge of",
         "type":"binary",
         "target":"suitability",
-        "tooltip":"the user must have some udnerstanding of the target concept.",
+        "tooltip":"the user must have some understanding of the target concept.",
         "code":"${%target%#own-knowledge} > 0.8 "
       },
       {

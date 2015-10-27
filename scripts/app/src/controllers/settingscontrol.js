@@ -15,6 +15,7 @@ angular.module('modelbuilder').controller('SettingsController', function($scope,
   $scope.relationName = "";
   $scope.relationDesc = "";
   $scope.parentLevel = {current:0, backwards:0};
+  $scope.hideAddRelation = true;
   //determines whether templated rules and parameters should be shown or not.
   $scope.showTemplated = false;
 
@@ -141,6 +142,7 @@ angular.module('modelbuilder').controller('SettingsController', function($scope,
     SessionService.saveProject();
     $scope.relationName = "";
     $scope.relationDesc = "";
+    $scope.hideAddRelation = true;
   };
 
   //plus button to add new rules clicked.
