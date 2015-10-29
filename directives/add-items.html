@@ -1,9 +1,9 @@
 <!--The reusable add item html code-->
 <div id	="addcontrol" ng-controller="AddController as addcontrol">
-	<div ng-hide="addcontrol.showAddButton" >
+	<div collapse="addcontrol.showAddButton" >
 		<label for:"addItemNameInput">Name: </label><input type="text" class="form-control" id="addItemNameInput" ng-model="addcontrol.addText"></input>
 		<label for:"addItemsTypeSelect">Type: </label><select class="form-control" id="addItemsTypeSelect" ng-options="concept as concept.name for concept in conceptTypes" ng-model="selectedConceptType"></select>
-		<button class="btn btn-default btn-sm" ng-click="addcontrol.addText && controller.saveItem(parent, addcontrol.addText, addcontrol.descText, selectedConceptType);addcontrol.addText && addcontrol.addHide()">
+		<button class="btn btn-default btn-sm" ng-click="addcontrol.addText && controller.saveItem(parent, addcontrol.addText, selectedConceptType);addcontrol.addText && addcontrol.addHide()">
 			<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
 		</button>
 		<button class="btn btn-default btn-sm" ng-click="addcontrol.addHide()">
@@ -11,7 +11,7 @@
 		</button>
 	</div>
 	<div>
-	<button class="btn btn-primary btn-sm btn-block" ng-click="addcontrol.addShow()" ng-show="addcontrol.showAddButton" >
+	<button class="btn btn-primary btn-sm btn-block" ng-click="addcontrol.addShow()" ng-show="addcontrol.showAddButton" tooltip-popup-delay='1000' tooltip="Add a new concept to the project hierarchy" >
 		<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 	</button>
 	</div>

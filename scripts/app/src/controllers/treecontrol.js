@@ -6,6 +6,7 @@
 			}
 			$scope.items = ConceptService.getConcepts();
 			$scope.name = SessionService.getCurrentproject().name;
+			$scope.description = SessionService.getCurrentproject().description;
 			$scope.deleteModal;
 			this.currentparentid= 0;
 			this.overviewEnabled = false;

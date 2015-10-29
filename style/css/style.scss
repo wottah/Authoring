@@ -71,5 +71,10 @@ ol{
 		.btn{
 			margin-left: 1%;
 		}
+		.projectListItem{
+			&:hover{
+				cursor:pointer;
+			}
+		}
 	}
 }

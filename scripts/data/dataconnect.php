@@ -1,16 +1,17 @@
 <?php
   class db {
     //CODE TO CONNECT TO DB AND PERFORM OPERATIONS
-    const SERVER = "localhost:3306";
+    const SERVER = "localhost";
     const USER = "author";
     const PASS = "author";
     const DB = "authoringbase";
+    const PORT = 3306;
 
     private static $instance = NULL;
 
 
     public function getConnection(){
-      $connection = new mysqli(self::SERVER, self::USER, self::PASS, self::DB);
+      $connection = new mysqli(self::SERVER, self::USER, self::PASS, self::DB, self::PORT);
       if ($connection->connect_errno) {
       echo "Failed to connect to MySQL: (" . $connection->connect_errno . ") " . $connection->connect_error;
       }
@@ -101,7 +102,8 @@
 
     public function saveProject($data)
     {
-      $post = json_decode(file_get_contents("php://input"));
+      $postdata = file_get_contents("php://input");
+      $post = json_decode($postdata);
       $author = $this->connection->real_escape_string($post->user);
       $name = $this->connection->real_escape_string($post->name);
       $description = $this->connection->real_escape_string($post->description);

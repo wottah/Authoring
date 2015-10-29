@@ -32,7 +32,7 @@
 					</tr>
 				</table>
 				<div  id="paramselector" ng-controller="AddController as paramcontrol">
-						<div class="panel panel-default panel-body" ng-hide="paramcontrol.showAddButton">
+						<div class="panel panel-default panel-body" collapse="paramcontrol.showAddButton">
 							<label for="parNameI ut">Name: </label><input type="text" class="form-control" id="parNameInput" ng-model="paramcontrol.addText" ></input>
 							<label for="parTypeSelect">Type: </label><select class="form-control" id="parTypeSelect" ng-options="type as type for type in defaultTypes" ng-model="selectedNewType"></select>
 							<label for="parValSelect">Value: </label><input type="text" class="form-control" id="parValSelect" ng-model="paramcontrol.descText"></input>
@@ -44,7 +44,7 @@
 							</button>
 						</div>
 						<div>
-							<button class="btn btn-default btn-xs" ng-click="paramcontrol.addShow()" ng-show="paramcontrol.showAddButton" >
+							<button class="btn btn-default btn-xs" ng-click="paramcontrol.addShow()" collapse="!paramcontrol.showAddButton" tooltip-popup-delay='1000' tooltip="Add a new attribute to this concept">
 								<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 							</button>
 						</div>
@@ -109,7 +109,7 @@
 								<span class="glyphicon glyphicon-forward" aria-hidden="true"></span>
 							</button>
 						</div>
-						<div collapse="addRuleCollapsed">
+						<div collapse="addRuleCollapsed" tooltip-popup-delay='1000' tooltip="Add relation or expression of the selected type to this concept.">
 							<button class="btn btn-default btn-xs" ng-click="setControl.plusRule(settingsItem)" ng-disabled="setControl.allSelected()" >
 							<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 						</button>
