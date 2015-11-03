@@ -24,32 +24,18 @@
         "code":"${%target%#knowledge} > 0.8"
       },
       {
+        "name":"passedTest",
+        "type":"binary",
+        "target":"suitability",
+        "tooltip" : "the user must have passed the target test.",
+        "code":"${%target%#score} >= 0.6"
+      },
+      {
         "name":"has knowledge of",
         "type":"binary",
         "target":"suitability",
         "tooltip":"the user must have some understanding of the target concept.",
-        "code":"${%target%#own-knowledge} > 0.8 "
-      },
-      {
-        "name":"parent available",
-        "type":"unary",
-        "target":"suitability",
-        "tooltip" : "placeholder tooltip for parent available.",
-        "code":"${=>(parent)#availability}"
-      },
-      {
-        "name":"parent subject known",
-        "type":"unary",
-        "target":"availability",
-        "tooltip" : "placeholder tooltip for parent sub known.",
-        "code":"${<=(parent)#knowledge > 0.3}"
-      },
-      {
-        "name":"childAverage",
-        "type":"unary",
-        "target":"knowledge",
-        "tooltip" : "placeholder tooltip for childavg",
-        "code":"avg(new Object[] {${<=(parent)#knowledge}, ${#own-knowledge}})"
+        "code":"${%target%#own-knowledge} > 0.8"
       },
       {
         "name":"knowledge_update",
@@ -59,5 +45,5 @@
         "code":"avg(new Object[] {${<=(parent)#knowledge}, ${#own-knowledge}})"
       }
     ],
-    "def_relations":[{"name":"isRelatedTo","tooltip":"source is related to the target"},{"name":"ComesAfter","tooltip":"the source comes after the target"}]
+    "def_relations":[]
   }

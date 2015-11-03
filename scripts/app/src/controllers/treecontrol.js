@@ -37,7 +37,11 @@
 			//Step by step view moves down the hierarchy.
 			this.next = function(concept){
 				this.currentparentid = concept.id;
-				this.crumblepath.push({text:concept.text.substring(0,15) + "...\\",id:concept.id, parent:concept.parent});
+				dots = "..";
+				if(concept.text.length<=5){
+					dots="";
+				}
+				this.crumblepath.push({text:concept.text.substring(0,5) + dots + "\\",id:concept.id, parent:concept.parent});
 			};
 
 			//Adds a new item to the hierarchy.

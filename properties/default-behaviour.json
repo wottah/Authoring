@@ -30,32 +30,19 @@
 		},
 		{
 			"name":"text-topic",
-			"default_parameters":
-			[
-				{
-					"name":"own-knowledge",
-					"type":"Double",
-					"value":"0"
-				},
-				{
-					"name":"didac-age",
-					"type":"Integer",
-					"value":"6"
-				}
-			],
-			"default_rules":["visited","own knowledge update", "childAverage"]
+			"default_parameters":[],
+			"default_rules":["own knowledge update","visited","knowledge_update"]
 		},
 		{
-			"name":"quiz-topics",
-			"default_parameters":
-			[
+			"name":"quiz_topic",
+			"default_parameters":[
 				{
-					"name":"mark",
-					"type":"Int",
-					"value":"1"
+					"name":"score",
+					"type":"double",
+					"value":"0"
 				}
 			],
-			"default_rules":[]
+			"default_rules":["own knowledge update","visited","knowledge_update"]
 		},
 		{
 			"name":"empty topic",
