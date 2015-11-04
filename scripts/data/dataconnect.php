@@ -60,15 +60,15 @@
     {
       $returnlist = [];
       $username = $this->connection->real_escape_string($post['user']);
-      $query = $this->connection->prepare("SELECT author, name, data, description
+      $query = $this->connection->prepare("SELECT author, name, description
                                             FROM projects
                                             WHERE author = ?");
       $query->bind_param('s',$username);
       $query->execute();
-      $query->bind_result($author, $name, $data, $description);
+      $query->bind_result($author, $name, $description);
       while($query->fetch())
       {
-        $returnobj = array('author' => $author, 'name' => $name, 'data' => $data, 'description' => $description);
+        $returnobj = array('author' => $author, 'name' => $name, 'description' => $description);
         array_push($returnlist,$returnobj);
       }
 
@@ -90,9 +90,8 @@
 
     public function deleteProject($data)
     {
-      $post = json_decode(file_get_contents("php://input"));
-      $author = $this->connection->real_escape_string($post->user);
-      $name = $this->connection->real_escape_string($post->name);
+      $author = $this->connection->real_escape_string($data['user']);
+      $name = $this->connection->real_escape_string($data['name']);
       $query = $this->connection->prepare("DELETE FROM projects
                                             WHERE author = ? AND name = ?");
       $query->bind_param('ss', $author, $name);
@@ -102,18 +101,14 @@
 
     public function saveProject($data)
     {
-      $postdata = file_get_contents("php://input");
-      $post = json_decode($postdata);
-      $author = $this->connection->real_escape_string($post->user);
-      $name = $this->connection->real_escape_string($post->name);
-      $description = $this->connection->real_escape_string($post->description);
-      //escaping the data would destroy the JSON structure
-      $data = $post->data;
-      $query = $this->connection->prepare("INSERT INTO projects (author, name, description, data)
-                                            VALUES (?,?,?,?)
+      $author = $this->connection->real_escape_string($data['user']);
+      $name = $this->connection->real_escape_string($data['name']);
+      $description = $this->connection->real_escape_string($data['description']);
+      $query = $this->connection->prepare("INSERT INTO projects (author, name, description)
+                                            VALUES (?,?,?)
                                             ON DUPLICATE KEY
-                                            UPDATE description = ?, data = ?");
-      $query->bind_param('ssssss',$author, $name, $description, $data, $description, $data);
+                                            UPDATE description = ?");
+      $query->bind_param('ssss',$author, $name, $description, $description);
       $result = $query->execute();
       return $result;
     }

@@ -14,9 +14,9 @@ angular.module('modelbuilder').controller('BrowserController', function( Session
   this.loadProject = function(){
     if(this.selectedProject!=null)
     {
-      this.selectedProject.data = angular.fromJson(this.selectedProject.data);
-      SessionService.setCurrentProject(this.selectedProject);
-      $location.path('/Authoringscreen');
+      SessionService.setCurrentProject(this.selectedProject).then(function(){
+        $location.path('/Authoringscreen');
+      });
     }
   };
 
@@ -38,8 +38,9 @@ angular.module('modelbuilder').controller('BrowserController', function( Session
 
   this.newProject = function(text, desc){
     $scope.newProjectModal.close();
-    SessionService.newProject(text, desc);
-    $location.path('/Authoringscreen');
+    SessionService.newProject(text, desc).then(function(){
+      $location.path('/Authoringscreen');
+    });
   };
 
   this.cancelNewProject = function(){

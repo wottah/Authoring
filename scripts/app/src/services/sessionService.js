@@ -1,5 +1,5 @@
 //Service which holds the user session
-angular.module('modelbuilder').service('SessionService', function(ConceptService, RuleService, DatabaseFactory, $q){
+angular.module('modelbuilder').service('SessionService', function(ConceptService, RuleService, DatabaseFactory, ExportJsonFactory, $q){
   var authorised = false;
   var username = "";
   var currentproject = [];
@@ -30,21 +30,38 @@ angular.module('modelbuilder').service('SessionService', function(ConceptService
   };
 
   this.setCurrentProject = function(project){
-    ConceptService.setConcepts(project.data.concepts);
-    for(var r in project.data.rules){
-      project.data.rules[r].source = {};
-      project.data.rules[r].target = {};
-      for(var i in project.data.concepts){
-        if(project.data.concepts[i].id == project.data.rules[r].sourceId){
-          project.data.rules[r].source = project.data.concepts[i] ;
+    //currentproject = project;
+    var deferred = $q.defer();
+    ExportJsonFactory.loadFile(project.author, project.name).then(function(data){
+      if(data!="FileNotFound"){
+        project.data = data;
+        ConceptService.setConcepts(project.data.concepts);
+        for(var r in project.data.rules){
+          project.data.rules[r].source = {};
+          project.data.rules[r].target = {};
+          for(var i in data.concepts){
+            if(project.data.concepts[i].id == project.data.rules[r].sourceId){
+              project.data.rules[r].source = project.data.concepts[i] ;
+            }
+            if(project.data.rules[r].targetId != null && project.data.concepts[i].id ==project.data.rules[r].targetId){
+              project.data.rules[r].target = project.data.concepts[i];
+            }
+          }
         }
-        if(project.data.rules[r].targetId != null && project.data.concepts[i].id == project.data.rules[r].targetId){
-          project.data.rules[r].target = project.data.concepts[i];
-        }
+        RuleService.setProject(project.data.rules, project.data.relations);
+        currentproject = project;
+        deferred.resolve();
       }
-    }
-    RuleService.setProject(project.data.rules, project.data.relations);
-    currentproject = project;
+      else{
+        alert("reach");
+        project.data={concepts:[], rules:[], relations:[]}
+        ConceptService.setConcepts(project.data.concepts);
+        RuleService.setProject(project.data.rules,project.data.relations);
+        currentproject = project;
+        deferred.resolve();
+      }
+    });
+    return deferred.promise;
   };
 
   this.getCurrentproject = function(){
@@ -56,9 +73,13 @@ angular.module('modelbuilder').service('SessionService', function(ConceptService
   };
 
   this.newProject = function(name, description){
+    var deferred = $q.defer();
     project={name:name, description:description, data:{concepts:[], rules:[]}};
-    this.setCurrentProject(project);
-    DatabaseFactory.saveProject(project, username);
+    DatabaseFactory.newProject(project, username);
+    this.setCurrentProject(project).then(function(){
+      deferred.resolve();
+    });
+    return deferred.promise;
   };
 
   this.saveProject = function(){
@@ -76,8 +97,8 @@ angular.module('modelbuilder').service('SessionService', function(ConceptService
       saveRuleNoRefs.push(saveRule);
     }
     data = {concepts:saveConcepts, rules:saveRuleNoRefs, relations:RuleService.getCustomRelations()};
-    currentproject.data = data;
-    DatabaseFactory.saveProject(currentproject, username);
+    //currentproject.data = data;
+    ExportJsonFactory.saveFile(username, currentproject.name, data);
   };
 
   this.deleteProject = function(name){

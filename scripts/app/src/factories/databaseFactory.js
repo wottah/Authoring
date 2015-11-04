@@ -49,8 +49,6 @@ angular.module('modelbuilder').factory('DatabaseFactory', function($http) {
     postObj = {
       user: user,
       name: project.name,
-      description: project.description,
-      data: angular.toJson(project.data)
     };
     var promise = $http({
       method: "POST",
@@ -66,18 +64,30 @@ angular.module('modelbuilder').factory('DatabaseFactory', function($http) {
     return promise;
   };
 
-  DatabaseFactory.deleteProject = function(name, user){
-    postObj = {
-      user : user,
-      name : name
-    };
+  DatabaseFactory.newProject = function(project, user){
     var promise = $http({
       method: "POST",
       url:"scripts/data/index.php",
-      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-      data:postObj,
       params: {
-        action:"deleteProject"
+        action:"newProject",
+        user: user,
+        name: project.name,
+        description: project.description
+      }
+    }).then(function(response){
+      return response.data;
+    });
+    return promise;
+  };
+
+  DatabaseFactory.deleteProject = function(name, user){
+    var promise = $http({
+      method: "POST",
+      url:"scripts/data/index.php",
+      params: {
+        action:"deleteProject",
+        user : user,
+        name : name
       }
     }).then(function(response){
       return response.data;
