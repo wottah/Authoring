@@ -28,21 +28,32 @@
         "type":"binary",
         "target":"suitability",
         "tooltip" : "the user must have fully learned the target concept.",
-        "code":"${%target%#knowledge} > 0.8"
+        "code":"${%target%#knowledge} > 0.8",
+        "operator":"and"
+      },
+      {
+        "name":"knowsOR",
+        "type":"binary",
+        "target":"suitability",
+        "tooltip" : "the user must have fully learned any of the OR target concepts.",
+        "code":"${%target%#knowledge} > 0.8",
+        "operator":"or"
       },
       {
         "name":"passedTest",
         "type":"binary",
         "target":"suitability",
         "tooltip" : "the user must have passed the target test.",
-        "code":"${%target%#score} >= 0.6"
+        "code":"${%target%#score} >= 0.6",
+        "operator":"and"
       },
       {
         "name":"has knowledge of",
         "type":"binary",
         "target":"suitability",
         "tooltip":"the user must have some understanding of the target concept.",
-        "code":"${%target%#own-knowledge} > 0.8"
+        "code":"${%target%#own-knowledge} > 0.8",
+        "operator":"and"
       },
       {
         "name":"knowledge_update",

@@ -111,7 +111,14 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
                   newatt = true;
                   for(var r in defaultAttributes){
                     if(ruleDef.target == defaultAttributes[r].name){
-                      this.addAttrCode(defaultAttributes[r], code);
+                      //this.addAttrCode(defaultAttributes[r], code);
+                      if(defaultAttributes[r].type!="Boolean"){
+                        defaultAttributes[r].ruleCode.push(code);
+                      }
+                      else{
+                        defaultAttributes[r].ruleCode.push({operator:ruleDef.operator , ruleCode:code});
+                      }
+
                       newatt = false;
                     }
                   }
@@ -119,8 +126,13 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
                     //add de attribute in de lijst.
                     for(var a in defaultTemplateAttRules){
                       if(defaultTemplateAttRules[a].id == coursemodel[i].type + ruleDef.target){
-                        atrObject = {name: ruleDef.target, type:defaultTemplateAttRules[a].type, code: defaultTemplateAttRules[a].code};
-                        this.addAttrCode(atrObject, code);
+                        if(defaultTemplateAttRules[a].type != "Boolean"){
+                          atrObject = {name: ruleDef.target, type:defaultTemplateAttRules[a].type, ruleCode:[code]};
+                        }
+                        else{
+                          atrObject = {name: ruleDef.target, type:defaultTemplateAttRules[a].type, ruleCode:[{operator:ruleDef.operator , ruleCode:code}]};
+                        }
+                        //this.addAttrCode(atrObject, code);
                         defaultAttributes.push(atrObject);
                       }
                     }
@@ -134,7 +146,31 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
             }
             //add all attribute code to the concept.
             for(var t in defaultAttributes){
-                concept += "\t#"+defaultAttributes[t].name+":"+defaultAttributes[t].type+" =`"+defaultAttributes[t].code+"`\n";
+              code="\t#"+defaultAttributes[t].name+":"+defaultAttributes[t].type+" =`true ";
+              if(defaultAttributes[t].type=="Boolean"){
+                andRules="";
+                orRules=" && ( false ";
+                hasOrRules = false;
+                for(var c in defaultAttributes[t].ruleCode){
+                  if(defaultAttributes[t].ruleCode[c].operator=="or"){
+                    hasOrRules = true;
+                    orRules +=this.addBoolAttrCode(defaultAttributes[t].ruleCode[c].operator,defaultAttributes[t].ruleCode[c].ruleCode);
+                  }
+                  if(defaultAttributes[t].ruleCode[c].operator=="and"){
+                    andRules +=this.addBoolAttrCode(defaultAttributes[t].ruleCode[c].operator,defaultAttributes[t].ruleCode[c].ruleCode);
+                  }
+                }
+                code += andRules;
+                if(hasOrRules){code += orRules +")`";}
+                else{code+="`";}
+              }
+              if(defaultAttributes[t].type =="Double" | defaultAttributes[t].type =="Integer"){
+                code += this.addNumeralAttrCode(defaultAttributes[t].operator, defaultAttributes[t].ruleCode)+"`";
+              }
+              if(defaultAttributes[t].type == "String"){
+                code += this.addStringAttrCode(defaultAttributes[t]) + "`";
+              }
+                concept += code+"\n";
                 defaultAttributes[t].code = null;
             }
             concept += nonAttCode;
@@ -145,8 +181,48 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
         //To just view the file use:
         //window.open('data:text,' + encodeURIComponent(output));
         //To actually deploy:
-        DeploymentFactory.deploy(SessionService.getCurrentproject().name,output)
+        ExportJsonFactory.deploy(SessionService.getCurrentproject().name,output)
     };
+
+    this.addBoolAttrCode = function(operator, ruleCode){
+        if(operator == "and"){
+          return " && "+ ruleCode;
+        }
+        if(operator == "or"){
+          return " | "+ ruleCode;
+        }
+    };
+
+    this.addNumeralAttrCode = function(operator, ruleCode){
+      code = "";
+      if(operator == "SUM"){
+        for(var r in ruleCode){
+          if(code==""){code += ruleCode[r];}
+          else{code += " + "+ruleCode[r];}
+        }
+      }
+      if(operator == "AVG"){
+        if(code==""){code += ruleCode[r];}
+        else{code += " + "+ruleCode[r];}
+      }
+      if(operator == "MAX"){
+        if(code==""){code += ruleCode[r];}
+        else{code += " + "+ruleCode[r];}
+      }
+      if(operator == "MIN"){
+        if(code==""){code += ruleCode[r];}
+        else{code += " + "+ruleCode[r];}
+      }
+      return code;
+    };
+
+    this.addStringAttrCode = function(ruleCode){
+      code="";
+      for(var c in ruleCode){
+        code += ruleCode[c];
+      }
+      return code;
+    }
 
     this.addAttrCode = function(attribute, code){
       //determine what to apply by evaluating the attribute type:
@@ -155,12 +231,6 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
           attribute.code = "";
         }
         attribute.code += code;
-      }
-      if(attribute.type=="Boolean"){
-        if(attribute.code == null){
-          attribute.code = "true ";
-        }
-        attribute.code += " && "+ code;
       }
       if(attribute.type=="Integer" || attribute.type=="Double"){
         if(attribute.code == null){
