@@ -53,7 +53,6 @@ angular.module('modelbuilder').service('SessionService', function(ConceptService
         deferred.resolve();
       }
       else{
-        alert("reach");
         project.data={concepts:[], rules:[], relations:[]}
         ConceptService.setConcepts(project.data.concepts);
         RuleService.setProject(project.data.rules,project.data.relations);

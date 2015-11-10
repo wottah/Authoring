@@ -13,6 +13,13 @@
         "properties":[{"name":"own-knowledge", "type":"Double", "defval":""}],
         "tooltip" : "placeholder tooltip for own knw update.",
         "code":"#[own-knowledge]:Double event +`if (${#suitability}) { ${#own-knowledge} = 1;} else if (${#own-knowledge} < 0.3) { ${#own-knowledge} = 0.3;}`"
+      },
+      {
+        "name":"quizpassed",
+        "type":"unary",
+        "properties":[{"name":"quiz_passed", "type":"Boolean","defval":"false"}],
+        "tooltip":"determines the value of the quiz_passed boolean, turns true when the user passed the quiz.",
+        "code":"#[quiz_passed]:Boolean `true && ${#score}>=${#treshold_passed}`"
       }
     ],
     "def_att_rules":[

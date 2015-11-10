@@ -38,11 +38,21 @@
 			"default_parameters":[
 				{
 					"name":"score",
-					"type":"double",
+					"type":"Double",
 					"value":"0"
+				},
+				{
+					"name":"treshold_passed",
+					"type":"double",
+					"value":"0.55"
+				},
+				{
+					"name":"quiz_passed",
+					"type":"boolean",
+					"value":"false"
 				}
 			],
-			"default_rules":["own knowledge update","visited","knowledge_update"]
+			"default_rules":["own knowledge update","visited","knowledge_update","quizpassed"]
 		},
 		{
 			"name":"empty topic",

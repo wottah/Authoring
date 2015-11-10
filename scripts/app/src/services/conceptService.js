@@ -7,7 +7,10 @@ angular.module('modelbuilder').service('ConceptService', function(SupportService
 
   DefaultPropsFac.LoadDefaults().then(function(data){
     conceptTypes = data.concepttypes;
-    defaultAttributes = data.defaultattributes;
+    for(var c in conceptTypes){
+      conceptTypes[c].default_parameters = SupportService.matchtypes(conceptTypes[c].default_parameters);
+    }
+    defaultAttributes = SupportService.matchtypes(data.defaultattributes);
   });
 
   this.getDefaultAtts = function(){
