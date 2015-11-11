@@ -34,6 +34,7 @@ angular.module('modelbuilder').service('RuleService', function(DefaultPropsFac, 
     return rulesList;
   };
 
+  //returns with all rules in it.
   this.getRuleTypeList = function(){
     returnlist = []
     for(var p in persistentRuleTypeList){
@@ -48,14 +49,17 @@ angular.module('modelbuilder').service('RuleService', function(DefaultPropsFac, 
     return returnlist;
   };
 
+  //returns a list of all the persistentRule types.
   this.getPersistentTypeList = function(){
     return persistentRuleTypeList;
   };
 
+  //returns a list of all attribute rule types.
   this.getAttRuleTypeList = function(){
     return attRuleTypeList;
   };
 
+  //get rule type by name.
   this.getRule = function(name){
     for(var r in persistentRuleTypeList){
       if(persistentRuleTypeList[r].name == name){
@@ -75,6 +79,7 @@ angular.module('modelbuilder').service('RuleService', function(DefaultPropsFac, 
     return null;
   };
 
+  //get all rules associated with the parameter id.
   this.getItemRules = function(id){
     var returnList = [];
     for(var r in rulesList){
@@ -85,6 +90,7 @@ angular.module('modelbuilder').service('RuleService', function(DefaultPropsFac, 
     return returnList;
   };
 
+  //returns the rule description as a tooltip.
   this.getTooltip = function(name){
     for(var p in persistentRuleTypeList){
       if(persistentRuleTypeList[p].name == name){
@@ -103,6 +109,7 @@ angular.module('modelbuilder').service('RuleService', function(DefaultPropsFac, 
     }
   };
 
+  //Returns all non-pedagogical relations specific to this project.
   this.getCustomRelations = function(){
     returnlist=[];
     for(var r in relationTypeList){
@@ -113,6 +120,7 @@ angular.module('modelbuilder').service('RuleService', function(DefaultPropsFac, 
     return returnlist;
   }
 
+  //adds a new non-pedagogical relation to the relations list.
   this.addRelation = function(name, description){
     rel = {name:name, tooltip:description, custom:true, type:"relation"};
     relationTypeList.push(rel);
@@ -168,6 +176,7 @@ angular.module('modelbuilder').service('RuleService', function(DefaultPropsFac, 
     }
   };
 
+  //removes specific rule instance from the ruleslist.
   this.removeRule = function(ruleId){
     for(var r in rulesList){
       if(rulesList[r].id == ruleId){

@@ -43,7 +43,7 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
               }
             }
           }
-          //add all attribute code to the concept.
+          //add all template attribute code to the concept.
           for(var t in defaultAttributes){
             if(defaultAttributes[t].code == null){
               concept += "\t#"+defaultAttributes[t].name+":"+defaultAttributes[t].type+" =`"+defaultAttributes[t].value+"`\n";
@@ -68,7 +68,8 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
             concept += coursemodel[i].text.replace(/\s|'|"|`/g, '') + "{\n";
             concept += "\t->(extends)"+ coursemodel[i].type.replace(/\s+/g, '') + "\n";
             concept += "\ttitle `" + coursemodel[i].text + "`\n";
-            defaultAttributes = [];
+
+            //print parent relation.
             for(var j in coursemodel)
             {
               if (coursemodel[j].id == coursemodel[i].parent)
@@ -76,6 +77,7 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
                   concept += "\t->(parent)"+coursemodel[j].text.replace(/\s+/g, '')+"\n";
               }
             }
+            //print all concept attributes.
             for(var p in coursemodel[i].parameters)
             {
               if(coursemodel[i].parameters[p].defval == null | coursemodel[i].parameters[p].value != coursemodel[i].parameters[p].defval && coursemodel[i].parameters[p].defval!="")
@@ -83,6 +85,7 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
                 concept+="\t#["+ coursemodel[i].parameters[p].name +"]:"+coursemodel[i].parameters[p].type+" `"+coursemodel[i].parameters[p].value + "`\n";
               }
             }
+            //print resource and display informatino.
             resource = "placeholder.xhtml";
             if(coursemodel[i].resource!=""){
               resource = coursemodel[i].resource;
@@ -91,6 +94,7 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
             concept += '\t#resource =`~ return "[[=layout.xhtml]]";`\n';
             itemRules = RuleService.getItemRules(coursemodel[i].id);
             nonAttCode="";
+            //print all concept rules.
             for(var r in itemRules)
             {
               if(itemRules[r].source.id == coursemodel[i].id && itemRules[r].defaultRule==false){
@@ -111,7 +115,7 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
                   newatt = true;
                   for(var r in defaultAttributes){
                     if(ruleDef.target == defaultAttributes[r].name){
-                      //this.addAttrCode(defaultAttributes[r], code);
+                      //checks if boolean because of the boolean or/and operator types.
                       if(defaultAttributes[r].type!="Boolean"){
                         defaultAttributes[r].ruleCode.push(code);
                       }
@@ -123,7 +127,7 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
                     }
                   }
                   if(newatt){
-                    //add de attribute in de lijst.
+                    //add the attribute to the list of earlier accounted attribute rules.
                     for(var a in defaultTemplateAttRules){
                       if(defaultTemplateAttRules[a].id == coursemodel[i].type + ruleDef.target){
                         if(defaultTemplateAttRules[a].type != "Boolean"){
@@ -132,13 +136,12 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
                         else{
                           atrObject = {name: ruleDef.target, type:defaultTemplateAttRules[a].type, ruleCode:[{operator:ruleDef.operator , ruleCode:code}]};
                         }
-                        //this.addAttrCode(atrObject, code);
                         defaultAttributes.push(atrObject);
                       }
                     }
                   }
                 }
-                //voeg regelcode toe aan concept als t geen attributecode is
+                //add rule code if rule is not an attribute-rule.
                 if(ruleDef.parameters!=null || ruleDef.type =="relation"){
                   nonAttCode += "\t"+code+"\n";
                 }
@@ -147,6 +150,7 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
             //add all attribute code to the concept.
             for(var t in defaultAttributes){
               code="\t#"+defaultAttributes[t].name+":"+defaultAttributes[t].type+" =`true ";
+              //OR-rules need to be added all at once (as 1 clause in the conjunction).
               if(defaultAttributes[t].type=="Boolean"){
                 andRules="";
                 orRules=" && ( false ";
@@ -184,6 +188,7 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
         ExportJsonFactory.deploy(SessionService.getCurrentproject().name,output)
     };
 
+    //add a boolean clause based on rule operator.
     this.addBoolAttrCode = function(operator, ruleCode){
         if(operator == "and"){
           return " && "+ ruleCode;
@@ -193,6 +198,7 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
         }
     };
 
+    //returns either Double or Integer definition based on attribute operator
     this.addNumeralAttrCode = function(operator, ruleCode){
       code = "";
       if(operator == "SUM"){
@@ -216,10 +222,11 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
       return code;
     };
 
+    //returns concatenated string code to current rule definition.
     this.addStringAttrCode = function(ruleCode){
       code="";
       for(var c in ruleCode){
-        code += ruleCode[c];
+        code += " + "ruleCode[c];
       }
       return code;
     }

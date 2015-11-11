@@ -1,6 +1,7 @@
 //This Factory is used to deploy GALE projects using a PHP data-connection
 angular.module('modelbuilder').factory('ExportJsonFactory', function($http) {
   var ExportJsonFactory = {};
+  
   //deploys gam code to file location through PHP.
   ExportJsonFactory.deploy = function(name, gamcode){
     postObj = {

@@ -1,4 +1,4 @@
-//Service which holds the user session
+//Service which holds the user session and controls the initial content of the rule and concept services.
 angular.module('modelbuilder').service('SessionService', function(ConceptService, RuleService, DatabaseFactory, ExportJsonFactory, $q){
   var authorised = false;
   var username = "";
@@ -29,6 +29,7 @@ angular.module('modelbuilder').service('SessionService', function(ConceptService
     return username;
   };
 
+  //fills the ruleService and conceptservice with the right data in order to set the new project.
   this.setCurrentProject = function(project){
     //currentproject = project;
     var deferred = $q.defer();

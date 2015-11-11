@@ -1,3 +1,4 @@
+//This controller controls the project browsing screen.
 angular.module('modelbuilder').controller('BrowserController', function( SessionService, $scope, $location, $modal){
   $scope.projects = [];
   $scope.newProject= {text:"", description:""};

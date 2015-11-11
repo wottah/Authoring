@@ -1,4 +1,4 @@
-//This controller takes care of all the concept settings and properties
+//This controller takes care of all the concept settings and properties, it controls the settings screen.
 angular.module('modelbuilder').controller('SettingsController', function($scope, $modalInstance, SessionService, RuleService, ConceptService, SupportService){
   //import rules list and assign reference to DefaultTypes to Properties
   $scope.ruleTypeList = RuleService.getRuleTypeList();
@@ -19,6 +19,7 @@ angular.module('modelbuilder').controller('SettingsController', function($scope,
   //determines whether templated rules and parameters should be shown or not.
   $scope.showTemplated = false;
 
+  //simply returns true if the "all" option is selected in the rules filter, otherwise returns false (used in html show/hide controls).
   this.allSelected = function(){
     if($scope.selectedrule.name=="All")
     {
@@ -82,15 +83,17 @@ angular.module('modelbuilder').controller('SettingsController', function($scope,
     SessionService.saveProject();
   };
 
+  //get the rules and relations a particular concept is associated with.
   this.getItemRules = function(id){
     return RuleService.getItemRules(id);
   }
 
-  //closes modal isntance and saves data.
+  //closes modal instance and saves data.
   this.ok = function () {
     $modalInstance.close();
   };
 
+  //determines whether a value is calculated by a rule or not.
   this.isCalculated = function (param) {
     if(param.defval=="")
     {
@@ -106,6 +109,7 @@ angular.module('modelbuilder').controller('SettingsController', function($scope,
     return false;
   };
 
+  //determines if the particular rule instance is a default (templated) rule.
   this.isDefRule = function(rule, id){
     itemRules = RuleService.getItemRules(id);
     for(var r in itemRules){
@@ -115,6 +119,7 @@ angular.module('modelbuilder').controller('SettingsController', function($scope,
     }
   };
 
+  //checks what items in the rules select list should be disabled/enabled.
   this.ruleSelectList = function(selectedItem, ruleList) {
     for(var r in ruleList){
       selectedItemRules = RuleService.getItemRules(selectedItem.id);
@@ -137,6 +142,7 @@ angular.module('modelbuilder').controller('SettingsController', function($scope,
     SessionService.saveProject();
   };
 
+  //add a new non-pedagogical relation to the rules/relation list.
   this.addRelation = function(name, description){
     $scope.ruleSelectList.push(RuleService.addRelation(name, description));
     SessionService.saveProject();
@@ -157,7 +163,7 @@ angular.module('modelbuilder').controller('SettingsController', function($scope,
     }
   };
 
-  //moving forwards/backwards in the rule target select box.
+  //moving backwards in the rule target select box.
   this.rulesBackwards = function(){
     $scope.parentLevel.current = $scope.parentLevel.backwards;
     back = ConceptService.getConcept($scope.parentLevel.current);
@@ -170,6 +176,7 @@ angular.module('modelbuilder').controller('SettingsController', function($scope,
 
   };
 
+  //moving forwards in the rule target select box.
   this.rulesForwards = function(){
     if($scope.selectedItem[0]!=null && ConceptService.getConcept($scope.selectedItem[0].id).children.length>0){
         $scope.parentLevel.backwards = $scope.parentLevel.current;

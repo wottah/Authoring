@@ -1,6 +1,7 @@
 //Factory which handles login communication with data layer
 angular.module('modelbuilder').factory('DatabaseFactory', function($http) {
   var DatabaseFactory = {};
+
   DatabaseFactory.login = function(credentials) {
     var promise = $http({
       method: "GET",
@@ -31,6 +32,7 @@ angular.module('modelbuilder').factory('DatabaseFactory', function($http) {
     return promise;
   };
 
+  //Get all projects associated with the current user.
   DatabaseFactory.getProjects = function(username) {
     var promise = $http({
       method: "GET",

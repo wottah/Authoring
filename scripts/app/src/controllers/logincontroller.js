@@ -18,11 +18,13 @@ angular.module('modelbuilder').controller('LoginController',function($window, $s
     });
   };
 
+  // closes an alert message given by entering invalid credentials
   this.closeAlert = function(index)
   {
     $scope.alerts.splice(index,1);
   };
 
+  //A new account will be registered at the database, using the given credentials.
   this.register = function(credentials)
   {
     if(credentials.name=="" || credentials.pass==""){
@@ -44,6 +46,7 @@ angular.module('modelbuilder').controller('LoginController',function($window, $s
     });
   };
 
+  //method used to toggle from login controls to register controls and back.
   this.ToggleRegisterMenu = function()
   {
     this.credentials.name="";

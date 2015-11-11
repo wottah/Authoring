@@ -1,4 +1,4 @@
-//Service that contains, manages and discloseas all current concepts.
+//Service that contains, manages and discloses all current project concepts.
 angular.module('modelbuilder').service('ConceptService', function(SupportService, RuleService, DefaultPropsFac){
   var concepts = {};
   var conceptTypes = {};
@@ -13,10 +13,12 @@ angular.module('modelbuilder').service('ConceptService', function(SupportService
     defaultAttributes = SupportService.matchtypes(data.defaultattributes);
   });
 
+  //returns all default attributes.
   this.getDefaultAtts = function(){
     return defaultAttributes;
   };
 
+  //returns all current concepts.
   this.getConcepts = function(){
     return concepts;
   };
@@ -29,10 +31,12 @@ angular.module('modelbuilder').service('ConceptService', function(SupportService
     }
   };
 
+  //returns all templated concept types.
   this.getConceptTypes = function(){
     return conceptTypes;
   }
 
+  //loads project data into the ConceptService.
   this.setConcepts = function(conceptdata){
     concepts = conceptdata;
     for(var c in concepts)
@@ -44,15 +48,17 @@ angular.module('modelbuilder').service('ConceptService', function(SupportService
     }
   }
 
+  //adds a new concept to the hierarchy.
   this.addConcept = function(parentId, addText, conceptType){
     var item = {text:addText, id:nextid, type:conceptType.name, parent:parentId, children:[], rules:[], parameters:[], selected:true, resource:""};
     nextid++;
     concepts.push(item);
+    //loads all templated parameters.
     defParams = conceptType.default_parameters.slice();
     for(var d in defParams){
         this.addParameter(item.id, defParams[d].name, defParams[d].type, defParams[d].value, defParams[d].value, false);
     }
-    //add all rules.
+    //add all templated rules.
     for(var dr in conceptType.default_rules)
     {
       defaultprops = RuleService.addRule(item,"",conceptType.default_rules[dr], true);
@@ -61,7 +67,7 @@ angular.module('modelbuilder').service('ConceptService', function(SupportService
         this.addParameter(item.id, defaultprops[rp].name, defaultprops[rp].type, defaultprops[rp].defval, defaultprops[rp].defval , true, conceptType.default_rules[dr]);
       }
     }
-
+    //add child reference to parent concept.
     if(parentId>0)
     {
       for(var i in concepts)
@@ -90,6 +96,7 @@ angular.module('modelbuilder').service('ConceptService', function(SupportService
     concepts.splice(index,1);
   }
 
+  //add a parameter to given concept.
   this.addParameter = function(id, name, type, value, defval, ruleparam, ruleName){
     var newprop = true;
     var target = null;

@@ -139,6 +139,7 @@
 				angular.element(element).toggleClass("glyphicon-triangle-right glyphicon-triangle-bottom");
 			};
 
+			//Tells the GamService to generate and export the project to GALE.
 			this.generateGAM = function(){
 				GamService.generateGAM();
 			}
