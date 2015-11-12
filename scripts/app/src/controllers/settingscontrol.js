@@ -32,12 +32,22 @@ angular.module('modelbuilder').controller('SettingsController', function($scope,
   }
   //adds an item to the prereq list of the current settingsItem.
   this.addRule = function(source, targets, rule){
-    for(var t in targets){
-      if(source.id != targets[t].id){
-        ruleprops = RuleService.addRule(source,targets[t],rule.name, false);
-        for(var r in ruleprops){
-          ConceptService.addParameter(source.id, ruleprops[r].name, ruleprops[r].type, ruleprops[r].defval, ruleprops[r].defval, true, rule.name);
+    if(rule.type=="binary"){
+      for(var t in targets){
+        if(source.id != targets[t].id){
+          ruleprops = RuleService.addRule(source,targets[t],rule.name, false);
+          for(var r in ruleprops){
+            ConceptService.addParameter(source.id, ruleprops[r].name, ruleprops[r].type, ruleprops[r].defval, ruleprops[r].defval, false , true, rule.name);
+          }
         }
+      }
+    }
+    if(rule.type=="unary"){
+      ruleprops = RuleService.addRule(source,null,rule.name, false);
+      $scope.selectedrule = $scope.ruleSelectList[0];
+      $scope.addRuleCollapsed = false;
+      for(var r in ruleprops){
+        ConceptService.addParameter(source.id, ruleprops[r].name, ruleprops[r].type, ruleprops[r].defval, ruleprops[r].defval, false, true, rule.name);
       }
     }
     SessionService.saveProject();
@@ -73,7 +83,7 @@ angular.module('modelbuilder').controller('SettingsController', function($scope,
 
   //adds a parameter to the paramlist of the current settingsItem.
   this.addParam = function(target, addName, addType, addValue){
-    ConceptService.addParameter(target.id, addName, addType, addValue, null, false, null);
+    ConceptService.addParameter(target.id, addName, addType, addValue, null, false, false, null);
     SessionService.saveProject();
   };
 
@@ -181,6 +191,13 @@ angular.module('modelbuilder').controller('SettingsController', function($scope,
     if($scope.selectedItem[0]!=null && ConceptService.getConcept($scope.selectedItem[0].id).children.length>0){
         $scope.parentLevel.backwards = $scope.parentLevel.current;
         $scope.parentLevel.current = $scope.selectedItem[0].id;
+    }
+  };
+
+  //determine of parameterised attribute is allowed to be deleted.
+  this.disableDelete = function(param){
+    if(param.ruleparam){
+      return true;
     }
   };
 });

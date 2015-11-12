@@ -30,7 +30,7 @@
 		{
 			"name":"text-topic",
 			"default_parameters":[],
-			"default_rules":["own knowledge update","visited","knowledge_update"]
+			"default_rules":["own knowledge update","visited","knowledge_update","trueOR","trueOR2"]
 		},
 		{
 			"name":"quiz_topic",

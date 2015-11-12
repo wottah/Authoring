@@ -18,16 +18,16 @@
 					</tr>
 					<tr ng-repeat="param in settingsItem.parameters | paramFilter : showTemplated">
 						<td>
-							<input type="text" ng-model="param.name" ng-blur="setControl.saveProject()" ng-disabled ="param.ruleparam"></input>
+							<input type="text" ng-model="param.name" ng-blur="setControl.saveProject()" ng-disabled="param.ruleparam || param.templateparam"></input>
 						</td>
 						<td>
 							<input type="text" ng-model="param.value" ng-blur="setControl.saveProject()" ng-disabled="setControl.isCalculated(param)"></input>
 						</td>
 						<td>
-							<select ng-model="param.type" ng-options="type as type for type in defaultTypes" ng-change="setControl.saveProject()" ng-disabled ="param.ruleparam"></select>
+							<select ng-model="param.type" ng-options="type as type for type in defaultTypes" ng-change="setControl.saveProject()" ng-disabled="param.ruleparam || param.templateparam"></select>
 						</td>
 						<td>
-							<button class="btn btn-default btn-xs" ng-click="setControl.removeParam(settingsItem, param)" ng-disabled="param.ruleparam">DELETE</button>
+							<button class="btn btn-default btn-xs" ng-click="setControl.removeParam(settingsItem, param)" ng-disabled="param.ruleparam || param.templateparam">DELETE</button>
 						</td>
 					</tr>
 				</table>
@@ -95,17 +95,17 @@
 					</table>
 					<div id="prereqselector">
 						<div collapse="!addRuleCollapsed" >
-							<select multiple class="form-control" ng-options="item as item.text for item in items | prereqFilter: parentLevel.current : settingsItem : selectedrule" ng-model="selectedItem" ng-hide="setControl.unaryRuleSelected(selectedrule)"></select>
+							<select multiple ng-hide="selectedrule.type=='unary'" class="form-control" ng-options="item as item.text for item in items | prereqFilter: parentLevel.current : settingsItem : selectedrule" ng-model="selectedItem" ng-hide="setControl.unaryRuleSelected(selectedrule)"></select>
 							<button class="btn btn-default btn-xs" ng-click="setControl.addRule(settingsItem, selectedItem, selectedrule)">
 								<span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
 							</button>
 							<button class="btn btn-default btn-xs" ng-click="addRuleCollapsed = !addRuleCollapsed">
 								<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
 							</button>
-							<button class="btn btn-default btn-xs" ng-click="setControl.rulesBackwards()">
+							<button ng-hide="selectedrule.type=='unary'" class="btn btn-default btn-xs" ng-click="setControl.rulesBackwards()">
 								<span class="glyphicon glyphicon-backward" aria-hidden="true"></span>
 							</button>
-							<button class="btn btn-default btn-xs" ng-click="setControl.rulesForwards()">
+							<button ng-hide="selectedrule.type=='unary'" class="btn btn-default btn-xs" ng-click="setControl.rulesForwards()">
 								<span class="glyphicon glyphicon-forward" aria-hidden="true"></span>
 							</button>
 						</div>

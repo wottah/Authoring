@@ -69,7 +69,7 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
           for(var index in defaultAttributes){
             if(defaultAttributes[index].name == rule.target){
               ruleIndex = SupportService.contains(defaultAttributes[index],"name",attrList);
-              //no rules on this attributes have been defined yed
+              //no rules on this attributes have been defined yet
               if(ruleIndex == -1){
                 if(defaultAttributes[index].type != "Boolean"){
                   attrList.push({name:defaultAttributes[index].name, type:defaultAttributes[index].type, rulecode:[rule.code]});
@@ -99,7 +99,7 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
           gam += "\t#"+defaultAttributes[d].name+":"+defaultAttributes[d].type+" =`"+defaultAttributes[d].value+"`\n";
         }
         //if one rule applies, just print that rule.
-        if(attrList[index] > -1 && attrList[index].rulecode.length == 1){
+        if(index > -1 && attrList[index].rulecode.length == 1){
           if(attrList[index].type =="Boolean"){
             code = attrList[index].rulecode[0].code;
           }
@@ -110,7 +110,7 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
           defaultTemplateAttRules.push({id:concept.name + defaultAttributes[d].name, type: defaultAttributes[d].type, rulecode:code});
         }
         //if multiple rules apply,make sure right settings are applied.
-        if(attrList[index] > -1 && attrList[index].rulecode.length > 1){
+        if(index > -1 && attrList[index].rulecode.length > 1){
           code = "";
           if(attrList[index].type =="Boolean"){
             andRules="true";

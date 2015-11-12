@@ -17,7 +17,7 @@
       {
         "name":"quizpassed",
         "type":"unary",
-        "properties":[{"name":"quiz_passed", "type":"Boolean","defval":"false"}],
+        "properties":[{"name":"quiz_passed", "type":"Boolean","defval":""}],
         "tooltip":"determines the value of the quiz_passed boolean, turns true when the user passed the quiz.",
         "code":"#[quiz_passed]:Boolean `true && ${#score}>=${#treshold_passed}`"
       }
@@ -37,6 +37,22 @@
         "target":"suitability",
         "tooltip" : "the user must have fully learned any of the OR target concepts.",
         "code":"${%target%#knowledge} > 0.8",
+        "operator":"or"
+      },
+      {
+        "name":"trueOR",
+        "type":"unary",
+        "target":"suitability",
+        "tooltip" : "the user must have fully learned any of the OR target concepts.",
+        "code":"true",
+        "operator":"or"
+      },
+      {
+        "name":"trueOR2",
+        "type":"unary",
+        "target":"suitability",
+        "tooltip" : "the user must have fully learned any of the OR target concepts.",
+        "code":"true",
         "operator":"or"
       },
       {

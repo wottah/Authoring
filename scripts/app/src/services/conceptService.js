@@ -56,15 +56,15 @@ angular.module('modelbuilder').service('ConceptService', function(SupportService
     //loads all templated parameters.
     defParams = conceptType.default_parameters.slice();
     for(var d in defParams){
-        this.addParameter(item.id, defParams[d].name, defParams[d].type, defParams[d].value, defParams[d].value, false);
+        this.addParameter(item.id, defParams[d].name, defParams[d].type, defParams[d].value, defParams[d].value, true, false);
     }
     //add all templated rules.
     for(var dr in conceptType.default_rules)
     {
-      defaultprops = RuleService.addRule(item,"",conceptType.default_rules[dr], true);
+      defaultprops = RuleService.addRule(item,null,conceptType.default_rules[dr], true);
       for(var rp in defaultprops)
       {
-        this.addParameter(item.id, defaultprops[rp].name, defaultprops[rp].type, defaultprops[rp].defval, defaultprops[rp].defval , true, conceptType.default_rules[dr]);
+        this.addParameter(item.id, defaultprops[rp].name, defaultprops[rp].type, defaultprops[rp].defval, defaultprops[rp].defval ,false, true, conceptType.default_rules[dr]);
       }
     }
     //add child reference to parent concept.
@@ -97,7 +97,7 @@ angular.module('modelbuilder').service('ConceptService', function(SupportService
   }
 
   //add a parameter to given concept.
-  this.addParameter = function(id, name, type, value, defval, ruleparam, ruleName){
+  this.addParameter = function(id, name, type, value, defval, templateparam, ruleparam, ruleName){
     var newprop = true;
     var target = null;
     for(var i in concepts){
@@ -106,7 +106,7 @@ angular.module('modelbuilder').service('ConceptService', function(SupportService
         break;
       }
     }
-    var newparam = {name:name, type:type, value:value, defval:defval, ruleparam:ruleparam};
+    var newparam = {name:name, type:type, value:value, defval:defval, templateparam:templateparam, ruleparam:ruleparam};
     var index = SupportService.contains(newparam,["name","type"],target.parameters);
     //if the parameter already exists:
     if(index>-1)
@@ -133,10 +133,11 @@ angular.module('modelbuilder').service('ConceptService', function(SupportService
     //else just adds this new parameter
     if(newprop)
     {
-      var addProp = {name: "", type:"", value:"", defval:"", ruleparam:true};
+      var addProp = {name: "", type:"", value:"", defval:"", templateparam:true, ruleparam:true};
       addProp.name = newparam.name;
       addProp.type = newparam.type;
       addProp.ruleparam = newparam.ruleparam;
+      addProp.templateparam = newparam.templateparam;
       if(defval == "" && ruleparam == true){
         addProp.defval = newparam.defval;
         if(ruleName != null){
