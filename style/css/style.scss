@@ -43,6 +43,12 @@ ol{
 
 #overviewcontainer{
   margin-top:15px;
+	.collapseIcon{
+		cursor:pointer;
+	}
+	li{
+		margin-top: 3px;
+	}
 }
 
 .listitem{

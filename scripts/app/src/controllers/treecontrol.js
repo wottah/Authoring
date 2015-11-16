@@ -116,21 +116,35 @@
 			//handles the drop down menu used in the overview. note: ugly solution, but it works.
 			this.dropdowncontrol = function(event, parentId){
 				var element = event.srcElement ? event.srcElement : event.target;
-				listelement = angular.element(element).parent();
+				listelement = angular.element(element).parent().parent().parent();
 				if(angular.element(listelement).hasClass("collapsed"))
 				{
 
-					var compilednewitem = $compile(angular.element("<ol class='list-group'><li ng-repeat='item in items|idFilter:"+parentId +"'class='collapsed list-group-item' >"+
-																														"<span class='glyphicon glyphicon-triangle-right' ng-click='control.dropdowncontrol($event, item.id)' aria-hidden='true'> </span>"+
-																														"<input type='checkbox' ng-checked='item.selected' ng-click='control.includeswitch(item)'/> {{item.text}} "+
-																														"<button ng-click='control.settings(item)'class='btn btn-primary'>"+
-																															"<span class='glyphicon glyphicon-option-horizontal' aria-hidden='true'></span>"+
-																														"</button></li></ol>"));
+					var compilednewitem = $compile(angular.element("<ol><li ng-repeat='item in  items|idFilter:"+parentId+"' class='collapsed'>"+
+						"<div class='row'>"+
+							"<div class='col-lg-1'>"+
+								"<span class='glyphicon glyphicon-triangle-right collapseIcon' ng-click='control.dropdowncontrol($event, item.id)' aria-hidden='true'> </span>"+
+								"<input type='checkbox' ng-checked='item.selected' ng-click='control.includeswitch(item)'/>"+
+							"</div>"+
+							"<p class='col-lg-2' >{{item.text}}</p>"+
+							"<div class='btn-group-sm col-lg-2'>"+
+							"	<button ng-click='control.deleteItem(item)' class='btn btn-primary'>"+
+										"<span class='glyphicon glyphicon-remove' aria-hidden='true'> </span>"+
+								"</button>"+
+								"<button ng-click='control.settings(item)' class='btn btn-primary'>"+
+										"<span class='glyphicon glyphicon-option-horizontal' aria-hidden='true'> </span>"+
+								"</button>"+
+							"</div>"+
+						"</span class='col-lg-7'>"+
+						"</div>"+
+					"</li>"+
+					"<div class='row'>"+
+					"	<li class='col-lg-3'><add-items controller='control' parent='"+parentId+"' ></add-items>"+
+							"<span class='col-lg-9'> </span>"+
+						"</li>"+
+					"</div>"));
 					var newitem = compilednewitem($scope);
 					angular.element(listelement).append(newitem);
-					var compiledControlItem = $compile(angular.element("<ol><add-items controller='control' parent='"+parentId+"' ></add-items></ol>"));
-					var controlItem = compiledControlItem($scope);
-					angular.element(listelement).append(controlItem);
 				}
 				else if(angular.element(listelement)){
 					angular.element(listelement).find("ol").remove();
