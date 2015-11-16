@@ -77,6 +77,20 @@
         "target":"knowledge",
         "tooltip":"defines the updates on the knowledge attribute",
         "code":"avg(new Object[] {${<=(parent)#knowledge}, ${#own-knowledge}})"
+      },
+      {
+        "name":"knowledge_tester_1",
+        "type":"unary",
+        "target":"knowledge",
+        "tooltip":"defines the updates on the knowledge attribute",
+        "code":"0"
+      },
+      {
+        "name":"knowledge_tester_2",
+        "type":"unary",
+        "target":"knowledge",
+        "tooltip":"defines the updates on the knowledge attribute",
+        "code":"0"
       }
     ],
     "def_relations":[]

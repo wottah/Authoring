@@ -211,7 +211,7 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
                   if(defaultAttributes[a].type == "String"){
                     attrList.push({name:defaultAttributes[a].name,type:defaultAttributes[a].type,rulecode:[code]});
                   }
-                  else{
+                  if(defaultAttributes[a].type == "Boolean"){
                     attrList.push({name:defaultAttributes[a].name , type:defaultAttributes[a].type , rulecode:[{operator:rule.operator , code:code}]});
                   }
                 }
@@ -273,22 +273,36 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
     this.addNumeralAttrCode = function(operator, ruleCode){
       code = "";
       if(operator == "SUM"){
+        code="";
         for(var r in ruleCode){
           if(code==""){code += ruleCode[r];}
           else{code += " + "+ruleCode[r];}
         }
       }
       if(operator == "AVG"){
-        if(code==""){code += ruleCode[r];}
-        else{code += " + "+ruleCode[r];}
+        //'avg(new Object[] {${<=(parent)#knowledge}, ${#own-knowledge}})'
+        code = "avg(new Object[] { ";
+        for(var r in ruleCode){
+          if(code=="avg(new Object[] { "){code += ruleCode[r];}
+          else{code += " , "+ruleCode[r];}
+        }
+        code+="})";
       }
       if(operator == "MAX"){
-        if(code==""){code += ruleCode[r];}
-        else{code += " + "+ruleCode[r];}
+        code="max(new Object[] {"
+        for(var r in ruleCode){
+          if(code=="max(new Object[] {"){code += ruleCode[r];}
+          else{code += " , "+ruleCode[r];}
+        }
+        code+="})"
       }
       if(operator == "MIN"){
-        if(code==""){code += ruleCode[r];}
-        else{code += " + "+ruleCode[r];}
+        code="min(new Object[] {";
+        for(var r in ruleCode){
+          if(code=="min(new Object[] {"){code += ruleCode[r];}
+          else{code += " , "+ruleCode[r];}
+        }
+        code+="})"
       }
       return code;
     };

@@ -3,7 +3,7 @@
 	"defaultattributes" :[
 		{"name":"suitability", "type":"Boolean", "value":"true"},
 		{"name":"availability", "type":"Boolean", "value":"true"},
-		{"name":"knowledge", "type":"Double", "value":"0", "operator":"SUM"}
+		{"name":"knowledge", "type":"Double", "value":"0", "operator":"AVG"}
 	],
 	"concepttypes" :[
 		{
@@ -30,7 +30,7 @@
 		{
 			"name":"text-topic",
 			"default_parameters":[],
-			"default_rules":["own knowledge update","visited","knowledge_update","trueOR","trueOR2"]
+			"default_rules":["own knowledge update","visited","knowledge_update","knowledge_tester_1","knowledge_tester_2"]
 		},
 		{
 			"name":"quiz_topic",
