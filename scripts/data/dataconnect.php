@@ -9,8 +9,44 @@
 
     private static $instance = NULL;
 
-
     public function getConnection(){
+      $connectioncheck = new mysqli(self::SERVER, self::USER, self::PASS,"",self::PORT);
+      if ($connectioncheck->connect_errno) {
+      echo "Failed to connect to MySQL: (" . $connectioncheck->connect_errno . ") " . $connectioncheck->connect_error;
+      }
+      $exists = true;
+      $query = $connectioncheck->prepare("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME='" . self::DB . "'");
+      $query->execute();
+      $query->bind_result($exists);
+      $query->fetch();
+      $connectioncheck->close();
+      if(!$exists){
+        //create and connect to db.
+        $connectionCreateDb = new mysqli(self::SERVER, self::USER, self::PASS,"",self::PORT);
+        if ($connectionCreateDb->connect_errno) {
+        echo "Failed to connect to MySQL: (" . $connectionCreateDb->connect_errno . ") " . $connectionCreateDb->connect_error;
+        }
+        $query = $connectionCreateDb->prepare("CREATE DATABASE ". self::DB);
+        $query->execute();
+        $connectionCreateDb->close();
+        $connectionCreateTables = new mysqli(self::SERVER, self::USER, self::PASS, self::DB, self::PORT);
+        if ($connectionCreateTables->connect_errno) {
+        echo "Failed to connect to MySQL: (" . $connectionCreateTables->connect_errno . ") " . $connectionCreateTables->connect_error;
+        }
+        $query = $connectionCreateTables->prepare("CREATE TABLE users (
+                                                          ID INT(3) UNSIGNED AUTO_INCREMENT,
+                                                          username VARCHAR(25) NOT NULL PRIMARY KEY,
+                                                          password VARCHAR(25) NOT NULL
+															                    );
+                                                  CREATE TABLE projects (
+                                                             author VARCHAR(255) NOT NULL,
+                                                             name VARCHAR(255) NOT NULL,
+                                                             description VARCHAR(255) NOT NULL,
+                                                      		 CONSTRAINT pk_projects PRIMARY KEY (author, name)
+                                                  );
+                                               ");
+        $query->execute();
+      }
       $connection = new mysqli(self::SERVER, self::USER, self::PASS, self::DB, self::PORT);
       if ($connection->connect_errno) {
       echo "Failed to connect to MySQL: (" . $connection->connect_errno . ") " . $connection->connect_error;
