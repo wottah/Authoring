@@ -3,12 +3,14 @@
     //CODE TO save concepts file n the gale server.
     const GALELOC = "C:/tomcat/apache-tomcat-7.0.55/webapps/authoringProjects";
     const PROJDIR = "C:/Bitnami/wampstack-5.5.28-0/apache2/htdocs/savedata";
+    const DEFAULTPAGDIR = "C:/Bitnami/wampstack-5.5.28-0/apache2/htdocs/defaultfiles";
 
     public function deploy($data){
       $post = json_decode(file_get_contents("php://input"));
-      $name = $post->name;
+      $projname = $post->projectname;
+      $username = $post->username;
       $content = $post->content;
-      $savedir = self::GALELOC . "/" . $name;
+      $savedir = self::GALELOC . "/" . $projname . "_" . $username;
       if(file_exists($savedir)){
         //edit the existing concepts file.
         $projectFile = fopen($savedir . "/concepts.gam", "w") or die("Unable to open file!");
@@ -21,6 +23,8 @@
         $projectFile = fopen($savedir . "/concepts.gam", "w") or die("Unable to open file!");
         fwrite($projectFile,$content);
         fclose($projectFile);
+        copy(self::DEFAULTPAGDIR . "/layout.xhtml",$savedir . "/layout.xhtml" );
+        copy(self::DEFAULTPAGDIR . "/placeholder.xhtml",$savedir . "/placeholder.xhtml");
       }
     }
 

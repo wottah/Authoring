@@ -32,7 +32,7 @@ angular.module('modelbuilder').controller('SettingsController', function($scope,
   }
   //adds an item to the prereq list of the current settingsItem.
   this.addRule = function(source, targets, rule){
-    if(rule.type=="binary"){
+    if(rule.type=="binary" || rule.type=="relation"){
       for(var t in targets){
         if(source.id != targets[t].id){
           ruleprops = RuleService.addRule(source,targets[t],rule.name, false);

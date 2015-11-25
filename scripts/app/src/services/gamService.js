@@ -42,7 +42,7 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
         //To just view the file use:
         //window.open('data:text,' + encodeURIComponent(output));
         //To actually deploy:
-        ExportJsonFactory.deploy(SessionService.getCurrentproject().name,output)
+        ExportJsonFactory.deploy(SessionService.getCurrentproject().name, SessionService.getUsername(), output)
     };
 
     //returns template concept GAM code.
