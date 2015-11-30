@@ -8,7 +8,7 @@
 	"concepttypes" :[
 		{
 			"name":"milkyway_topic",
-			"default_parameters":[
+			"default_attributes":[
 				{
 					"name":"next",
 					"type":"String",
@@ -29,12 +29,12 @@
 		},
 		{
 			"name":"text-topic",
-			"default_parameters":[],
+			"default_attributes":[],
 			"default_rules":["own knowledge update","visited","knowledge_update","knowledge_tester_1","knowledge_tester_2"]
 		},
 		{
 			"name":"quiz_topic",
-			"default_parameters":[
+			"default_attributes":[
 				{
 					"name":"score",
 					"type":"Double",
@@ -55,7 +55,7 @@
 		},
 		{
 			"name":"empty topic",
-			"default_parameters":[],
+			"default_attributes":[],
 			"default_rules":[]
 		}
 	]

@@ -54,7 +54,7 @@ angular.module('modelbuilder').service('ConceptService', function(SupportService
     nextid++;
     concepts.push(item);
     //loads all templated parameters.
-    defParams = conceptType.default_parameters.slice();
+    defParams = conceptType.default_attributes.slice();
     for(var d in defParams){
         this.addParameter(item.id, defParams[d].name, defParams[d].type, defParams[d].value, defParams[d].value, true, false);
     }

@@ -272,6 +272,7 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
     //returns either Double or Integer definition based on attribute operator
     this.addNumeralAttrCode = function(operator, ruleCode){
       code = "";
+      // the sum of all rules is applied.
       if(operator == "SUM"){
         code="";
         for(var r in ruleCode){
@@ -279,8 +280,8 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
           else{code += " + "+ruleCode[r];}
         }
       }
+      // the average of all rules is applied.
       if(operator == "AVG"){
-        //'avg(new Object[] {${<=(parent)#knowledge}, ${#own-knowledge}})'
         code = "avg(new Object[] { ";
         for(var r in ruleCode){
           if(code=="avg(new Object[] { "){code += ruleCode[r];}
@@ -288,6 +289,7 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
         }
         code+="})";
       }
+      //DOES NOT WORK. Set up for future expansion.
       if(operator == "MAX"){
         code="max(new Object[] {"
         for(var r in ruleCode){
@@ -296,6 +298,7 @@ angular.module('modelbuilder').service('GamService', function($window, $http, Ru
         }
         code+="})"
       }
+      //DOES NOT WORK. Set up for future expansion.
       if(operator == "MIN"){
         code="min(new Object[] {";
         for(var r in ruleCode){
