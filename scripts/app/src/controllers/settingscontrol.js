@@ -56,22 +56,22 @@ angular.module('modelbuilder').controller('SettingsController', function($scope,
   //removes rule from the list of rules of the current settingsItem
   this.removeRule = function(rule, item) {
     ruleDefinition = RuleService.getRule(rule.name);
-    //If no other rules rely on this one -> delete the property dependancy
+    //If no other rules rely on this one -> delete the property dependency
     allRules = RuleService.getRules();
     if(ruleDefinition.properties!=null){
       for(var r in ruleDefinition.properties){
-        hasDependancy = false;
+        hasDependency = false;
         for(var ar in allRules){
           if(rule.id != allRules[ar].id && SupportService.contains(ruleDefinition.properties[r],["name","type"],allRules[ar].properties)!=-1){
-            hasDependancy = true;
+            hasDependency = true;
           }
         }
-        if(!hasDependancy){
+        if(!hasDependency){
           if(ruleDefinition.properties[r].defval==""){
             ConceptService.removeParameter(rule.source,ruleDefinition.properties[r]);
           }
           else{
-            ConceptService.removeRuleParamDependancy(rule.source.id, ruleDefinition.properties[r].name, ruleDefinition.properties[r].type);
+            ConceptService.removeRuleParamDependency(rule.source.id, ruleDefinition.properties[r].name, ruleDefinition.properties[r].type);
           }
         }
       }

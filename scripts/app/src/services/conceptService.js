@@ -165,7 +165,7 @@ angular.module('modelbuilder').service('ConceptService', function(SupportService
   };
 
   //When a rule is removed which depended on this variable, the variable is allowed to be deleted.
-  this.removeRuleParamDependancy = function(itemId, varName, varType){
+  this.removeRuleParamDependency = function(itemId, varName, varType){
     for(var i in concepts){
       if(concepts[i].id == itemId){
         compObj = {name:varName, type:varType};
