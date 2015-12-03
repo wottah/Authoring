@@ -1,11 +1,11 @@
 {
 
-	"defaultattributes" :[
+	"defaultAttributes" :[
 		{"name":"suitability", "type":"Boolean", "value":"true"},
 		{"name":"availability", "type":"Boolean", "value":"true"},
 		{"name":"knowledge", "type":"Double", "value":"0", "operator":"AVG"}
 	],
-	"concepttypes" :[
+	"conceptTypes" :[
 		{
 			"name":"milkyway_topic",
 			"default_attributes":[

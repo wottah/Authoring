@@ -6,11 +6,11 @@ angular.module('modelbuilder').service('ConceptService', function(SupportService
   var nextid = 1;
 
   DefaultPropsFac.LoadDefaults().then(function(data){
-    conceptTypes = data.concepttypes;
+    conceptTypes = data.conceptTypes;
     for(var c in conceptTypes){
       conceptTypes[c].default_parameters = SupportService.matchtypes(conceptTypes[c].default_parameters);
     }
-    defaultAttributes = SupportService.matchtypes(data.defaultattributes);
+    defaultAttributes = SupportService.matchtypes(data.defaultAttributes);
   });
 
   //returns all default attributes.
