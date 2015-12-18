@@ -24,10 +24,10 @@
     ],
     "def_att_rules":[
       {
-        "name":"knows",
+        "name":"hasPrerequisite",
         "type":"binary",
         "target":"suitability",
-        "tooltip" : "the user must have fully learned the target concept.",
+        "tooltip" : "The target concept is a prerequisite for the source concept.",
         "code":"${%target%#knowledge} > 0.8",
         "operator":"and"
       },
@@ -64,10 +64,10 @@
         "operator":"and"
       },
       {
-        "name":"has knowledge of",
+        "name":"hasPrerequisite-all",
         "type":"binary",
         "target":"suitability",
-        "tooltip":"the user must have some understanding of the target concept.",
+        "tooltip":"the target concept must have been learned partially before the target concept is recommended.",
         "code":"${%target%#own-knowledge} > 0.8",
         "operator":"and"
       },

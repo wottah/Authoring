@@ -34,7 +34,16 @@ angular.module('modelbuilder').service('ConceptService', function(SupportService
   //returns all templated concept types.
   this.getConceptTypes = function(){
     return conceptTypes;
-  }
+  };
+
+  //gets and returns a root concept.
+  this.getRootConcept = function(){
+    for(var c in concepts){
+      if(concepts[c].parent==0){
+        return concepts[c];
+      }
+    }
+  };
 
   //loads project data into the ConceptService.
   this.setConcepts = function(conceptdata){

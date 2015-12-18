@@ -1,16 +1,24 @@
 <?php
   class fileManager {
     //CODE TO save concepts file n the gale server.
+    //location of the exported ALAT projects.
     const GALELOC = "C:/tomcat/apache-tomcat-7.0.55/webapps/authoringProjects";
+    //location at which the exported ALAT projects are available.
+    const PROJURL = "http://localhost:8080/authoringProjects";
+    //location of the saved ALAT projects.
     const PROJDIR = "C:/Bitnami/wampstack-5.5.28-0/apache2/htdocs/savedata";
+    //location of the placeholder and layout files.
     const DEFAULTPAGDIR = "C:/Bitnami/wampstack-5.5.28-0/apache2/htdocs/defaultfiles";
+    //Base URL to start GALE applications.
+    const GALEURL = "http://localhost:8080/gale/concept";
 
     public function deploy($data){
       $post = json_decode(file_get_contents("php://input"));
       $projname = $post->projectname;
       $username = $post->username;
       $content = $post->content;
-      $savedir = self::GALELOC . "/" . $projname . "_" . $username;
+      $projectfolder = $projname . "_" . $username;
+      $savedir = self::GALELOC . "/" . $projectfolder;
       if(file_exists($savedir)){
         //edit the existing concepts file.
         $projectFile = fopen($savedir . "/concepts.gam", "w") or die("Unable to open file!");
@@ -26,6 +34,7 @@
         copy(self::DEFAULTPAGDIR . "/layout.xhtml",$savedir . "/layout.xhtml" );
         copy(self::DEFAULTPAGDIR . "/placeholder.xhtml",$savedir . "/placeholder.xhtml");
       }
+      return self::GALEURL . "/" . self::PROJURL . "/" . $projectfolder . "/";
     }
 
     public function saveFile($data){
