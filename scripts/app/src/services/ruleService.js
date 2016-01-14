@@ -176,6 +176,15 @@ angular.module('modelbuilder').service('RuleService', function(DefaultPropsFac, 
     }
   };
 
+  //Remove all rules associated with target id
+  this.removeTargetRules = function(targetID){
+    for(var r in rulesList){
+      if(rulesList[r].source.id == targetID ||rulesList[r].target.id == targetID){
+        rulesList.splice(r,1);
+      }
+    }
+  }
+
   //removes specific rule instance from the ruleslist.
   this.removeRule = function(ruleId){
     for(var r in rulesList){

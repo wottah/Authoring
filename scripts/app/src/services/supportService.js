@@ -31,9 +31,17 @@ angular.module('modelbuilder').service('SupportService',function(DefaultPropsFac
     {
       for(var i in array)
       {
-        if(array[i].toLowerCase()==item.toLowerCase())
-        {
-          return i;
+        if(array[i].constructor === String){
+          if(array[i].toLowerCase()==item.toLowerCase())
+          {
+            return i;
+          }
+        }
+        else{
+          if(array[i]==item)
+          {
+            return i;
+          }
         }
       }
       return -1;

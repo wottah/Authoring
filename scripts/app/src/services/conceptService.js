@@ -89,6 +89,7 @@ angular.module('modelbuilder').service('ConceptService', function(SupportService
     }
   };
 
+  //Removes concept and all its references/associated rules.
   this.removeConcept = function(id){
     var index;
     for(var i in concepts)
@@ -101,7 +102,12 @@ angular.module('modelbuilder').service('ConceptService', function(SupportService
       {
         this.removeConcept(concepts[i].id);
       }
+      childId = SupportService.contains(id,"",concepts[i].children);
+      if(childId>-1){
+        concepts[i].children.splice(childId,1);
+      }
     }
+    RuleService.removeTargetRules(id);
     concepts.splice(index,1);
   }
 
