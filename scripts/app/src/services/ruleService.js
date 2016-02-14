@@ -182,7 +182,6 @@ angular.module('modelbuilder').service('RuleService', function(DefaultPropsFac, 
     for(var r in rulesList){
       index = nrItems -1 -r;
       if(rulesList[index].sourceId == targetID || rulesList[index].targetId == targetID){
-        alert(rulesList[index].id);
         rulesList.splice(index,1);
       }
     }
