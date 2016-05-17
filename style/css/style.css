@@ -1,0 +1,57 @@
+#header {
+  min-height: 80px;
+  min-width: 300px;
+  background-color: #226FE3;
+  color: white; }
+  #header h1 {
+    margin: 10px; }
+  #header h4 {
+    margin-top: 5px;
+    margin-left: 10px; }
+  #header button {
+    float: right;
+    margin-top: 10px;
+    margin-right: 10px; }
+
+#crumblepath span {
+  display: inline;
+  color: grey;
+  font-size: 16px; }
+#crumblepath a {
+  cursor: pointer; }
+
+#options td {
+  vertical-align: text-top; }
+
+ol {
+  list-style-type: none; }
+
+#overviewcontainer {
+  margin-top: 15px; }
+  #overviewcontainer .collapseIcon {
+    cursor: pointer; }
+  #overviewcontainer li {
+    margin-top: 3px; }
+
+.listitem {
+  margin: 5px;
+  padding-bottom: 2px; }
+
+#loginScreenContainer #loginBox {
+  margin-top: 10%; }
+  #loginScreenContainer #loginBox .panel {
+    background-color: #D4D4D4;
+    border-style: solid;
+    border-color: black; }
+
+#browseScreenContainer #browseBox {
+  margin-top: 10%; }
+  #browseScreenContainer #browseBox .panel {
+    border-style: solid;
+    border-color: black; }
+  #browseScreenContainer #browseBox .btn {
+    margin-left: 1%; }
+  #browseScreenContainer #browseBox .projectListItem:hover {
+    cursor: pointer; }
+
+/*# sourceMappingURL=style.css.map */
